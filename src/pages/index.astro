@@ -1,0 +1,393 @@
+---
+import Base from '../layouts/Base.astro';
+import { getArticles } from '../lib/notion';
+
+const articles = await getArticles();
+
+const tagStyles: Record<string, string> = {
+  accent: 'bg-brand-accent/10 text-brand-accent',
+  warm:   'bg-brand-warm/10 text-brand-warm',
+  cool:   'bg-brand-cool/10 text-brand-cool',
+  purple: 'bg-purple-500/10 text-purple-400',
+};
+---
+
+<Base title="Angela Jian 簡琬庭 — Sr. Product Manager / AI Product Builder">
+
+<!-- HERO SECTION -->
+<section class="relative min-h-screen flex flex-col justify-center overflow-hidden" id="hero">
+  <div class="section-num parallax-slow" data-speed="0.15">01</div>
+
+  <div class="container mx-auto px-8 md:px-16 lg:px-28 pt-32 pb-12 relative z-10 flex-1 flex flex-col justify-center">
+
+    <!-- Main Layout: Photo Left + Content Right -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
+
+      <!-- Left: Portrait (clean, no overlay) -->
+      <div class="stagger-col md:col-span-5" data-stagger="0">
+        <div class="w-full aspect-[4/4] rounded-[2rem] overflow-hidden">
+          <img src="/angela.jpeg"
+               alt="Angela Jian 簡琬庭" class="w-full h-full object-cover" loading="eager">
+        </div>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="stagger-col md:col-span-7" data-stagger="1">
+        <!-- Label -->
+        <div class="mb-6 flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase">
+          <div class="w-8 h-px bg-brand-accent"></div>
+          <span>Sr. Product Manager / AI Product Builder</span>
+        </div>
+
+        <!-- Title Tags -->
+        <div class="flex flex-wrap gap-2 mb-5">
+          <span class="px-3 py-1.5 text-xs font-body bg-brand-accent/10 text-brand-accent rounded-full border border-brand-accent/20">Sr. PM scaled apps to millions</span>
+          <span class="px-3 py-1.5 text-xs font-body bg-brand-warm/10 text-brand-warm rounded-full border border-brand-warm/20">AI Product Builder</span>
+          <span class="px-3 py-1.5 text-xs font-body bg-brand-cool/10 text-brand-cool rounded-full border border-brand-cool/20">AI Playbook Creator</span>
+          <span class="px-3 py-1.5 text-xs font-body bg-purple-500/10 text-purple-400 rounded-full border border-purple-500/20">經濟部 AI 應用規劃師</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="hero-title text-4xl md:text-5xl lg:text-7xl mb-6">
+          <span class="line"><span class="line-inner">SCALE</span></span>
+          <span class="line"><span class="line-inner text-brand-accent">PRODUCTS</span></span>
+          <span class="line"><span class="line-inner">THAT MATTER</span></span>
+        </h1>
+
+        <!-- Description -->
+        <p class="font-body text-brand-subtle text-sm md:text-base leading-relaxed mb-8 opacity-0" id="heroDesc">
+          8+ years driving global growth & monetization for high-scale mobile apps (TikTok, LiveIn, Invos). Scaled MAU from 0 to 600K, managed 100M+ content views, and boosted revenue by 120% through hybrid monetization. Expert in leading 20+ member cross-functional teams, A/B testing, and translating data into user-centric product features.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-4 opacity-0" id="heroCTAs">
+          <a href="#articles" class="mag-btn px-8 py-4 bg-brand-accent text-brand-dark font-heading font-semibold rounded-full text-sm tracking-wide">
+            <span>探索作品集</span>
+          </a>
+          <a href="#about" class="mag-btn px-8 py-4 border border-brand-muted text-brand-text font-heading font-medium rounded-full text-sm tracking-wide">
+            <span>了解更多</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Stats Bar -->
+  <div class="relative z-10 border-t border-brand-muted/15 mt-auto">
+    <div class="container mx-auto px-8 md:px-16 lg:px-28">
+      <div class="flex items-center justify-between md:justify-start md:gap-16 py-6">
+        <div class="hero-stat flex items-center gap-3">
+          <span class="text-2xl font-heading font-bold text-brand-accent">600K</span>
+          <span class="text-xs text-brand-subtle font-body">MAU Scaled</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-brand-muted/30"></div>
+        <div class="hero-stat flex items-center gap-3">
+          <span class="text-2xl font-heading font-bold text-brand-accent">100M+</span>
+          <span class="text-xs text-brand-subtle font-body">Content Views</span>
+        </div>
+        <div class="hidden md:block w-px h-6 bg-brand-muted/30"></div>
+        <div class="hero-stat flex items-center gap-3">
+          <span class="text-2xl font-heading font-bold text-brand-accent">120%</span>
+          <span class="text-xs text-brand-subtle font-body">Revenue Growth</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 z-20" id="scrollHint">
+    <span class="text-xs text-brand-subtle tracking-widest font-body uppercase">Scroll</span>
+    <div class="w-px h-10 bg-gradient-to-b from-brand-accent to-transparent"></div>
+  </div>
+</section>
+
+<!-- MARQUEE SECTION -->
+<section class="py-8 border-y border-brand-muted/20 overflow-hidden relative z-10 bg-brand-dark/50 backdrop-blur-sm">
+  <div style="display:flex;flex-wrap:nowrap;width:max-content;animation:marqueeScroll 30s linear infinite;">
+    <div class="flex shrink-0 items-center gap-12 px-6 whitespace-nowrap">
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">PRODUCT</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">GROWTH</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">AI</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">STRATEGY</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">MONETIZATION</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">LEADERSHIP</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+    </div>
+    <div class="flex shrink-0 items-center gap-12 px-6 whitespace-nowrap">
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">PRODUCT</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">GROWTH</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">AI</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">STRATEGY</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">MONETIZATION</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+      <span class="text-5xl md:text-7xl font-heading font-bold text-brand-text/5">LEADERSHIP</span>
+      <iconify-icon icon="solar:star-bold" class="text-brand-accent text-2xl"></iconify-icon>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="relative py-32 md:py-44 overflow-hidden" id="about">
+  <div class="section-num parallax-slow" data-speed="0.1">02</div>
+  <div class="container mx-auto px-8 md:px-16 lg:px-28 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
+
+      <!-- Col 1: Label -->
+      <div class="stagger-col" data-stagger="0">
+        <div class="sticky top-32">
+          <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-8">
+            <div class="w-8 h-px bg-brand-accent"></div>
+            <span>About</span>
+          </div>
+          <h2 class="font-heading font-bold text-3xl md:text-4xl leading-tight">
+            關於<br><span class="text-brand-accent">我</span>
+          </h2>
+        </div>
+      </div>
+
+      <!-- Col 2-3: Content -->
+      <div class="stagger-col md:col-span-2" data-stagger="1">
+        <div class="space-y-8">
+          <p class="text-xl md:text-2xl font-body text-brand-text leading-relaxed">
+            從營運與內容出發，一路走到產品決策與產品領導——這讓我在做產品時，特別能同時站在使用者、商業與團隊執行的角度思考。
+          </p>
+          <p class="text-base font-body text-brand-subtle leading-relaxed">
+            8 年以上的產品經驗中，我在 TikTok、LiveIn、Invos 等高成長產品中，實際參與從 0 到 1、再到百萬用戶的全過程。我理解成長不是功能堆疊，而是設計對的飛輪；變現不是加按鈕，而是用數據與用戶行為驗證每一個產品決策。
+          </p>
+          <p class="text-base font-body text-brand-subtle leading-relaxed">
+            隨著角色資深，我更多在做的是對齊方向、拆解問題，讓設計、工程與商業能在同一個決策框架下前進。我找的不是把需求做完的角色，而是把問題想清楚的位置。
+          </p>
+
+          <!-- Core Values -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8">
+            <div class="p-5 rounded-2xl bg-brand-deeper border border-brand-muted/20 card-hover">
+              <iconify-icon icon="solar:chart-2-bold" class="text-brand-accent text-2xl mb-3"></iconify-icon>
+              <h4 class="font-heading font-semibold text-sm mb-2">規模化成長</h4>
+              <p class="text-xs text-brand-subtle leading-relaxed">從 0 到百萬用戶，設計驅動成長的產品飛輪</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-brand-deeper border border-brand-muted/20 card-hover">
+              <iconify-icon icon="solar:wallet-money-bold" class="text-brand-warm text-2xl mb-3"></iconify-icon>
+              <h4 class="font-heading font-semibold text-sm mb-2">變現與商業</h4>
+              <p class="text-xs text-brand-subtle leading-relaxed">用數據驅動收入成長，打造可持續的商業模型</p>
+            </div>
+            <div class="p-5 rounded-2xl bg-brand-deeper border border-brand-muted/20 card-hover">
+              <iconify-icon icon="solar:users-group-rounded-bold" class="text-brand-cool text-2xl mb-3"></iconify-icon>
+              <h4 class="font-heading font-semibold text-sm mb-2">跨職能領導</h4>
+              <p class="text-xs text-brand-subtle leading-relaxed">對齊方向、拆解問題，帶領團隊高效前進</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 4: Expertise -->
+      <div class="stagger-col" data-stagger="2">
+        <div class="space-y-6">
+          <div class="p-6 rounded-3xl bg-brand-deeper border border-brand-muted/20">
+            <div class="text-xs text-brand-subtle tracking-widest uppercase font-body mb-5">產品經歷</div>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 rounded-full bg-brand-accent mt-1.5 shrink-0"></div>
+                <div>
+                  <div class="text-sm font-heading font-semibold">TikTok</div>
+                  <div class="text-xs text-brand-subtle">全球內容生態與成長策略</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 rounded-full bg-brand-warm mt-1.5 shrink-0"></div>
+                <div>
+                  <div class="text-sm font-heading font-semibold">LiveIn</div>
+                  <div class="text-xs text-brand-subtle">從 0 到 600K MAU 社交產品</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-2 h-2 rounded-full bg-brand-cool mt-1.5 shrink-0"></div>
+                <div>
+                  <div class="text-sm font-heading font-semibold">Invos</div>
+                  <div class="text-xs text-brand-subtle">Fintech 變現與訂閱模型</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="text-xs text-brand-subtle tracking-widest uppercase font-body mb-4">核心能力</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">Product Strategy</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">Growth</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">Monetization</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">A/B Testing</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">AI Product</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">Cross-functional</span>
+              <span class="px-3 py-1.5 text-xs font-body bg-brand-surface border border-brand-muted/30 rounded-full text-brand-subtle">Data-driven</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="relative py-32 md:py-44 overflow-hidden" id="services">
+  <div class="section-num parallax-slow" data-speed="0.12">03</div>
+  <div class="container mx-auto px-8 md:px-16 lg:px-28 relative z-10">
+
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Services</span>
+    </div>
+    <h2 class="font-heading font-bold text-4xl md:text-6xl mb-8">
+      產品<span class="text-brand-accent">三大主軸</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="stagger-col group p-8 rounded-3xl bg-brand-deeper/60 border border-brand-muted/20 card-hover backdrop-blur-sm" data-stagger="0">
+        <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 flex items-center justify-center mb-6 group-hover:bg-brand-accent/20 transition-colors">
+          <iconify-icon icon="solar:rocket-2-bold" class="text-brand-accent text-2xl"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-semibold text-xl mb-3">規模化與平台成長</h3>
+        <p class="text-sm text-brand-subtle leading-relaxed mb-6">在 TikTok 與 LiveIn 等高成長產品中，參與從 0 到 1、再到百萬用戶的過程。理解成長不是功能堆疊，而是設計對的飛輪。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-accent/8 text-brand-accent/70 rounded-full">MAU 600K</span>
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-accent/8 text-brand-accent/70 rounded-full">100M+ Views</span>
+        </div>
+      </div>
+
+      <div class="stagger-col group p-8 rounded-3xl bg-brand-deeper/60 border border-brand-muted/20 card-hover backdrop-blur-sm" data-stagger="1">
+        <div class="w-14 h-14 rounded-2xl bg-brand-warm/10 flex items-center justify-center mb-6 group-hover:bg-brand-warm/20 transition-colors">
+          <iconify-icon icon="solar:wallet-money-bold" class="text-brand-warm text-2xl"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-semibold text-xl mb-3">變現與商業模型</h3>
+        <p class="text-sm text-brand-subtle leading-relaxed mb-6">在 Fintech 與訂閱型產品中，負責與收入直接相關的功能設計。習慣用數據與用戶行為來驗證產品決策，而非靠直覺。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-warm/8 text-brand-warm/70 rounded-full">Revenue +120%</span>
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-warm/8 text-brand-warm/70 rounded-full">Hybrid Monetization</span>
+        </div>
+      </div>
+
+      <div class="stagger-col group p-8 rounded-3xl bg-brand-deeper/60 border border-brand-muted/20 card-hover backdrop-blur-sm" data-stagger="2">
+        <div class="w-14 h-14 rounded-2xl bg-brand-cool/10 flex items-center justify-center mb-6 group-hover:bg-brand-cool/20 transition-colors">
+          <iconify-icon icon="solar:users-group-rounded-bold" class="text-brand-cool text-2xl"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-semibold text-xl mb-3">跨職能與產品領導</h3>
+        <p class="text-sm text-brand-subtle leading-relaxed mb-6">對齊方向、拆解問題，讓設計、工程與商業能在同一個決策框架下前進。帶領 20+ 人跨職能團隊交付產品成果。</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-cool/8 text-brand-cool/70 rounded-full">20+ 人團隊</span>
+          <span class="px-2.5 py-1 text-xs font-body bg-brand-cool/8 text-brand-cool/70 rounded-full">A/B Testing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ARTICLES SECTION -->
+<section class="relative py-32 md:py-44 overflow-hidden" id="articles">
+  <div class="section-num parallax-slow" data-speed="0.08">04</div>
+  <div class="container mx-auto px-8 md:px-16 lg:px-28 relative z-10">
+
+    <div class="flex items-center justify-between mb-8 flex-wrap gap-6">
+      <div>
+        <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+          <div class="w-8 h-px bg-brand-accent"></div>
+          <span>Articles</span>
+        </div>
+        <h2 class="font-heading font-bold text-4xl md:text-6xl">
+          最新<span class="text-brand-accent">文章</span>
+        </h2>
+      </div>
+      <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn px-6 py-3 border border-brand-muted text-brand-subtle font-body text-sm rounded-full hover:text-brand-accent hover:border-brand-accent transition-colors">
+        <span>查看全部</span>
+      </a>
+    </div>
+
+    <!-- Article Grid: 5 Columns Staggered -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+
+      {articles.slice(0, 4).map((article, i) => (
+        <a href={`/articles/${article.slug}`}
+           class={`stagger-col article-card card-hover bg-brand-deeper border border-brand-muted/20 block ${i % 2 === 1 ? 'lg:mt-14' : ''}`}
+           data-stagger={i}>
+          {article.image && (
+            <div class="img-wrapper aspect-[3/4]">
+              <img src={article.image} alt={article.title} class="w-full h-full object-cover" />
+            </div>
+          )}
+          <div class="p-4">
+            <div class="flex items-center gap-2 mb-2 flex-wrap">
+              <span class={`px-2 py-0.5 text-[11px] rounded-full font-body ${tagStyles[article.tagColor] || tagStyles.accent}`}>{article.tag}</span>
+              <span class="text-[11px] text-brand-subtle font-body">{article.date}</span>
+            </div>
+            <h3 class="font-heading font-semibold text-sm mb-1.5 leading-snug text-white line-clamp-3">{article.title}</h3>
+            {article.summary && (
+              <p class="text-xs text-stone-400 leading-relaxed line-clamp-2">{article.summary}</p>
+            )}
+          </div>
+        </a>
+      ))}
+
+      <!-- Newsletter CTA Card (5th slot) -->
+      <div class="stagger-col lg:mt-14 p-5 rounded-[1.25rem] bg-gradient-to-br from-brand-accent/20 to-brand-warm/10 border border-brand-accent/30 relative overflow-hidden flex flex-col justify-center" data-stagger="4">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-brand-accent/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+        <iconify-icon icon="solar:letter-bold" class="text-brand-accent text-2xl mb-2 relative z-10"></iconify-icon>
+        <div class="text-sm font-heading font-bold text-brand-text mb-1 relative z-10">AI Applied Playbook</div>
+        <p class="text-xs text-brand-subtle font-body mb-1.5 relative z-10">AIPM 思維實驗室電子報</p>
+        <p class="text-[11px] text-brand-accent/60 font-body mb-4 leading-relaxed italic relative z-10">"把 AI 從工具變成工作流程的實戰手冊"</p>
+        <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn px-4 py-2.5 bg-brand-accent text-brand-dark font-body font-semibold rounded-full text-xs tracking-wide inline-flex relative z-10">
+          <span>免費訂閱</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="relative py-32 md:py-44 overflow-hidden" id="contact">
+  <div class="section-num parallax-slow" data-speed="0.06">05</div>
+  <div class="container mx-auto px-8 md:px-16 lg:px-28 relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="flex items-center justify-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-8">
+        <div class="w-8 h-px bg-brand-accent"></div>
+        <span>Contact</span>
+        <div class="w-8 h-px bg-brand-accent"></div>
+      </div>
+
+      <h2 class="font-heading font-bold text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight">
+        Let's<br><span class="text-brand-accent">Connect</span>
+      </h2>
+
+      <p class="text-lg text-brand-subtle font-body max-w-2xl mx-auto mb-12 leading-relaxed">
+        如果你正在尋找一位能把問題想清楚、把產品做到位的產品夥伴——歡迎跟我聊聊。
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-6 mb-16">
+        <a href="mailto:an9lajian@gmail.com" class="mag-btn px-10 py-5 bg-brand-accent text-brand-dark font-heading font-bold rounded-full text-base tracking-wide">
+          <span>an9lajian@gmail.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/angela-jian/" target="_blank" class="mag-btn px-10 py-5 border border-brand-muted text-brand-text font-heading font-medium rounded-full text-base">
+          <span>LinkedIn Profile</span>
+        </a>
+      </div>
+
+      <!-- Social Links -->
+      <div class="flex items-center justify-center gap-6">
+        <a href="https://www.linkedin.com/in/angela-jian/" target="_blank" class="w-12 h-12 rounded-full border border-brand-muted/30 flex items-center justify-center text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-all duration-300">
+          <iconify-icon icon="simple-icons:linkedin" class="text-xl"></iconify-icon>
+        </a>
+        <a href="mailto:an9lajian@gmail.com" class="w-12 h-12 rounded-full border border-brand-muted/30 flex items-center justify-center text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-all duration-300">
+          <iconify-icon icon="solar:letter-bold" class="text-xl"></iconify-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>

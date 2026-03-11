@@ -1,0 +1,121 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = 'Sr. Product Manager / AI Product Builder — 8+ years driving global growth and monetization for high-scale mobile apps.', ogImage = '' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="zh-Hant" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Open Graph / LinkedIn -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Angela Jian 簡琬庭",
+  "jobTitle": "Sr. Product Manager / AI Product Builder",
+  "url": Astro.site?.toString(),
+})} />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@200;300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- External Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" is:inline></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" is:inline></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" is:inline></script>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" is:inline></script>
+
+<!-- Global CSS -->
+<style>
+  @import "../styles/global.css";
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <div style="font-family: Sora, sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.2em; color: #e2c87e;">ANGELA JIAN</div>
+  <div class="loader-bar"><div class="loader-bar-inner" id="loaderBar"></div></div>
+  <div style="font-family: Space Grotesk, sans-serif; font-size: 0.75rem; color: #a8a29e; letter-spacing: 0.1em;">LOADING EXPERIENCE</div>
+</div>
+
+<!-- Noise Overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Custom Cursor -->
+<div class="cursor-main" id="cursorMain"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- Vertical Guide Lines -->
+<div class="guide-lines">
+  <div class="guide-line" style="left: 25%;"></div>
+  <div class="guide-line" style="left: 50%;"></div>
+  <div class="guide-line" style="left: 75%;"></div>
+</div>
+
+<!-- WebGL Background -->
+<canvas id="webgl-bg"></canvas>
+
+<!-- Navigation -->
+<nav class="nav-glass fixed top-0 left-0 w-full z-50 px-8 md:px-16 lg:px-28 py-5 flex items-center justify-between" id="mainNav">
+  <a href="/" class="font-heading font-bold text-lg tracking-widest text-brand-accent">ANGELA<span class="text-brand-text">.JIAN</span></a>
+  <div class="hidden md:flex items-center gap-8 text-sm font-body text-brand-subtle">
+    <a href="/#about" class="hover:text-brand-accent transition-colors duration-300">關於我</a>
+    <a href="/#services" class="hover:text-brand-accent transition-colors duration-300">服務</a>
+    <a href="/#articles" class="hover:text-brand-accent transition-colors duration-300">文章</a>
+    <a href="/#contact" class="hover:text-brand-accent transition-colors duration-300">聯繫</a>
+  </div>
+  <a href="/#contact" class="mag-btn px-5 py-2.5 border border-brand-accent rounded-full text-sm font-body font-medium text-brand-accent hover:text-brand-dark transition-colors">
+    <span>開始合作</span>
+  </a>
+</nav>
+
+<!-- Page Content -->
+<slot />
+
+<!-- Footer -->
+<footer class="py-12 border-t border-brand-muted/10 relative z-10">
+  <div class="container mx-auto px-8 md:px-16 lg:px-28">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="font-heading font-bold text-sm tracking-widest text-brand-accent">ANGELA<span class="text-brand-text">.JIAN</span></div>
+      <p class="text-xs text-brand-subtle font-body">&copy; 2026 Angela Jian. Crafted with passion & pixels.</p>
+      <div class="flex items-center gap-1 text-xs text-brand-subtle font-body">
+        <span>Built with</span>
+        <iconify-icon icon="solar:heart-bold" class="text-brand-warm"></iconify-icon>
+        <span>and</span>
+        <iconify-icon icon="solar:cup-hot-bold" class="text-brand-accent"></iconify-icon>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Global Scripts -->
+<script is:inline src="/scripts/main.js"></script>
+
+</body>
+</html>
