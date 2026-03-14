@@ -7,8 +7,8 @@ const databaseId = import.meta.env.NOTION_DATABASE_ID;
 export interface Article {
   title: string;
   slug: string;
-  tag: string;
-  tagColor: string;
+  tags: string[];
+  tagColors: string[];
   date: string;
   image: string;
   summary: string;
@@ -34,8 +34,8 @@ export const STATIC_ARTICLES: Article[] = [
   {
     title: '淺談傳統 PM 技能樹 vs. AI PM 能力矩陣',
     slug: 'pm-skill-tree-vs-ai-pm-matrix',
-    tag: 'AI PM',
-    tagColor: 'accent',
+    tags: ['AI PM'],
+    tagColors: ['accent'],
     date: '2026.03.08',
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&q=80&auto=format',
     summary: '傳統 PM 技能樹已不足以應對 AI 產品，提出「π 型」能力模型，結合產品判斷力與 AI 技術理解...',
@@ -45,8 +45,8 @@ export const STATIC_ARTICLES: Article[] = [
   {
     title: '美感不再是門檻，Pencil.dev 幫我實現「設計即產品」',
     slug: 'pencil-dev-design-as-product',
-    tag: 'AI 工具',
-    tagColor: 'warm',
+    tags: ['AI 工具'],
+    tagColors: ['warm'],
     date: '2026.02.11',
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80&auto=format',
     summary: '透過 AI 設計工具補足美感缺口，減少反覆下 Prompt 的成本，展現 AI 時代產品開發新可能...',
@@ -56,8 +56,8 @@ export const STATIC_ARTICLES: Article[] = [
   {
     title: 'How AI Changes Product Sense: Building an AI-Powered Competitive Intelligence Dashboard',
     slug: 'ai-powered-competitive-intelligence',
-    tag: 'Product Sense',
-    tagColor: 'cool',
+    tags: ['Product Sense'],
+    tagColors: ['cool'],
     date: '2026.01.21',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80&auto=format',
     summary: 'Built an AI-powered competitive intelligence dashboard using Python, Streamlit, and Gemini AI...',
@@ -67,8 +67,8 @@ export const STATIC_ARTICLES: Article[] = [
   {
     title: '分享我如何設計「Human-in-the-Loop」的 AI 會計作帳流程',
     slug: 'human-in-the-loop-ai-accounting',
-    tag: 'AI 流程設計',
-    tagColor: 'purple',
+    tags: ['AI 流程設計'],
+    tagColors: ['purple'],
     date: '2025.12.26',
     image: '',
     summary: '不是盲目自動化，而是設置信心度閾值讓系統智能標記需要審核的項目，最終作帳時間下降 60%...',
@@ -78,8 +78,8 @@ export const STATIC_ARTICLES: Article[] = [
   {
     title: 'AI 應用規劃師教我的 3 個「殘酷」現實',
     slug: 'ai-planner-3-harsh-realities',
-    tag: 'AI 規劃師',
-    tagColor: 'accent',
+    tags: ['AI 規劃師'],
+    tagColors: ['accent'],
     date: '2025.12.13',
     image: '',
     summary: 'AI 的價值在於流程優化而非技術本身，提出正確的問題比得到答案更重要...',
@@ -171,13 +171,14 @@ export async function getArticles(): Promise<Article[]> {
 
     for (const page of response.results as any[]) {
       const props = page.properties;
-      const tag = props.Tag?.select?.name || '';
+      const tags = (props.Tag?.multi_select || []).map((t: any) => t.name);
+      const tagColors = tags.map((t: string) => getTagColor(t));
 
       articles.push({
         title: props.Title?.title?.[0]?.plain_text || '',
         slug: props.Slug?.rich_text?.[0]?.plain_text || '',
-        tag,
-        tagColor: getTagColor(tag),
+        tags,
+        tagColors,
         date: props.Date?.date?.start?.replaceAll('-', '.') || '',
         image: props.Image?.url || '',
         summary: props.Summary?.rich_text?.[0]?.plain_text || '',

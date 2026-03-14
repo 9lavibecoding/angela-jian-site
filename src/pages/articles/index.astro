@@ -1,0 +1,163 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getArticles } from '../../lib/notion';
+
+const articles = await getArticles();
+
+const tagStyles: Record<string, string> = {
+  accent: 'bg-brand-accent-dark/10 text-brand-accent-dark',
+  warm:   'bg-brand-warm-dark/10 text-brand-warm-dark',
+  cool:   'bg-brand-cool/10 text-brand-cool',
+  purple: 'bg-purple-600/10 text-purple-600',
+};
+
+// Collect unique tags for filter buttons
+const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
+---
+
+<Base title="所有文章 — Angela Jian 簡琬庭">
+
+  <section class="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden min-h-screen bg-brand-light-bg">
+    <div class="container mx-auto px-6 relative z-10">
+
+      <!-- Back link -->
+      <a href="/" class="inline-flex items-center gap-2 text-brand-light-subtle text-sm font-body mb-8 md:mb-10 hover:text-brand-accent-dark transition-colors">
+        <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
+        <span>返回首頁</span>
+      </a>
+
+      <!-- Page heading -->
+      <div class="flex items-center justify-between mb-8 md:mb-12 flex-wrap gap-4 md:gap-6">
+        <div>
+          <div class="flex items-center gap-3 text-brand-light-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
+            <div class="w-8 h-px bg-brand-accent-dark"></div>
+            <span>Articles</span>
+          </div>
+          <h1 class="font-heading font-bold text-3xl md:text-6xl text-brand-light-text">
+            所有<span class="text-brand-accent-dark">文章</span>
+          </h1>
+        </div>
+        <div class="text-sm text-brand-light-subtle font-body">
+          共 <span class="text-brand-accent-dark font-semibold">{articles.length}</span> 篇文章
+        </div>
+      </div>
+
+      <!-- Tag filter buttons -->
+      <div class="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10" id="tagFilters">
+        <button
+          data-tag="all"
+          class="tag-btn px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-body rounded-full border transition-colors active-tag"
+        >全部</button>
+        {uniqueTags.map(tag => (
+          <button
+            data-tag={tag}
+            class="tag-btn px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-body rounded-full border transition-colors border-brand-light-border text-brand-light-subtle hover:text-brand-light-text"
+          >{tag}</button>
+        ))}
+      </div>
+
+      <!-- Article list -->
+      <div class="divide-y divide-brand-light-border" id="articleList">
+        {articles.map((article) => (
+          <a href={`/articles/${article.slug}`}
+             class="article-item group block py-5 md:py-7 first:pt-0 hover:pl-2 transition-all duration-300"
+             data-article-tags={article.tags.join(',')}>
+            <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
+
+              {/* Thumbnail */}
+              {article.image ? (
+                <div class="w-full md:w-56 h-40 md:h-[8.5rem] shrink-0 rounded-xl overflow-hidden bg-brand-light-surface">
+                  <img src={article.image} alt={article.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                </div>
+              ) : (
+                <div class="w-full md:w-56 h-40 md:h-[8.5rem] shrink-0 rounded-xl bg-brand-light-surface flex items-center justify-center">
+                  <iconify-icon icon="solar:document-text-bold" class="text-3xl text-brand-light-border"></iconify-icon>
+                </div>
+              )}
+
+              {/* Title + Tags + Summary */}
+              <div class="flex-1 min-w-0">
+                <div class="flex items-baseline gap-3 mb-2 flex-wrap">
+                  <h3 class="font-heading font-semibold text-base md:text-xl leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">
+                    {article.title}
+                  </h3>
+                  <span class="text-xs text-brand-light-subtle font-body whitespace-nowrap">{article.date}</span>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap mb-2">
+                  {article.tags.map((tag, j) => (
+                    <span class={`px-2.5 py-1 text-[11px] rounded-full font-body ${tagStyles[article.tagColors[j]] || tagStyles.accent}`}>{tag}</span>
+                  ))}
+                </div>
+                {article.summary && (
+                  <p class="text-sm text-brand-light-subtle leading-relaxed line-clamp-2">{article.summary}</p>
+                )}
+              </div>
+
+              {/* Arrow */}
+              <div class="hidden md:flex items-center shrink-0 self-center">
+                <iconify-icon icon="solar:arrow-right-linear" class="text-xl text-brand-light-border group-hover:text-brand-accent-dark transition-colors"></iconify-icon>
+              </div>
+
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Empty state -->
+      <div id="emptyState" class="hidden text-center py-20">
+        <iconify-icon icon="solar:document-text-bold" class="text-brand-light-border text-5xl mb-4"></iconify-icon>
+        <p class="text-brand-light-subtle font-body text-lg">沒有找到符合條件的文章</p>
+      </div>
+
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('#tagFilters .tag-btn');
+    const items = document.querySelectorAll<HTMLElement>('#articleList .article-item');
+    const emptyState = document.getElementById('emptyState');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.dataset.tag;
+
+        // Update active button styles
+        buttons.forEach(b => {
+          b.classList.remove('active-tag');
+          b.classList.add('border-brand-light-border', 'text-brand-light-subtle');
+        });
+        btn.classList.add('active-tag');
+        btn.classList.remove('border-brand-light-border', 'text-brand-light-subtle');
+
+        // Filter items
+        let visibleCount = 0;
+        items.forEach(item => {
+          const itemTags = (item.dataset.articleTags || '').split(',');
+          if (tag === 'all' || itemTags.includes(tag!)) {
+            item.style.display = '';
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Show/hide empty state
+        if (emptyState) {
+          emptyState.classList.toggle('hidden', visibleCount > 0);
+        }
+      });
+    });
+  });
+
+</script>
+
+<style>
+  .active-tag {
+    background-color: color-mix(in srgb, var(--color-brand-accent-dark) 12%, transparent);
+    color: var(--color-brand-accent-dark);
+    border-color: color-mix(in srgb, var(--color-brand-accent-dark) 35%, transparent);
+  }
+</style>
