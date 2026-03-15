@@ -10,7 +10,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!DOCTYPE html>
-<html lang="zh-Hant" class="scroll-smooth">
+<html lang="zh-Hant" class="scroll-smooth" style="overflow-x:hidden;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,7 +55,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   @import "../styles/global.css";
 </style>
 </head>
-<body>
+<body style="overflow-x:hidden; max-width:100%; width:100%;">
 
 <!-- Loading Screen -->
 <div id="loader">
@@ -127,7 +127,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <!-- Footer -->
 <footer class="py-12 border-t border-brand-light-border relative z-10 bg-brand-dark">
-  <div class="container mx-auto px-6">
+  <div class="site-container px-6">
     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="font-heading font-bold text-sm tracking-widest text-brand-accent">ANGELA<span class="text-white">.JIAN</span></div>
       <p class="text-xs text-gray-400 font-body">&copy; 2026 Angela Jian. Crafted with passion & pixels.</p>
@@ -143,6 +143,32 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <!-- Global Scripts -->
 <script is:inline src="/scripts/main.js"></script>
+
+<!-- Debug: find overflow elements (remove after fixing) -->
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function() {
+  var docWidth = document.documentElement.offsetWidth;
+  var all = document.querySelectorAll('*');
+  var overflows = [];
+  all.forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.right > docWidth + 1) {
+      overflows.push({
+        tag: el.tagName,
+        id: el.id,
+        class: el.className.toString().slice(0, 80),
+        right: Math.round(rect.right),
+        width: Math.round(rect.width),
+        docWidth: docWidth
+      });
+    }
+  });
+  if (overflows.length) {
+    console.log('=== OVERFLOW ELEMENTS ===');
+    overflows.forEach(function(o) { console.log(o); });
+  }
+});
+</script>
 
 </body>
 </html>

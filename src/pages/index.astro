@@ -24,7 +24,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
 <!-- HERO SECTION -->
 <section class="relative min-h-screen flex items-center overflow-hidden bg-white" id="hero">
-  <div class="container mx-auto px-6 pt-28 md:pt-32 pb-12 relative z-10">
+  <div class="site-container px-6 pt-28 md:pt-32 pb-12 relative z-10">
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
@@ -53,32 +53,32 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
         <!-- CTAs -->
         <div class="flex flex-wrap gap-4 opacity-0" id="heroCTAs">
-          <a href="#articles" class="mag-btn px-8 py-4 bg-brand-accent text-white font-heading font-semibold rounded-full text-sm tracking-wide">
+          <a href="#articles" class="mag-btn px-6 md:px-8 py-3.5 md:py-4 bg-brand-accent text-white font-heading font-semibold rounded-full text-sm tracking-wide">
             <span>探索作品集</span>
           </a>
-          <a href="#about" class="mag-btn px-8 py-4 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-sm tracking-wide hover:border-brand-accent hover:text-brand-accent transition-colors">
+          <a href="#about" class="mag-btn px-6 md:px-8 py-3.5 md:py-4 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-sm tracking-wide hover:border-brand-accent hover:text-brand-accent transition-colors">
             <span>了解更多</span>
           </a>
         </div>
       </div>
 
       <!-- Right: Photo + Floating Badges -->
-      <div class="relative flex justify-center md:justify-end">
+      <div class="relative flex justify-center md:justify-end overflow-hidden rounded-3xl">
         <!-- Main Photo -->
-        <div class="hero-photo relative w-[280px] md:w-[380px] lg:w-[420px]">
+        <div class="hero-photo relative w-[60vw] max-w-[280px] md:w-[380px] md:max-w-[380px] lg:w-[420px] lg:max-w-[420px]">
           <img src="/angela.jpeg" alt="Angela Jian"
                class="w-full rounded-3xl object-cover aspect-[3/4] shadow-xl" loading="eager">
         </div>
 
         <!-- Floating Badges -->
-        <div class="float-badge absolute -left-4 md:-left-8 top-1/4 bg-amber-100 rounded-2xl p-3 shadow-lg">
-          <iconify-icon icon="solar:chart-2-bold" class="text-2xl text-amber-600"></iconify-icon>
+        <div class="float-badge absolute left-0 md:-left-8 top-1/4 bg-amber-100 rounded-2xl p-2.5 md:p-3 shadow-lg">
+          <iconify-icon icon="solar:chart-2-bold" class="text-xl md:text-2xl text-amber-600"></iconify-icon>
         </div>
-        <div class="float-badge absolute -right-2 md:-right-6 top-[15%] bg-indigo-100 rounded-2xl p-3 shadow-lg" style="animation-delay: 2s;">
-          <iconify-icon icon="solar:verified-check-bold" class="text-2xl text-indigo-600"></iconify-icon>
+        <div class="float-badge absolute right-0 md:-right-6 top-[15%] bg-indigo-100 rounded-2xl p-2.5 md:p-3 shadow-lg" style="animation-delay: 2s;">
+          <iconify-icon icon="solar:verified-check-bold" class="text-xl md:text-2xl text-indigo-600"></iconify-icon>
         </div>
-        <div class="float-badge absolute -left-2 md:-left-6 bottom-[20%] bg-emerald-100 rounded-2xl p-3 shadow-lg" style="animation-delay: 4s;">
-          <iconify-icon icon="solar:users-group-rounded-bold" class="text-2xl text-emerald-600"></iconify-icon>
+        <div class="float-badge absolute left-0 md:-left-6 bottom-[20%] bg-emerald-100 rounded-2xl p-2.5 md:p-3 shadow-lg" style="animation-delay: 4s;">
+          <iconify-icon icon="solar:users-group-rounded-bold" class="text-xl md:text-2xl text-emerald-600"></iconify-icon>
         </div>
       </div>
 
@@ -87,21 +87,21 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
   <!-- Bottom Stats Bar -->
   <div class="absolute bottom-0 left-0 right-0 z-10 border-t border-brand-light-border bg-white/80 backdrop-blur-sm">
-    <div class="container mx-auto px-6">
-      <div class="grid grid-cols-3 gap-4 md:flex md:items-center md:justify-start md:gap-16 py-5 md:py-6">
-        <div class="hero-stat flex flex-col md:flex-row items-center gap-1 md:gap-3 text-center md:text-left">
-          <span id="stat-mau" class="text-xl md:text-2xl font-heading font-bold text-brand-accent" data-target="600" data-suffix="K">0</span>
-          <span class="text-[10px] md:text-xs text-brand-subtle font-body">MAU Scaled</span>
+    <div class="site-container px-6">
+      <div class="flex items-center justify-between gap-3 md:justify-start md:gap-16 py-5 md:py-6">
+        <div class="hero-stat flex flex-col items-center gap-1 md:flex-row md:gap-3 text-center md:text-left">
+          <span id="stat-mau" class="text-lg md:text-2xl font-heading font-bold text-brand-accent" data-target="600" data-suffix="K">0</span>
+          <span class="text-[9px] md:text-xs text-brand-subtle font-body whitespace-nowrap">MAU Scaled</span>
         </div>
-        <div class="hidden md:block w-px h-6 bg-brand-light-border"></div>
-        <div class="hero-stat flex flex-col md:flex-row items-center gap-1 md:gap-3 text-center md:text-left">
-          <span id="stat-views" class="text-xl md:text-2xl font-heading font-bold text-brand-accent" data-target="100" data-suffix="M+">0</span>
-          <span class="text-[10px] md:text-xs text-brand-subtle font-body">Content Views</span>
+        <div class="w-px h-5 md:h-6 bg-brand-light-border shrink-0"></div>
+        <div class="hero-stat flex flex-col items-center gap-1 md:flex-row md:gap-3 text-center md:text-left">
+          <span id="stat-views" class="text-lg md:text-2xl font-heading font-bold text-brand-accent" data-target="100" data-suffix="M+">0</span>
+          <span class="text-[9px] md:text-xs text-brand-subtle font-body whitespace-nowrap">Content Views</span>
         </div>
-        <div class="hidden md:block w-px h-6 bg-brand-light-border"></div>
-        <div class="hero-stat flex flex-col md:flex-row items-center gap-1 md:gap-3 text-center md:text-left">
-          <span id="stat-revenue" class="text-xl md:text-2xl font-heading font-bold text-brand-accent" data-target="120" data-suffix="%">0</span>
-          <span class="text-[10px] md:text-xs text-brand-subtle font-body">Revenue Growth</span>
+        <div class="w-px h-5 md:h-6 bg-brand-light-border shrink-0"></div>
+        <div class="hero-stat flex flex-col items-center gap-1 md:flex-row md:gap-3 text-center md:text-left">
+          <span id="stat-revenue" class="text-lg md:text-2xl font-heading font-bold text-brand-accent" data-target="120" data-suffix="%">0</span>
+          <span class="text-[9px] md:text-xs text-brand-subtle font-body whitespace-nowrap">Revenue Growth</span>
         </div>
       </div>
     </div>
@@ -110,7 +110,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
 <!-- ABOUT SECTION -->
 <section class="relative py-20 md:py-28 overflow-hidden bg-brand-light-surface" id="about">
-  <div class="container mx-auto px-6 relative z-10">
+  <div class="site-container px-6 relative z-10">
 
     <!-- Section Header -->
     <div class="mb-12">
@@ -178,7 +178,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
       </div>
 
       <!-- Right: Image Stack -->
-      <div class="relative rounded-2xl overflow-hidden w-full max-w-[408px] ml-auto md:sticky md:top-28" style="aspect-ratio: 4/3;">
+      <div class="relative rounded-2xl overflow-hidden w-full md:max-w-[408px] md:ml-auto md:sticky md:top-28" style="aspect-ratio: 4/3;">
         <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80&auto=format"
              alt="Product work" data-about-img="0"
              class="about-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100" />
@@ -199,7 +199,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
 <!-- PORTFOLIO SECTION -->
 <section class="relative py-20 md:py-28 overflow-hidden bg-white" id="portfolio">
-  <div class="container mx-auto px-6 relative z-10">
+  <div class="site-container px-6 relative z-10">
 
     <!-- Header (consistent with other sections) -->
     <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
@@ -222,7 +222,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         <a href="/articles/ai-powered-competitive-intelligence" class="group block p-6 md:p-10 border-b md:border-r border-brand-light-border hover:bg-brand-light-surface/50 transition-colors duration-300 no-underline">
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl md:text-4xl font-heading font-light italic text-brand-accent/20">01</span>
-            <p class="text-[11px] tracking-[0.2em] uppercase text-brand-subtle font-body">Dashboard · OpenAI · Supabase</p>
+            <p class="text-[10px] md:text-[11px] tracking-[0.1em] md:tracking-[0.2em] uppercase text-brand-subtle font-body">Dashboard · OpenAI · Supabase</p>
           </div>
           <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3 group-hover:text-brand-accent transition-colors">AI 數據分析 Dashboard</h3>
           <p class="text-sm text-brand-subtle leading-relaxed mb-6">結合 OpenAI 與 Supabase，打造即時數據分析儀表板，支援自然語言查詢與智慧圖表生成。</p>
@@ -235,7 +235,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         <a href="/articles/human-in-the-loop-ai-accounting" class="group block p-6 md:p-10 border-b border-brand-light-border hover:bg-brand-light-surface/50 transition-colors duration-300 no-underline">
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl md:text-4xl font-heading font-light italic text-brand-accent/20">02</span>
-            <p class="text-[11px] tracking-[0.2em] uppercase text-brand-subtle font-body">AI Agent · Human-in-the-Loop</p>
+            <p class="text-[10px] md:text-[11px] tracking-[0.1em] md:tracking-[0.2em] uppercase text-brand-subtle font-body">AI Agent · Human-in-the-Loop</p>
           </div>
           <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI 會計師</h3>
           <p class="text-sm text-brand-subtle leading-relaxed mb-6">結合人工審核與模型分類，自動化帳務處理流程，準確率高達 97%。</p>
@@ -251,7 +251,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         <a href="#" class="group block p-6 md:p-10 border-b md:border-r border-brand-light-border hover:bg-brand-light-surface/50 transition-colors duration-300 no-underline">
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl md:text-4xl font-heading font-light italic text-brand-accent/20">03</span>
-            <p class="text-[11px] tracking-[0.2em] uppercase text-brand-subtle font-body">AI Agent · PDF Automation</p>
+            <p class="text-[10px] md:text-[11px] tracking-[0.1em] md:tracking-[0.2em] uppercase text-brand-subtle font-body">AI Agent · PDF Automation</p>
           </div>
           <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3 group-hover:text-brand-accent transition-colors">AI 產品型錄財報</h3>
           <p class="text-sm text-brand-subtle leading-relaxed mb-6">AI Agent 自動產出一頁式產品型錄，結合市場數據與專業視覺排版。</p>
@@ -264,7 +264,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         <a href="#" class="group block p-6 md:p-10 border-b border-brand-light-border hover:bg-brand-light-surface/50 transition-colors duration-300 no-underline">
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl md:text-4xl font-heading font-light italic text-brand-accent/20">04</span>
-            <p class="text-[11px] tracking-[0.2em] uppercase text-brand-subtle font-body">GPT · Storytelling</p>
+            <p class="text-[10px] md:text-[11px] tracking-[0.1em] md:tracking-[0.2em] uppercase text-brand-subtle font-body">GPT · Storytelling</p>
           </div>
           <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3 group-hover:text-brand-accent transition-colors">月亮枕頭故事</h3>
           <p class="text-sm text-brand-subtle leading-relaxed mb-6">GPT 驅動的互動式兒童睡前故事，每晚生成獨特的冒險旅程。</p>
@@ -282,7 +282,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
 <!-- ARTICLES SECTION -->
 <section class="relative py-20 md:py-28 overflow-hidden bg-brand-light-surface" id="articles">
-  <div class="container mx-auto px-6 relative z-10">
+  <div class="site-container px-6 relative z-10">
 
     <div class="flex items-center justify-between mb-8 flex-wrap gap-4 md:gap-6">
       <div>
@@ -294,7 +294,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
           最新<span class="text-brand-accent">文章</span>
         </h2>
       </div>
-      <a href="/articles" class="mag-btn px-5 md:px-6 py-2.5 md:py-3 border border-brand-light-border text-brand-subtle font-body text-sm rounded-full hover:text-brand-accent hover:border-brand-accent transition-colors">
+      <a href="/articles" class="mag-btn px-4 md:px-6 py-2 md:py-3 border border-brand-light-border text-brand-subtle font-body text-xs md:text-sm rounded-full hover:text-brand-accent hover:border-brand-accent transition-colors no-underline shrink-0">
         <span>查看全部</span>
       </a>
     </div>
@@ -306,7 +306,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         const header = cardHeaderStyles[article.tagColors[0]] || cardHeaderStyles.accent;
         return (
           <a href={`/articles/${article.slug}`}
-             class="stagger-col card-hover rounded-2xl bg-white border border-brand-light-border block overflow-hidden group"
+             class="stagger-col card-hover rounded-2xl bg-white border border-brand-light-border block overflow-hidden group no-underline"
              data-stagger={i}>
             {/* Pastel header with icon */}
             <div class={`${header.bg} flex items-center justify-center py-8 md:py-10`}>
@@ -345,7 +345,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
 
 <!-- CONTACT SECTION -->
 <section class="relative py-20 md:py-28 overflow-hidden bg-white" id="contact">
-  <div class="container mx-auto px-6 relative z-10">
+  <div class="site-container px-6 relative z-10">
     <div class="max-w-4xl mx-auto text-center">
       <div class="flex items-center justify-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6 md:mb-8">
         <div class="w-8 h-px bg-brand-accent"></div>
@@ -353,7 +353,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         <div class="w-8 h-px bg-brand-accent"></div>
       </div>
 
-      <h2 class="font-heading font-black text-4xl md:text-7xl lg:text-8xl mb-6 md:mb-8 leading-tight text-brand-text">
+      <h2 class="font-heading font-black text-3xl md:text-7xl lg:text-8xl mb-6 md:mb-8 leading-tight text-brand-text">
         Let's<br><span class="text-brand-accent">Connect</span>
       </h2>
 
@@ -362,10 +362,10 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
       </p>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mb-10 md:mb-16">
-        <a href="mailto:an9lajian@gmail.com" class="mag-btn w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 bg-brand-accent text-white font-heading font-bold rounded-full text-sm md:text-base tracking-wide text-center">
+        <a href="mailto:an9lajian@gmail.com" class="mag-btn w-full sm:w-auto px-6 md:px-10 py-3.5 md:py-5 bg-brand-accent text-white font-heading font-bold rounded-full text-xs md:text-base tracking-wide text-center truncate max-w-full">
           <span>an9lajian@gmail.com</span>
         </a>
-        <a href="https://www.linkedin.com/in/angela-jian/" target="_blank" class="mag-btn w-full sm:w-auto px-8 md:px-10 py-4 md:py-5 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-sm md:text-base hover:border-brand-accent hover:text-brand-accent transition-colors text-center">
+        <a href="https://www.linkedin.com/in/angela-jian/" target="_blank" class="mag-btn w-full sm:w-auto px-6 md:px-10 py-3.5 md:py-5 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-xs md:text-base hover:border-brand-accent hover:text-brand-accent transition-colors text-center">
           <span>LinkedIn Profile</span>
         </a>
       </div>
