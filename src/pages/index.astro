@@ -62,23 +62,11 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         </div>
       </div>
 
-      <!-- Right: Photo + Floating Badges -->
-      <div class="relative flex justify-center md:justify-end overflow-hidden rounded-3xl">
-        <!-- Main Photo -->
+      <!-- Right: Photo -->
+      <div class="relative flex justify-center md:justify-end">
         <div class="hero-photo relative w-[60vw] max-w-[280px] md:w-[380px] md:max-w-[380px] lg:w-[420px] lg:max-w-[420px]">
           <img src="/angela.jpeg" alt="Angela Jian"
                class="w-full rounded-3xl object-cover aspect-[3/4] shadow-xl" loading="eager">
-        </div>
-
-        <!-- Floating Badges -->
-        <div class="float-badge absolute left-0 md:-left-8 top-1/4 bg-amber-100 rounded-2xl p-2.5 md:p-3 shadow-lg">
-          <iconify-icon icon="solar:chart-2-bold" class="text-xl md:text-2xl text-amber-600"></iconify-icon>
-        </div>
-        <div class="float-badge absolute right-0 md:-right-6 top-[15%] bg-indigo-100 rounded-2xl p-2.5 md:p-3 shadow-lg" style="animation-delay: 2s;">
-          <iconify-icon icon="solar:verified-check-bold" class="text-xl md:text-2xl text-indigo-600"></iconify-icon>
-        </div>
-        <div class="float-badge absolute left-0 md:-left-6 bottom-[20%] bg-emerald-100 rounded-2xl p-2.5 md:p-3 shadow-lg" style="animation-delay: 4s;">
-          <iconify-icon icon="solar:users-group-rounded-bold" class="text-xl md:text-2xl text-emerald-600"></iconify-icon>
         </div>
       </div>
 
@@ -127,7 +115,7 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
     </div>
 
     <!-- Accordion + Image Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
 
       <!-- Left: Accordion -->
       <div class="space-y-0 divide-y divide-brand-light-border" id="aboutAccordion">
@@ -175,6 +163,20 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
           </div>
         </details>
 
+        <details class="about-accordion group" data-img="4">
+          <summary class="flex items-center justify-between py-5 md:py-6 cursor-pointer list-none">
+            <span class="font-heading font-semibold text-base md:text-lg text-brand-text">AI 產品思維</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-xl transition-transform duration-300 group-open:rotate-180"></iconify-icon>
+          </summary>
+          <div class="pb-5 md:pb-6">
+            <p class="text-sm text-brand-subtle leading-relaxed mb-3">將 AI 融入產品策略與工作流程，從競品分析到自動化報告，探索 AI 在產品管理中的實戰應用。</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2.5 py-1 text-[11px] font-body bg-purple-600/10 text-purple-600 rounded-full">AI Applied</span>
+              <span class="px-2.5 py-1 text-[11px] font-body bg-purple-600/10 text-purple-600 rounded-full">經濟部AI應用規劃師</span>
+            </div>
+          </div>
+        </details>
+
       </div>
 
       <!-- Right: Image Stack -->
@@ -190,6 +192,9 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
              class="about-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0" />
         <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80&auto=format"
              alt="Cross-functional team" data-about-img="3"
+             class="about-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0" />
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&auto=format"
+             alt="AI Product Thinking" data-about-img="4"
              class="about-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0" />
       </div>
 
@@ -361,12 +366,9 @@ const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
         如果你正在尋找一位能把問題想清楚、把產品做到位的產品夥伴——歡迎跟我聊聊。
       </p>
 
-      <div class="flex flex-col items-center gap-4 md:gap-6 mb-10 md:mb-16">
-        <a href="mailto:an9lajian@gmail.com" class="mag-btn px-6 md:px-10 py-3.5 md:py-5 bg-brand-accent text-white font-heading font-bold rounded-full text-xs md:text-base tracking-wide text-center no-underline self-center w-auto">
-          <span>an9lajian@gmail.com</span>
-        </a>
-        <a href="https://www.linkedin.com/in/angela-jian/" target="_blank" class="mag-btn px-6 md:px-10 py-3.5 md:py-5 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-xs md:text-base hover:border-brand-accent hover:text-brand-accent transition-colors text-center no-underline self-center w-auto">
-          <span>LinkedIn Profile</span>
+      <div class="flex justify-center mb-10 md:mb-16">
+        <a href="mailto:an9lajian@gmail.com" class="mag-btn px-8 md:px-10 py-3.5 md:py-5 bg-brand-accent text-white font-heading font-bold rounded-full text-sm md:text-base tracking-wide text-center no-underline">
+          <span>與我聊聊</span>
         </a>
       </div>
 

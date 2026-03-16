@@ -106,14 +106,19 @@ function initAnimations() {
   // Hero photo fade in + float up
   gsap.to('.hero-photo', { opacity: 1, y: 0, duration: 1.2, delay: 0.5, ease: 'power3.out' });
 
-  // Floating badges pop in
-  gsap.to('.float-badge', {
-    opacity: 1,
-    scale: 1,
-    duration: 0.8,
-    ease: 'back.out(1.7)',
-    stagger: 0.2,
-    delay: 1.2
+  // Stats counter animation
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    gsap.to({ val: 0 }, {
+      val: target,
+      duration: 2,
+      delay: 1.4,
+      ease: 'power2.out',
+      onUpdate: function() {
+        el.textContent = Math.round(this.targets()[0].val) + suffix;
+      }
+    });
   });
 
   // Staggered columns scroll animation
