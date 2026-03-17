@@ -25,13 +25,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={ogImage || '/angela.jpeg'} />
+<meta property="og:image" content={ogImage || new URL('/angela.jpeg', Astro.site).toString()} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImage || '/angela.jpeg'} />
+<meta name="twitter:image" content={ogImage || new URL('/angela.jpeg', Astro.site).toString()} />
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify({
@@ -40,6 +40,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   "name": "Angela Jian 簡琬庭",
   "jobTitle": "Sr. Product Manager / AI Product Builder",
   "url": Astro.site?.toString(),
+  "image": new URL('/angela.jpeg', Astro.site).toString(),
+  "sameAs": [
+    "https://www.linkedin.com/in/angela-jian/"
+  ],
+  "knowsAbout": ["Product Management", "AI Product Development", "Growth Strategy", "Monetization", "Mobile Apps"],
+  "description": "資深產品經理，擅長從 0 到 1 打造 AI 產品，8 年以上行動應用成長與變現經驗。"
+})} />
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "AI PM INSIDER",
+  "url": Astro.site?.toString(),
+  "description": "Angela Jian 的產品管理與 AI 產品思維部落格",
+  "author": { "@type": "Person", "name": "Angela Jian 簡琬庭" }
 })} />
 
 <!-- Fonts -->
@@ -143,31 +157,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <!-- Global Scripts -->
 <script is:inline src="/scripts/main.js"></script>
 
-<!-- Debug: find overflow elements (remove after fixing) -->
-<script is:inline>
-document.addEventListener('DOMContentLoaded', function() {
-  var docWidth = document.documentElement.offsetWidth;
-  var all = document.querySelectorAll('*');
-  var overflows = [];
-  all.forEach(function(el) {
-    var rect = el.getBoundingClientRect();
-    if (rect.right > docWidth + 1) {
-      overflows.push({
-        tag: el.tagName,
-        id: el.id,
-        class: el.className.toString().slice(0, 80),
-        right: Math.round(rect.right),
-        width: Math.round(rect.width),
-        docWidth: docWidth
-      });
-    }
-  });
-  if (overflows.length) {
-    console.log('=== OVERFLOW ELEMENTS ===');
-    overflows.forEach(function(o) { console.log(o); });
-  }
-});
-</script>
 
 </body>
 </html>

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://angelajian.com', // 之後換成你的正式網域
+  site: 'https://angela-jian-site.vercel.app',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

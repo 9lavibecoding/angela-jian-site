@@ -25,7 +25,10 @@ if (!article) {
     "headline": article.title,
     "description": article.summary,
     "datePublished": article.date?.replaceAll('.', '-'),
-    "author": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+    "dateModified": article.date?.replaceAll('.', '-'),
+    "author": { "@type": "Person", "name": "Angela Jian 簡琬庭", "url": Astro.site?.toString() },
+    "publisher": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": new URL(Astro.url.pathname, Astro.site).toString() },
     ...(article.image ? { "image": article.image } : {}),
   })} />
 

@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://angelajian.com/sitemap-index.xml
+Sitemap: https://angela-jian-site.vercel.app/sitemap-index.xml
