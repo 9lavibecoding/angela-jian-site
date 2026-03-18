@@ -320,10 +320,19 @@ export async function getArticles(): Promise<Article[]> {
       });
     }
 
-    // Merge Notion articles with static articles (avoid duplicates by slug)
+    // Merge: if a static article has rich content (diagrams), prefer static version
+    const staticBySlug = new Map(STATIC_ARTICLES.map(a => [a.slug, a]));
+    const mergedArticles = articles.map(a => {
+      const staticVer = staticBySlug.get(a.slug);
+      if (staticVer && staticVer.content) {
+        return { ...a, content: staticVer.content };
+      }
+      return a;
+    });
+    // Add static articles not in Notion
     const notionSlugs = new Set(articles.map(a => a.slug));
     const extraStatic = STATIC_ARTICLES.filter(a => !notionSlugs.has(a.slug));
-    const merged = [...articles, ...extraStatic];
+    const merged = [...mergedArticles, ...extraStatic];
     merged.sort((a, b) => b.date.localeCompare(a.date));
     return merged;
   } catch (e) {
