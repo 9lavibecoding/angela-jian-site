@@ -22,6 +22,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <meta name="google-site-verification" content="Y1o5i5ud5dxL04i4mfOsfviUwUZbtEbLmVLjFBdV5H0" />
 <meta name="msvalidate.01" content="4DBEE2E3BFD6DE1C7177AB8C0CEBE864" />
 
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XY1PQ9JQVG" is:inline></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XY1PQ9JQVG');
+</script>
+
 <!-- Open Graph / LinkedIn -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
