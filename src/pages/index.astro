@@ -22,7 +22,7 @@ const featuredArticles = articles.slice(0, 2);
 const moreArticles = articles.slice(2, 6);
 ---
 
-<Base title="AI PM INSIDER — AI 時代的產品思維指南">
+<Base title="AI PM INSIDER — 產品人的 AI 轉型指南">
 
 <!-- FAQ Schema for SEO -->
 <script type="application/ld+json" set:html={JSON.stringify({
@@ -88,14 +88,13 @@ const moreArticles = articles.slice(2, 6);
 
       <!-- Left: Text Content -->
       <div class="flex-1 text-center md:text-left">
-        <h1 class="hero-title text-3xl md:text-5xl lg:text-[3.8rem] mb-6 text-brand-text leading-tight">
-          <span class="line"><span class="line-inner">AI 時代的</span></span>
-          <span class="line"><span class="line-inner text-brand-accent">產品思維</span></span>
-          <span class="line"><span class="line-inner">指南</span></span>
+        <h1 class="hero-title text-4xl md:text-[3.5rem] lg:text-[4.2rem] mb-6 text-brand-text leading-tight">
+          <span class="line"><span class="line-inner">產品人的</span></span>
+          <span class="line"><span class="line-inner"><span class="text-brand-accent">AI 轉型</span>指南</span></span>
         </h1>
 
         <p class="font-body text-brand-subtle text-base md:text-lg leading-relaxed mb-6 opacity-0 max-w-lg mx-auto md:mx-0" id="heroDesc">
-          從 AI 產品策略、工具實戰到職涯轉型——一個資深 PM 的第一手觀察與實踐。
+          從 AI 產品策略、工具實戰到職涯轉型！資深 PM 的第一手觀察與實踐。
         </p>
 
         <div class="flex flex-wrap gap-2 mb-8 opacity-0 justify-center md:justify-start" id="heroTags">
@@ -114,11 +113,40 @@ const moreArticles = articles.slice(2, 6);
         </div>
       </div>
 
-      <!-- Right: Circular Photo -->
-      <div class="relative flex justify-center md:justify-end shrink-0">
-        <div class="hero-photo w-32 h-32 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-3 border-indigo-100 shadow-lg">
-          <img src="/angela.jpeg" alt="Angela Jian"
-               class="w-full h-full object-cover" loading="eager">
+      <!-- Right: Dual Circle — Brand + Author -->
+      <div class="relative flex justify-center md:justify-end shrink-0 w-52 h-52 md:w-64 md:h-64 lg:w-72 lg:h-72">
+        <!-- Brand circle (top-left) -->
+        <div class="absolute top-0 left-0 w-36 h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg overflow-hidden">
+          <!-- Decorative circuit lines -->
+          <svg class="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 200 200">
+            <circle cx="60" cy="50" r="3" fill="white"/>
+            <circle cx="140" cy="70" r="3" fill="white"/>
+            <circle cx="100" cy="140" r="3" fill="white"/>
+            <circle cx="50" cy="130" r="2" fill="white"/>
+            <circle cx="150" cy="150" r="2" fill="white"/>
+            <line x1="60" y1="50" x2="140" y2="70" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="70" x2="100" y2="140" stroke="white" stroke-width="1"/>
+            <line x1="60" y1="50" x2="50" y2="130" stroke="white" stroke-width="1"/>
+            <line x1="100" y1="140" x2="150" y2="150" stroke="white" stroke-width="1"/>
+            <line x1="50" y1="130" x2="100" y2="140" stroke="white" stroke-width="1"/>
+          </svg>
+          <!-- Brand mark -->
+          <div class="relative text-center">
+            <div class="font-heading font-black text-2xl md:text-3xl text-white tracking-tight leading-none">AI</div>
+            <div class="font-heading font-bold text-[9px] md:text-[10px] tracking-[0.25em] text-white/70 mt-1">PM INSIDER</div>
+          </div>
+        </div>
+        <!-- Author photo (bottom-right, overlapping) -->
+        <div class="absolute bottom-0 right-0">
+          <div class="w-36 h-36 md:w-44 md:h-44 lg:w-48 lg:h-48 rounded-full overflow-hidden ring-4 ring-white shadow-xl">
+            <img src="/angela.jpeg" alt="Angela Jian"
+                 class="w-full h-full object-cover" loading="eager">
+          </div>
+          <!-- Name badge -->
+          <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm border border-brand-light-border rounded-full px-4 py-1.5 shadow-sm whitespace-nowrap">
+            <span class="font-heading font-semibold text-xs text-brand-text">Angela Jian</span>
+            <span class="text-[10px] text-brand-subtle font-body ml-1.5">Sr. PM</span>
+          </div>
         </div>
       </div>
 
