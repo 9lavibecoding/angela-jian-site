@@ -64,16 +64,17 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
              data-article-tags={article.tags.join(',')}>
             <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
 
-              {/* Thumbnail */}
-              {article.image ? (
-                <div class="w-full md:w-56 h-40 md:h-[8.5rem] shrink-0 rounded-xl overflow-hidden bg-brand-light-surface">
-                  <img src={article.image} alt={article.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                </div>
-              ) : (
-                <div class="w-full md:w-56 h-40 md:h-[8.5rem] shrink-0 rounded-xl bg-brand-light-surface flex items-center justify-center">
-                  <iconify-icon icon="solar:document-text-bold" class="text-3xl text-brand-light-border"></iconify-icon>
-                </div>
-              )}
+              {/* Thumbnail — tag-based icon */}
+              <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center">
+                <iconify-icon icon={
+                  article.tags.includes('AI 工具') ? 'solar:lightbulb-bolt-bold' :
+                  article.tags.includes('AI PM') ? 'solar:document-text-bold' :
+                  article.tags.includes('Product Sense') ? 'solar:chart-2-bold' :
+                  article.tags.includes('AI 流程設計') ? 'solar:settings-bold' :
+                  article.tags.includes('AI 規劃師') ? 'solar:cpu-bolt-bold' :
+                  'solar:document-text-bold'
+                } class="text-4xl text-brand-accent/25 group-hover:text-brand-accent/40 transition-colors"></iconify-icon>
+              </div>
 
               {/* Title + Tags + Summary */}
               <div class="flex-1 min-w-0">
