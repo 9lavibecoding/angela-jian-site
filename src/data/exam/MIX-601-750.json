@@ -1,0 +1,2102 @@
+[
+  {
+    "id": 601,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "一家智慧零售公司正在評估導入 AI 系統，工程師描述系統需能「感知貨架狀態、理解庫存語意、推論補貨時機、決策補貨量、並自動下單」。請問這段描述最貼近哪一種 AI 運作模型？",
+    "options": [
+      "A. 資料蒐集 → 清理 → 訓練 → 預測",
+      "B. 感知 → 理解 → 推理 → 決策 → 行動",
+      "C. 學習 → 推論 → 執行",
+      "D. 分析 → 建模 → 部署 → 回報"
+    ],
+    "answer": "B",
+    "explanation": "AI 系統的完整運作流程涵蓋感知（輸入資料）、理解（語意解析）、推理（邏輯判斷）、決策（選擇方案）、行動（執行輸出）五大環節，貼近人類智能的完整循環。"
+  },
+  {
+    "id": 602,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某家醫院正在評估一款 AI 系統：它只能依據當下病患輸入資料做出回應，但可以記錄最近 30 分鐘的生命徵象歷史以調整建議。請問這屬於哪種 AI 智能分類？",
+    "options": [
+      "A. 反應型 AI（Reactive AI）",
+      "B. 有限記憶型 AI（Limited Memory AI）",
+      "C. 理論心智 AI（Theory of Mind AI）",
+      "D. 自我意識 AI（Self-Aware AI）"
+    ],
+    "answer": "B",
+    "explanation": "有限記憶型 AI 能利用近期歷史資料優化決策，例如記錄過去數據調整輸出，是目前最常見的實用 AI 類型，如自駕車、推薦系統等皆屬此類。"
+  },
+  {
+    "id": 603,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "產品設計師正在選擇 AI 模型架構來產生新款產品外觀圖。她比較了 GAN、VAE、Diffusion Model 和 SVM，最終排除了一個不屬於生成式 AI 的選項。請問她排除的是哪一個？",
+    "options": [
+      "A. GAN",
+      "B. VAE",
+      "C. SVM",
+      "D. Diffusion Model"
+    ],
+    "answer": "C",
+    "explanation": "SVM（支援向量機）是鑑別式模型，用於分類與迴歸任務，本身不具備生成新資料的能力。GAN、VAE 與 Diffusion Model 皆屬生成式 AI 技術。"
+  },
+  {
+    "id": 604,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某銀行在申請核貸 AI 系統中發現，對於女性申請者的核准率明顯低於男性，且這個差距無法用信用評分解釋。請問該系統違反了 Responsible AI 六大原則中的哪一項？",
+    "options": [
+      "A. 可解釋性（Explainability）",
+      "B. 公平性（Fairness）",
+      "C. 問責性（Accountability）",
+      "D. 安全性（Safety）"
+    ],
+    "answer": "B",
+    "explanation": "公平性原則要求 AI 系統不得因性別、種族等特徵對特定群體產生歧視性結果。若模型輸出因資料偏誤而對特定群體不公，即違反公平性原則。"
+  },
+  {
+    "id": 605,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "技術主管向業務團隊解釋為何選用 Transformer 架構作為新款對話助理的基礎。他提到了兩大優點，請問下列哪一項最能代表 Transformer 的核心優勢？",
+    "options": [
+      "A. 高度序列記憶能力與遞迴結構",
+      "B. 可處理圖形節點與邊的結構",
+      "C. 並行運算與對長距離語意依賴的建模能力",
+      "D. 訓練成本低且參數量少"
+    ],
+    "answer": "C",
+    "explanation": "Transformer 的核心優勢在於 Self-Attention 機制能並行處理序列資料，並有效捕捉長距離語意依賴關係，是 GPT、BERT 等模型的基礎架構。"
+  },
+  {
+    "id": 606,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "電商平台將數百萬筆消費者購買記錄交給 AI 系統，未提供任何標籤，系統自動將消費者分成五個族群以利精準行銷。請問這套系統採用的是哪種學習類型？",
+    "options": [
+      "A. 監督式學習",
+      "B. 非監督式學習",
+      "C. 半監督式學習",
+      "D. 強化學習"
+    ],
+    "answer": "B",
+    "explanation": "非監督式學習不依賴標籤資料，透過發現資料內部結構進行分群（如 K-means），是消費者分析、異常偵測等應用的常見方法。"
+  },
+  {
+    "id": 607,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某律師事務所使用 AI 工具查閱法規，結果模型提供了一個看起來格式正確、邏輯清晰的引用條文，但該條文根本不存在於任何法律資料庫中。這屬於哪種 AI 風險？",
+    "options": [
+      "A. 模型訓練資料不足導致欠擬合",
+      "B. AI 幻覺（Hallucination）風險",
+      "C. 資料格式無法結構化",
+      "D. 演算法透明度過高"
+    ],
+    "answer": "B",
+    "explanation": "AI 幻覺（Hallucination）是生成式模型常見問題，模型輸出看似合理但實為虛構或錯誤的資訊，在法律、醫療等高風險場域尤為危險。"
+  },
+  {
+    "id": 608,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "客服中心正評估一套能將客戶電話即時轉成文字記錄的系統，以便後續分析與存檔。請問這項核心功能最主要依賴哪一種 AI 技術？",
+    "options": [
+      "A. CNN 卷積神經網路",
+      "B. Transformer 注意力模型",
+      "C. ASR（自動語音辨識）",
+      "D. GAN 生成對抗網路"
+    ],
+    "answer": "C",
+    "explanation": "自動語音辨識（ASR）是將語音訊號轉換為文字的核心技術，代表性系統如 Whisper、DeepSpeech，廣泛應用於客服、字幕生成與語音助理等場景。"
+  },
+  {
+    "id": 609,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某歐洲新創公司計畫推出一款 AI 系統，協助法院判斷假釋申請是否批准。在評估是否需遵循歐盟《AI 法案》嚴格規範時，合規顧問判定這屬於「高風險」應用。請問以下哪個比較選項中，只有一個屬於高風險？",
+    "options": [
+      "A. 音樂推薦系統",
+      "B. 自動駕駛車輛控制系統",
+      "C. 社群平台聊天機器人",
+      "D. 影音串流內容推薦"
+    ],
+    "answer": "B",
+    "explanation": "歐盟《AI 法案》將影響人身安全與基本權利的系統列為高風險，包括自駕車、醫療診斷、司法輔助決策等。一般娛樂推薦類應用風險等級較低。"
+  },
+  {
+    "id": 610,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "AI 治理委員會正在審查公司採用的風險管理框架是否符合 NIST AI RMF。某成員列出了四個功能選項，其中一個不屬於該框架。請問哪一個不在 NIST AI RMF 的四大核心功能中？",
+    "options": [
+      "A. Govern（治理）",
+      "B. Map（範疇圖像）",
+      "C. Create（創造性設計）",
+      "D. Measure（衡量）"
+    ],
+    "answer": "C",
+    "explanation": "NIST AI 風險管理框架的四大核心功能為 Govern、Map、Measure、Manage，並不包含「Create」。該框架強調系統性地識別、評估與管理 AI 風險。"
+  },
+  {
+    "id": 611,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "無人機導航系統需同時整合攝影機、雷達、GPS 與聲納等多種感測器的資料，才能在複雜環境中安全飛行。請問這種整合多來源環境資料的技術稱為什麼？",
+    "options": [
+      "A. 語音辨識（Speech Recognition）",
+      "B. 感測器融合（Sensor Fusion）",
+      "C. 詞向量嵌入（Word Embedding）",
+      "D. 命名實體識別（NER）"
+    ],
+    "answer": "B",
+    "explanation": "感測器融合（Sensor Fusion）是整合來自不同感測器的異質資料，以建立更完整環境感知的技術，廣泛用於自駕車、機器人與無人機導航等場景。"
+  },
+  {
+    "id": 612,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某智慧醫療平台希望建立一套系統，能將疾病、藥物、症狀之間的語意關係以圖形方式結構化表達，以供臨床推理使用。請問最符合此需求的認知表徵技術為何？",
+    "options": [
+      "A. 卷積層（Convolution Layer）",
+      "B. 強化學習（Reinforcement Learning）",
+      "C. 知識圖譜（Knowledge Graph）",
+      "D. LSTM 時序模型"
+    ],
+    "answer": "C",
+    "explanation": "知識圖譜以節點與關係建構語意網絡，能表達概念間的結構關係，是認知與表徵系統中常用的知識轉化技術，適合醫療推理、問答系統等應用。"
+  },
+  {
+    "id": 613,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "市場研究公司收集了十萬名消費者的購物記錄，但完全沒有人工標記。他們希望 AI 系統自動找出不同年齡層的消費行為模式。請問最適合的學習方法為何？",
+    "options": [
+      "A. 監督式學習",
+      "B. 非監督式學習",
+      "C. 強化學習",
+      "D. 自監督學習"
+    ],
+    "answer": "B",
+    "explanation": "分群（Clustering）是非監督式學習的典型應用，在無標籤資料中自動發現資料結構與模式，常用演算法包括 K-means 與層次式分群。"
+  },
+  {
+    "id": 614,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "新聞摘要系統需從文章中自動找出提到的公司名稱、國家與人物，以便建立索引。請問這項功能最主要依賴哪種 NLP 技術？",
+    "options": [
+      "A. 預測下一個詞彙（Language Modeling）",
+      "B. 情緒分類（Sentiment Analysis）",
+      "C. 命名實體識別（NER）",
+      "D. 詞性標註（POS Tagging）"
+    ],
+    "answer": "C",
+    "explanation": "命名實體識別（NER）專門從非結構化文本中識別人名、地點、組織等具語意的專有名詞，是資訊擷取與知識圖譜建構的基礎技術。"
+  },
+  {
+    "id": 615,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "健身應用程式希望透過手機攝影機即時偵測使用者的深蹲姿勢是否標準，需要識別膝蓋、臀部、肩膀等關鍵點的位置。請問最適合的電腦視覺模型為何？",
+    "options": [
+      "A. U-Net",
+      "B. EfficientNet",
+      "C. OpenPose",
+      "D. Autoencoder"
+    ],
+    "answer": "C",
+    "explanation": "OpenPose 是專為人體姿勢估計設計的電腦視覺模型，能偵測並追蹤身體關鍵點（如關節位置），廣泛應用於健身指導、動作分析與醫療復健等場域。"
+  },
+  {
+    "id": 616,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "廣告公司想要用 AI 為客戶批量生成高品質、風格一致的產品宣傳圖片。工程師評估後建議採用目前在圖像生成品質與穩定度最佳的技術。請問是哪種？",
+    "options": [
+      "A. GAN（生成對抗網路）",
+      "B. VAE（變分自編碼器）",
+      "C. Diffusion Model（擴散模型）",
+      "D. Autoencoder（自編碼器）"
+    ],
+    "answer": "C",
+    "explanation": "Diffusion Model 在近年圖像生成品質與多樣性上全面超越 GAN，Stable Diffusion 即為代表性應用，能產生高解析度且細節豐富的圖像。"
+  },
+  {
+    "id": 617,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某公司的 AI 系統需處理大量含有個人健康資料的訓練集，法務部門要求必須採取隱私保護措施。工程師提議引入一種在訓練過程中加入隨機噪聲以保護個資的技術。請問這是什麼技術？",
+    "options": [
+      "A. 梯度加速（Gradient Boosting）",
+      "B. 模型蒸餾（Knowledge Distillation）",
+      "C. 差分隱私（Differential Privacy）",
+      "D. 批次正規化（Batch Normalization）"
+    ],
+    "answer": "C",
+    "explanation": "差分隱私透過在訓練資料或模型更新中加入受控隨機噪聲，防止模型記住個別資料點，在保持模型效能的同時保護個人資訊，是合規 AI 系統的重要技術。"
+  },
+  {
+    "id": 618,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某藝術生成平台在測試 GAN 模型時，發現無論輸入什麼隨機向量，生成器產出的圖片都是同一種風格，缺乏多樣性。請問這是什麼問題？",
+    "options": [
+      "A. GAN 對抗訓練不穩定導致模式崩壞（Mode Collapse）",
+      "B. Transformer 注意力機制失效",
+      "C. 監督式模型過擬合",
+      "D. 過度資料清洗導致資訊不足"
+    ],
+    "answer": "A",
+    "explanation": "模式崩壞（Mode Collapse）是 GAN 訓練中常見問題，生成器找到「騙過」判別器的捷徑，只產出少數固定樣本，導致輸出多樣性極低。"
+  },
+  {
+    "id": 619,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某電競公司希望開發一個能在棋盤遊戲中自我學習、不斷提升對戰技巧的 AI 代理。請問最適合使用哪種學習方法？",
+    "options": [
+      "A. 銀行信貸風險評估模型",
+      "B. 強化學習（Reinforcement Learning）",
+      "C. 文本分類模型",
+      "D. 內容過濾推薦系統"
+    ],
+    "answer": "B",
+    "explanation": "強化學習透過代理人與環境互動、根據獎勵信號調整策略，特別適合遊戲操作、機器人控制等需要序列決策的場景，如 AlphaGo 即為典型應用。"
+  },
+  {
+    "id": 620,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "視障輔助 APP 需要同時理解使用者拍攝的照片內容，並以自然語言描述給使用者聽。這種結合圖像與文字的多模態 AI 任務，最關鍵的融合技術是什麼？",
+    "options": [
+      "A. 嵌入層（Embedding Layer）",
+      "B. 卷積層（Convolution Layer）",
+      "C. 交叉注意力機制（Cross-Attention）",
+      "D. 分詞器（Tokenization）"
+    ],
+    "answer": "C",
+    "explanation": "Cross-Attention 能對齊並融合來自不同模態（如影像特徵與語言語意）的資訊，是 CLIP、Flamingo 等多模態模型的核心技術，讓模型理解圖文對應關係。"
+  },
+  {
+    "id": 621,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某餐飲連鎖品牌想用 AI 預測下週各門市的銷售量，但標記資料極少，大量未標記的歷史交易資料卻很豐富。請問最適合採用哪種技術策略？",
+    "options": [
+      "A. 改用 GAN 生成模擬資料",
+      "B. 採用半監督式學習結合無標記資料",
+      "C. 使用強化學習不需資料即可決策",
+      "D. 放棄 AI，改用統計回歸"
+    ],
+    "answer": "B",
+    "explanation": "半監督式學習結合少量標記資料與大量無標記資料進行學習，適合標記成本高但未標記資料豐富的場景，是 AI 初期導入時常見的資料策略。"
+  },
+  {
+    "id": 622,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "公司技術長正在比較 BERT 與 GPT 兩種語言模型，準備選擇適合閱讀理解任務的架構。請問兩者最根本的架構差異是什麼？",
+    "options": [
+      "A. BERT 使用 LSTM，GPT 使用 CNN",
+      "B. BERT 採用雙向 Transformer 編碼器，GPT 採用單向 Transformer 解碼器",
+      "C. GPT 為強化學習架構，BERT 為自監督架構",
+      "D. BERT 專用於語音，GPT 專用於圖像"
+    ],
+    "answer": "B",
+    "explanation": "BERT 使用雙向 Encoder，能同時考量前後文，適合語意理解任務；GPT 使用單向 Decoder，逐步生成文字，適合文本生成任務。兩者皆基於 Transformer 架構。"
+  },
+  {
+    "id": 623,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "AI 治理顧問正在協助企業對照 NIST AI 風險管理框架，確認採用的功能是否完整。以下選項中，哪一個不屬於 NIST AI RMF 的四大核心功能？",
+    "options": [
+      "A. Governance（治理）",
+      "B. Map（範疇圖像）",
+      "C. Predict（預測）",
+      "D. Manage（管理）"
+    ],
+    "answer": "C",
+    "explanation": "NIST AI RMF 的四大功能為 Govern、Map、Measure、Manage，其中不包含「Predict」。框架強調對 AI 風險的識別、衡量與管控，而非以預測為核心功能。"
+  },
+  {
+    "id": 624,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 研究員正在訓練語言理解模型，所使用的方法是讓模型自行從大量未標記文字中，透過遮蔽詞彙預測等任務學習語意。請問這屬於哪種學習方式的核心特性？",
+    "options": [
+      "A. 使用外部監督者提供標籤的監督學習",
+      "B. 完全不需資料的強化學習",
+      "C. 從未標記資料自建預測任務作為訓練目標的自監督學習",
+      "D. 透過環境回饋修正行為的強化學習"
+    ],
+    "answer": "C",
+    "explanation": "自監督學習（Self-Supervised Learning）在無標記資料中設計 proxy 任務（如 masked language modeling）來產生訓練信號，是 BERT、GPT 等大型模型的預訓練基礎。"
+  },
+  {
+    "id": 625,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "一家醫療診斷新創公司計畫在歐盟市場推出 AI 輔助病理影像分析系統。法務顧問提醒這屬於《EU AI Act》中的哪個風險等級，需要最嚴格的審查？",
+    "options": [
+      "A. 最小風險（旅遊推薦）",
+      "B. 高風險（醫療診斷分析）",
+      "C. 有限風險（學生寫作輔助）",
+      "D. 最小風險（社群聊天機器人）"
+    ],
+    "answer": "B",
+    "explanation": "歐盟《AI 法案》將直接影響人身安全與基本權利的系統列為高風險，醫療診斷 AI 因涉及生命健康而受最嚴格規範，需提交合規文件、進行人工監督並通過第三方審查。"
+  },
+  {
+    "id": 626,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某多模態 AI 平台整合了語音助理與視覺辨識功能，但測試時發現圖像描述與對應文字語意嚴重不吻合，導致輸出結果錯誤。請問這最可能造成什麼問題？",
+    "options": [
+      "A. 訓練時間縮短",
+      "B. 演算法無法學習結構",
+      "C. 預測誤差擴大且模型無法收斂",
+      "D. 模型參數無法更新"
+    ],
+    "answer": "C",
+    "explanation": "多模態模型需確保圖文語意對齊，若對齊不足會造成模型學習到錯誤的跨模態關聯，導致預測誤差持續擴大，整體模型效能顯著下降。"
+  },
+  {
+    "id": 627,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "社群媒體平台上出現大量以假亂真的 AI 生成名人影片，導致謠言大量傳播。請問這類 AI 生成虛假但可信內容的情境，在 NIST 框架中屬於哪種風險類型？",
+    "options": [
+      "A. 資料缺失風險",
+      "B. 模型過擬合風險",
+      "C. 資訊完整性風險（Information Integrity Risk）",
+      "D. 運算資源浪費"
+    ],
+    "answer": "C",
+    "explanation": "NIST 將 AI 生成虛假可信內容（如 deepfake、幻覺式輸出）歸類為資訊完整性風險，這類風險威脅社會信任與資訊生態，是 AI 治理的重點議題。"
+  },
+  {
+    "id": 628,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某金融科技公司想要用 AI 分析客戶的社交關係網路，以預測信用違約風險。技術主管建議使用一種能處理節點與連線關係的神經網路架構。請問最適合的技術是什麼？",
+    "options": [
+      "A. GNN 只適合純文字資料",
+      "B. GNN（圖神經網路）可處理節點與連線資訊，適合社群結構分析",
+      "C. GNN 原理與 GAN 相似",
+      "D. GNN 無法應用於推薦與風險分析"
+    ],
+    "answer": "B",
+    "explanation": "GNN（Graph Neural Network）能處理圖結構資料的節點特徵與邊關係，適用於社交網路分析、詐欺偵測、推薦系統與知識圖譜等具有關係結構的任務。"
+  },
+  {
+    "id": 629,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某保險公司在導入 AI 核保系統後，監理機關要求其能解釋每筆核保決策的依據，並可追溯模型決策過程。以下哪種技術組合最能滿足此需求？",
+    "options": [
+      "A. GAN 生成對抗訓練",
+      "B. 對抗樣本訓練（Adversarial Training）",
+      "C. LIME / SHAP 可解釋性工具",
+      "D. Diffusion Model 擴散過程"
+    ],
+    "answer": "C",
+    "explanation": "LIME 與 SHAP 是主流的模型可解釋性工具，能量化各特徵對單一預測結果的貢獻，支援決策透明化，是高風險場域 AI 系統合規的重要輔助工具。"
+  },
+  {
+    "id": 630,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "政府推動數位政府計畫，希望讓 AI 服務平台能讓所有市民都能輕鬆使用，包括老年人與身障者。請問這最主要體現哪個設計原則？",
+    "options": [
+      "A. 引進大型雲端 GPU",
+      "B. 優先部署所有民間語言處理模型",
+      "C. 設計可理解、可接近的 AI 使用者介面（數位涵容）",
+      "D. 僅部署於高技術使用單位"
+    ],
+    "answer": "C",
+    "explanation": "數位涵容（Digital Inclusion）強調科技服務應讓所有人平等使用，設計上需考量無障礙存取、簡單易懂的介面，確保弱勢群體也能受益於 AI 服務。"
+  },
+  {
+    "id": 631,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "資料科學團隊從 Twitter 蒐集了大量用戶留言，準備用來訓練情緒分析模型。在輸入模型之前，文字資料必須先經過哪項關鍵的前處理步驟？",
+    "options": [
+      "A. 將文字轉換為圖像格式再分析",
+      "B. 將文字分成高頻與低頻詞彙後刪除",
+      "C. 使用 NLP 技術進行斷詞、清理與向量化",
+      "D. 轉換成 CSV 格式後直接輸入"
+    ],
+    "answer": "C",
+    "explanation": "非結構化文字資料需先經過斷詞（Tokenization）、雜訊清除、向量化（如 TF-IDF、Embedding）等 NLP 前處理步驟，才能作為深度學習模型的有效輸入。"
+  },
+  {
+    "id": 632,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "電腦視覺工程師正在建立一個能識別倉庫貨物種類與位置的模型。資料標注人員需要在每張圖片上標記物品的類別和所在位置。請問應採用哪種標注方式？",
+    "options": [
+      "A. 資料去識別化",
+      "B. 區塊鏈驗證",
+      "C. 邊界框標注（Bounding Box Annotation）",
+      "D. 隨機遮蔽（Masking）"
+    ],
+    "answer": "C",
+    "explanation": "邊界框標注（Bounding Box）為物件偵測任務提供物件類別與空間位置資訊，是監督式視覺學習中最基本的資料標注形式，常用於 YOLO、Faster R-CNN 等模型。"
+  },
+  {
+    "id": 633,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "管理顧問正在向傳統製造業解釋 AI 專案與一般 IT 系統開發的不同之處。以下哪項說法是錯誤的，不應成為說明重點？",
+    "options": [
+      "A. AI 專案更重視資料品質與模型訓練",
+      "B. 傳統 IT 系統強調流程邏輯與資料庫結構",
+      "C. AI 專案可省略需求定義階段直接建模",
+      "D. AI 專案結果具有不確定性與機率性"
+    ],
+    "answer": "C",
+    "explanation": "AI 專案仍需清楚定義業務問題與應用目標，需求定義是所有開發流程的起點。跳過此階段會導致模型方向錯誤，造成資源浪費與無效投入。"
+  },
+  {
+    "id": 634,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某串流平台的推薦模型在上線三個月後，點擊率開始持續下滑。工程師懷疑是使用者行為已發生變化導致模型失準。這種情況最可能是什麼問題？",
+    "options": [
+      "A. 模型漂移（Model Drift）",
+      "B. 多重共線性",
+      "C. 偵測偏態誤差",
+      "D. 執行緒阻塞"
+    ],
+    "answer": "A",
+    "explanation": "模型漂移（Model Drift）是指部署後環境或使用者行為改變，導致訓練時的資料分佈與現實分佈出現偏差，使模型效能持續下降，需定期再訓練或監控觸發更新。"
+  },
+  {
+    "id": 635,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 公司正在為法庭開發輔助量刑建議系統。律師強調，系統必須能讓法官理解判斷依據，且在出現異常建議時必須有機制可問責。請問這最符合哪項 AI 治理的最低要求？",
+    "options": [
+      "A. 高速運算效能",
+      "B. 支援無人監控的自動執行",
+      "C. 高度模型可解釋性與問責機制",
+      "D. 持續自我學習與進化功能"
+    ],
+    "answer": "C",
+    "explanation": "在法律、醫療等高風險場域，AI 系統必須滿足可解釋性（讓人理解決策依據）與問責機制（明確責任歸屬），是 AI 治理框架對高風險應用的最低合規要求。"
+  },
+  {
+    "id": 636,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "台灣某銀行導入 AI 信用評分系統，金管會要求對於影響貸款核准與否的 AI 決策，銀行必須能夠向消費者說明。這符合金管會哪項要求？",
+    "options": [
+      "A. 強制使用雲端部署架構",
+      "B. 定期進行外部稽核",
+      "C. 提供合理的決策說明",
+      "D. 強制採用生成式模型"
+    ],
+    "answer": "C",
+    "explanation": "金管會《金融業 AI 治理指引》明訂，影響消費者決策的 AI 系統須能提供合理說明（Explanation），確保金融消費者知情權與申訴管道。"
+  },
+  {
+    "id": 637,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某電商平台希望在兩週內快速部署 AI 客服機器人，並針對自家產品知識進行微調，但無法負擔從頭訓練的成本。請問最適合的模型策略為何？",
+    "options": [
+      "A. 黑箱式封閉 AI 系統",
+      "B. 基礎模型（Foundation Model）搭配微調",
+      "C. 傳統規則式專家系統",
+      "D. 淺層決策樹模型"
+    ],
+    "answer": "B",
+    "explanation": "基礎模型（如 GPT、BERT）已在大量資料上預訓練，具備廣泛語言能力，透過 Fine-tuning 即可快速適應特定業務場景，大幅降低開發時間與成本。"
+  },
+  {
+    "id": 638,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某開源 AI 社群在發布模型時附上了一份文件，詳細記載了訓練資料來源、適用場景、已知偏誤與限制。請問這份文件通常稱為什麼？",
+    "options": [
+      "A. 模型效能測試報告",
+      "B. 模型權重儲存檔案",
+      "C. 模型卡（Model Card）",
+      "D. 模型推論加速設定檔"
+    ],
+    "answer": "C",
+    "explanation": "模型卡（Model Card）是 AI 治理文件的標準格式，記錄模型的訓練歷程、資料來源、應用限制、偏誤風險與倫理考量，有助於使用者做出知情判斷。"
+  },
+  {
+    "id": 639,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "資安研究員發現某自駕車視覺系統在路標上貼上不易察覺的貼紙後，系統將「停止」標誌誤判為「限速 45」。請問這種攻擊手法屬於哪類 AI 安全威脅？",
+    "options": [
+      "A. 封包注入攻擊",
+      "B. 對抗樣本攻擊（Adversarial Attack）",
+      "C. 資料偏態騷擾",
+      "D. 預測輸出遺漏"
+    ],
+    "answer": "B",
+    "explanation": "對抗樣本攻擊（Adversarial Attack）透過在輸入資料中加入人類難以察覺但能誤導模型的微小擾動，使模型產生錯誤判斷，是 AI 部署安全的重大挑戰。"
+  },
+  {
+    "id": 640,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "教育科技平台希望根據每位學生的學習歷程與弱項，動態推薦最適合的練習題目與教材。請問這類個人化學習推薦最可能採用哪種模型？",
+    "options": [
+      "A. 自然語言生成模型（GPT）",
+      "B. 卷積神經網路（CNN）",
+      "C. 協同過濾推薦系統（Collaborative Filtering）",
+      "D. 自注意力遮蔽模型"
+    ],
+    "answer": "C",
+    "explanation": "協同過濾依據使用者的行為歷史與相似使用者的偏好進行推薦，是個人化推薦系統的核心技術，廣泛應用於教育科技、電商與影音平台。"
+  },
+  {
+    "id": 641,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某語言模型在進行長文本理解時，工程師發現模型無法區分句子中不同詞彙在語義上的多角度關聯，導致摘要質量低落。採用 Multi-Head Attention 設計的主要用意是什麼？",
+    "options": [
+      "A. 降低參數量並提升運算速度",
+      "B. 同步不同序列輸入的時間步",
+      "C. 讓模型可同時關注不同子空間的語意表示",
+      "D. 減少向量嵌入維度對學習的影響"
+    ],
+    "answer": "C",
+    "explanation": "Multi-Head Attention 讓模型同時從多個「視角」捕捉序列中不同位置間的語意關聯，每個頭專注於不同的特徵子空間，提升了上下文建模的多樣性與豐富度。"
+  },
+  {
+    "id": 642,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "研究人員希望使用生成式模型學習資料的潛在機率結構，並能夠通過操作潛在空間來生成具有特定特徵的樣本。相比傳統 Autoencoder，VAE 的核心理論創新是什麼？",
+    "options": [
+      "A. 採用反向傳播進行梯度計算",
+      "B. 對重建誤差進行正規化處理",
+      "C. 引入機率潛在空間並最大化 Evidence Lower Bound（ELBO）",
+      "D. 處理序列資料並學習時間依賴性"
+    ],
+    "answer": "C",
+    "explanation": "VAE 基於變分推論，將潛在變數視為機率分布，透過最大化 ELBO（變分下界）實現近似後驗分布學習，使潛在空間具有連續性與可插值特性，是其相較於傳統 AE 的根本創新。"
+  },
+  {
+    "id": 643,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某公司訓練圖像生成 GAN 時，發現生成器只會產出幾種固定樣式的圖片，無論如何調整輸入都無法獲得多樣化輸出。工程師決定引入一種讓生成器感知批次內樣本多樣性的技術。請問是哪一種？",
+    "options": [
+      "A. 使用 L1 損失取代對抗損失",
+      "B. 引入梯度裁剪防止爆炸",
+      "C. 使用 Mini-batch Discrimination",
+      "D. 將判別器層數縮減以穩定學習"
+    ],
+    "answer": "C",
+    "explanation": "Mini-batch Discrimination 讓判別器能比較同一批次中不同樣本之間的相似度，促使生成器意識到多樣性需求，是對抗 GAN 模式崩壞最有效的策略之一。"
+  },
+  {
+    "id": 644,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某金融機構的 AI 模型在更新版本後，合規部門希望能追蹤每個版本的訓練資料來源、參數變更記錄與上線時間，以備監理機關查核。最合適的治理機制是什麼？",
+    "options": [
+      "A. 將所有推論結果保存於日誌檔",
+      "B. 使用模型卡結合 Model Lineage 管理架構",
+      "C. 將模型儲存於雲端以便複用",
+      "D. 將所有模型壓縮成 ONNX 格式"
+    ],
+    "answer": "B",
+    "explanation": "Model Lineage（模型血緣）記錄從資料收集、訓練到部署的完整流程，結合模型卡可提供版本追溯與決策可審計性，是 AI 治理合規的最佳實務。"
+  },
+  {
+    "id": 645,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 NLP 研究員在比較不同 Transformer 配置時，發現模型無法分辨「我愛你」和「你愛我」的差異，因為兩者詞彙相同。這反映了 Transformer 哪個設計元素的必要性？",
+    "options": [
+      "A. 無法辨識不同長度的輸入",
+      "B. 無法儲存長距離上下文",
+      "C. 缺乏序列位置資訊，需要 Position Encoding",
+      "D. 無法與預訓練詞嵌入結合"
+    ],
+    "answer": "C",
+    "explanation": "Transformer 的 Self-Attention 本身不含序列順序資訊，Position Encoding 透過在嵌入向量中加入位置信息來補足這一缺失，使模型能夠區分詞序不同但詞彙相同的句子。"
+  },
+  {
+    "id": 646,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "AI 倫理審查委員會在評估一個用於大學錄取審核的 AI 系統時，討論到公平性指標的選擇。「Equal Opportunity」與「Equalized Odds」兩個指標的關鍵差異是什麼？",
+    "options": [
+      "A. 前者只關注假陽性率（FPR）",
+      "B. 後者允許偏見合理存在",
+      "C. Equal Opportunity 只要求不同群體的真陽性率（TPR）相同",
+      "D. Equalized Odds 不需要考量實際結果"
+    ],
+    "answer": "C",
+    "explanation": "Equal Opportunity 只要求各群體的真陽性率（TPR）一致；而 Equalized Odds 更嚴格，同時要求 TPR 和假陽性率（FPR）在各群體間都保持一致，是更全面的公平性指標。"
+  },
+  {
+    "id": 647,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某跨國企業需要一個 AI 系統，能同時處理英文、日文、中文的客服問題，還能理解附件圖片並回答長篇技術文件的問題。請問最適合的技術方向是？",
+    "options": [
+      "A. 雙向 LSTM 與注意力結構",
+      "B. Graph Attention Network",
+      "C. 具備 In-Context Learning 能力的大型語言模型（LLM）",
+      "D. 差分隱私保護的多工卷積網路"
+    ],
+    "answer": "C",
+    "explanation": "具備 In-Context Learning 的大型語言模型（如 GPT-4）可在單一模型中處理多語言、多模態輸入與長文本推理，無需針對每種語言或任務個別訓練，是跨語言多模態應用的最佳選擇。"
+  },
+  {
+    "id": 648,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某醫療 AI 系統具備高解釋性，醫生能看到每個特徵的影響。但有人認為高準確度的黑箱模型更可信。關於模型可解釋性與可信度的關係，下列哪項描述最合理？",
+    "options": [
+      "A. 可解釋性高的模型可信度必然較高",
+      "B. 可解釋性是可信度的充分條件但非必要條件",
+      "C. 信賴區間與決策邊界無關",
+      "D. 高準確度的黑箱模型可信度可完全依賴績效指標"
+    ],
+    "answer": "B",
+    "explanation": "模型可信度涵蓋效能穩定性、魯棒性與可解釋性三個面向，可解釋性有助於建立信任但並非充分條件；高準確率的黑箱模型缺乏透明度，仍可能因資料偏誤或分佈外失效而失去信任。"
+  },
+  {
+    "id": 649,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某醫療機構希望在多個院區間聯合訓練 AI 診斷模型，但患者資料受隱私法規限制不能集中存放。工程師提出結合邊緣運算與隱私保護技術的方案。請問最適合的技術組合是什麼？",
+    "options": [
+      "A. 資料去識別化 + 集中式同步訓練",
+      "B. 邊緣計算 + 差分隱私 + 聯邦平均（Federated Averaging）",
+      "C. 集中式監控 + 批次處理架構",
+      "D. 條件隨機場 + CNN 分支模型"
+    ],
+    "answer": "B",
+    "explanation": "聯邦學習讓各院區在本地訓練模型後只上傳梯度更新，透過聯邦平均合併全域模型；加入差分隱私可進一步保護梯度中的個人資訊，是符合醫療隱私法規的最佳方案。"
+  },
+  {
+    "id": 650,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "AI 研究所正在探討「可驗證 AI（Verifiable AI）」的設計標準，希望確保某自動化交通管理系統的決策邏輯能夠被形式化地證明符合安全規範。請問此概念的核心精神是什麼？",
+    "options": [
+      "A. 模型能達到預定的精準度閾值",
+      "B. 模型決策過程具備邏輯證明與形式驗證能力",
+      "C. 模型可在不同硬體平台快速執行",
+      "D. 模型能在法律規範內避免歧視"
+    ],
+    "answer": "B",
+    "explanation": "可驗證 AI（Verifiable AI）指系統的內部推理邏輯可透過形式化方法（formal verification）加以數學證明，確保其在所有條件下符合安全性規範，是高安全需求場域的進階 AI 可信度要求。"
+  },
+  {
+    "id": 651,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 AI 研究機構計畫訓練一個新版本的大型語言模型，但工程師擔心大量 GPU 訓練帶來的高碳排放。哪一種技術策略最能有效降低訓練時的碳足跡？",
+    "options": [
+      "A. 增加模型參數量以提升計算密度",
+      "B. 採用高頻資料傳輸優化資料中心",
+      "C. 應用參數高重用微調技術（如 LoRA）",
+      "D. 每次訓練都從隨機初始化重新開始"
+    ],
+    "answer": "C",
+    "explanation": "LoRA（Low-Rank Adaptation）僅調整少量低秩矩陣參數，而非重新訓練整個模型，大幅降低計算資源需求與能源消耗，是 AI 可持續發展的重要策略。"
+  },
+  {
+    "id": 652,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 NLP 團隊正在分析語意嵌入空間的幾何性質，發現語義相近的詞彙在高維空間中形成緊密的群聚結構。這反映了語意嵌入空間怎樣的特性？",
+    "options": [
+      "A. 嵌入向量之間總是等距分布",
+      "B. 嵌入空間雖高維但具有低維流形結構",
+      "C. 嵌入向量多呈現同軸向量場形式",
+      "D. 嵌入空間具雙曲幾何結構且彼此互斥"
+    ],
+    "answer": "B",
+    "explanation": "流形假設（Manifold Hypothesis）指出高維資料實際上分布在嵌入空間的低維流形上，語意相近的概念在高維空間中形成緊密聚類，這是詞向量空間類比推理（如 king - man + woman = queen）的幾何基礎。"
+  },
+  {
+    "id": 653,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某法律科技公司希望建立一套 AI 推理系統，能夠依據法條規則進行邏輯推理，同時利用神經網路處理語義理解。請問這種結合兩種技術的系統設計屬於什麼？",
+    "options": [
+      "A. 多層 RNN 記憶模組",
+      "B. 結合邏輯規則引擎與神經嵌入模型的神經符號推理（Neurosymbolic AI）",
+      "C. 使用多重注意力模擬 IF-THEN 結構",
+      "D. 以大型語言模型直接回答符號問題"
+    ],
+    "answer": "B",
+    "explanation": "神經符號 AI（Neurosymbolic AI）結合神經網路的語意表徵能力與符號邏輯系統的規則推理能力，能處理需要精確邏輯推理與語義理解並重的複雜任務，如法律推理、科學知識庫查詢。"
+  },
+  {
+    "id": 654,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某公司希望在不重新訓練整個語言模型的前提下，讓模型能快速適應特定任務（如客服對話風格調整）。工程師建議採用只訓練輸入提示向量的輕量化方法。這屬於什麼技術？",
+    "options": [
+      "A. 需要重新訓練全部參數的 Full Fine-tuning",
+      "B. 只能用於分類任務的遷移學習",
+      "C. 固定模型參數、只學習提示向量的 Prompt Tuning",
+      "D. 必須凍結解碼器的 Encoder-only 微調"
+    ],
+    "answer": "C",
+    "explanation": "Prompt Tuning 保持預訓練模型參數不變，僅訓練一組可學習的提示向量（Soft Prompts），是少樣本學習與快速任務適應的高效策略，計算成本遠低於完整微調。"
+  },
+  {
+    "id": 655,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某台灣企業計畫在歐盟推出 AI 輔助人資篩選系統，協助初步篩選求職者履歷。法務顧問評估這屬於高風險 AI 應用。部署前最基本的合規要求是什麼？",
+    "options": [
+      "A. 使用開放原始碼模型即可免責",
+      "B. 模型須具備可說明性、完善資料治理與風險評估報告",
+      "C. 必須通過歐盟中央認證機構的個別核准",
+      "D. 限制模型不能存取跨國資料"
+    ],
+    "answer": "B",
+    "explanation": "依據《EU AI Act》，高風險 AI 系統（如人資篩選）必須符合可解釋性要求、具備資料治理文件、進行持續風險監控，並保存詳細技術文件以供監管審查。"
+  },
+  {
+    "id": 656,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 AI 邏輯推理系統需要判斷一組命題是否存在滿足所有條件的解。資訊工程師告知這類問題在計算複雜度上屬於特定問題類型。請問 SAT（可滿足性）問題屬於哪一類計算問題？",
+    "options": [
+      "A. P 類問題",
+      "B. NP-Complete 問題",
+      "C. BPP 類問題",
+      "D. PSPACE 可解問題"
+    ],
+    "answer": "B",
+    "explanation": "SAT（Boolean Satisfiability）問題是第一個被證明為 NP-Complete 的問題（Cook-Levin 定理），所有 NP 問題都可在多項式時間內歸約至 SAT，是計算複雜度理論的基石。"
+  },
+  {
+    "id": 657,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 AI 晶片公司正在開發下一代推論加速器，希望減少模型在邊緣設備上的計算量。工程師提議採用讓部分子網路參與推論的「稀疏性」設計。這項技術的主要效益是？",
+    "options": [
+      "A. 降低參數數量、運算量並提升推論效率",
+      "B. 擴增資料多樣性以減少偏差",
+      "C. 改善輸出語意連貫性",
+      "D. 增加隨機性使模型避免過擬合"
+    ],
+    "answer": "A",
+    "explanation": "稀疏模型（如 Mixture-of-Experts）透過動態路由機制，讓每次推論只激活部分子網路，大幅降低計算量與延遲，在維持模型能力的同時提升推論效率，是邊緣 AI 部署的重要技術。"
+  },
+  {
+    "id": 658,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某法律 AI 助理在查詢最高法院判例時，給出了一份引用詳細、邏輯清晰卻完全不存在的判決書。這最符合哪種 AI 風險類型？",
+    "options": [
+      "A. 訓練資料不足導致欠擬合",
+      "B. 資料中缺乏連續性特徵",
+      "C. 模型幻覺（Hallucination）",
+      "D. 遇到反事實推理無法執行"
+    ],
+    "answer": "C",
+    "explanation": "生成式 AI 的幻覺（Hallucination）現象是指模型輸出看似合理但實為捏造的資訊。在法律場域，這類虛假引用可能誤導當事人，造成嚴重後果，需配合 RAG 或人工驗證機制防範。"
+  },
+  {
+    "id": 659,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某機器人導航系統在執行任務時，感測器資料存在雜訊，機器人無法確切知道自己當前的位置與狀態。為了讓機器人仍能做出合理決策，應採用哪種強化學習框架？",
+    "options": [
+      "A. 完全可觀測的 MDP",
+      "B. 監督式學習",
+      "C. 部分可觀測馬可夫決策過程（POMDP）",
+      "D. 線上分類演算法"
+    ],
+    "answer": "C",
+    "explanation": "POMDP（Partially Observable MDP）專門處理代理人無法完全觀測環境狀態的情境，透過維護對當前狀態的機率信念（belief state）來指導決策，廣泛應用於機器人導航與對話系統。"
+  },
+  {
+    "id": 660,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某城市採用 AI 系統輔助公共資源分配決策，但沒有設計回饋修正機制。三年後，系統被發現持續強化了某些不公平的初始決策傾向。這最可能是什麼風險的體現？",
+    "options": [
+      "A. 模型浮動率過低",
+      "B. 自我增強偏見迴圈（Bias Amplification Feedback Loop）",
+      "C. 透明度過高造成系統不穩",
+      "D. 模型彈性設計過強"
+    ],
+    "answer": "B",
+    "explanation": "當 AI 系統的輸出影響後續資料收集或政策執行，而缺乏人類回饋修正時，可能形成偏見自我強化的正回饋迴圈，使不公平的決策模式不斷累積放大，是 AI 長期部署的系統性風險。"
+  },
+  {
+    "id": 661,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某核電廠安全監控 AI 系統需要提供具有數學保證的安全性，確保在任何輸入條件下都不會觸發誤報。負責系統安全驗證的工程師建議採用哪類工具？",
+    "options": [
+      "A. 模糊邏輯規則引擎",
+      "B. 一階邏輯與 SAT/SMT 解譯器",
+      "C. 機率圖模型（Probabilistic Graphical Model）",
+      "D. 拓撲嵌入學習"
+    ],
+    "answer": "B",
+    "explanation": "形式驗證系統（Formal Verification）使用一階邏輯與 SAT/SMT Solver 對系統行為進行數學證明，確保輸出在所有可能輸入下均符合安全規範，是高安全需求場域（核能、航空）的必要技術。"
+  },
+  {
+    "id": 662,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某招募平台的 AI 履歷篩選系統，訓練資料主要來自過去十年間成功晉升的員工記錄。稽核後發現這些員工幾乎都是特定背景的人。這種現象會造成什麼問題？",
+    "options": [
+      "A. 訓練資料維度過高",
+      "B. 測試資料準確率異常過高",
+      "C. 模型學習到與實際目標族群不一致的資料分佈",
+      "D. 損失函數無法收斂"
+    ],
+    "answer": "C",
+    "explanation": "樣本選擇偏誤（Sample Selection Bias）使訓練資料無法代表真實目標群體，導致模型在推論時對未充分代表的群體表現差，在人資、醫療等社會決策場域尤為嚴重。"
+  },
+  {
+    "id": 663,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 NLP 實驗室正在大量未標記的網路爬蟲文字上進行模型預訓練，採用的方法是讓模型預測被遮蔽的詞彙。這種預訓練策略的本質是什麼？",
+    "options": [
+      "A. 使用外部教師模型提供標籤",
+      "B. 從無標記資料自行建立 proxy 任務產生訓練信號",
+      "C. 自動調整梯度學習率以提升穩定性",
+      "D. 將資料分群以利預測訓練"
+    ],
+    "answer": "B",
+    "explanation": "自我監督學習（Self-Supervised Learning）在無標記資料中設計代理任務（如遮蔽詞預測、句子順序預測）來產生訓練信號，是 BERT、GPT 等大型模型預訓練的核心方法論。"
+  },
+  {
+    "id": 664,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 AI 壓縮研究小組在討論資訊瓶頸理論時，爭論到模型應該如何在「保留對預測有用的資訊」與「過濾掉輸入中的雜訊」之間做取捨。這兩個目標的關係為何？",
+    "options": [
+      "A. 可以同時最大化兩者",
+      "B. 兩者完全無關",
+      "C. 壓縮會增加有效資訊量",
+      "D. 兩者處於 trade-off 張力中，需在表達能力與雜訊過濾間取得平衡"
+    ],
+    "answer": "D",
+    "explanation": "資訊瓶頸理論（Information Bottleneck Theory）指出模型應在壓縮輸入（去除與輸出無關的雜訊）與保留預測所需資訊之間取得平衡，兩者存在本質的 trade-off，此理論為深度學習的泛化能力提供了理論解釋。"
+  },
+  {
+    "id": 665,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某研究團隊要同時訓練文字分類、情緒辨識和命名實體識別三個 NLP 任務的模型，希望共享底層語言表示以提升資料利用效率。這種架構設計屬於什麼學習範式？",
+    "options": [
+      "A. 使用獨立模型分別訓練以避免相互干擾",
+      "B. 將所有任務合併成單一分類問題",
+      "C. 多任務學習（MTL）：共享底層 Encoder，各任務使用獨立輸出層",
+      "D. 對每個任務使用獨立特徵選擇器"
+    ],
+    "answer": "C",
+    "explanation": "多任務學習（Multi-Task Learning）透過共享底層表示層（Shared Encoder）讓不同任務相互強化，各任務再接上專屬輸出層，既降低對大量標記資料的依賴，又提升模型的泛化能力。"
+  },
+  {
+    "id": 666,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某藝術 AI 平台在開發「依指定風格生成圖像」功能時，需要一種能在生成空間中調控特定屬性（如光線強度、色調）的技術。請問最適合的方法是？",
+    "options": [
+      "A. 訓練後重新初始化模型權重",
+      "B. 使用隨機初始化向量產生變化",
+      "C. 在潛在變數空間進行向量調制（Latent Traversal）",
+      "D. 使用標準分布對抗判別器參數"
+    ],
+    "answer": "C",
+    "explanation": "Latent Traversal（潛在空間遍歷）透過沿特定方向調整潛在變數，實現對生成結果特定屬性（風格、顏色、角度）的精確控制，是 VAE 與 GAN 的核心應用技術之一。"
+  },
+  {
+    "id": 667,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某民主國家立法機構正在審議 AI 相關法律，重點是確保 AI 在公共行政決策中不能完全取代人工審查，且受影響公民有權申訴。這體現了什麼概念？",
+    "options": [
+      "A. AI 擁有獨立法律人格",
+      "B. 所有 AI 模型必須開放原始碼",
+      "C. AI 法治化：確保 AI 決策可解釋且具有可訴性",
+      "D. AI 可完全取代公權力的裁量判決"
+    ],
+    "answer": "C",
+    "explanation": "AI 法治化（AI and the Rule of Law）要求 AI 系統在法律框架下具備可解釋性、可問責性與可訴訟性，確保公民在受 AI 決策影響時擁有適當的法律救濟途徑，是民主社會導入 AI 的核心原則。"
+  },
+  {
+    "id": 668,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某大型語言模型的初版輸出常常含有偏激內容且未能遵循使用者意圖。開發團隊決定引入人類評估者對模型回應進行偏好標記，並以此調整模型行為。這套訓練流程稱為什麼？",
+    "options": [
+      "A. 加快語料擷取流程的工具",
+      "B. 降低 GPU 訓練成本的壓縮技術",
+      "C. 讓模型輸出更符合人類價值與偏好的 RLHF",
+      "D. 移除模型中符號結構的技術"
+    ],
+    "answer": "C",
+    "explanation": "RLHF（Reinforcement Learning from Human Feedback）是 ChatGPT、Claude 等對話模型的關鍵對齊技術，透過人類偏好數據訓練獎勵模型，再用強化學習調整生成策略，使輸出更符合人類期望與倫理標準。"
+  },
+  {
+    "id": 669,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某醫療 AI 輔助診斷系統的設計原則要求：醫生可以隨時撤銷、修改或完全推翻 AI 的任何建議，而不需要向系統說明理由。這符合人機協作中的哪項設計原則？",
+    "options": [
+      "A. 禁止人類修改 AI 輸出的自動化原則",
+      "B. AI 回應必須以程式碼形式呈現",
+      "C. 所有 AI 決策須可被人類覆寫與復原的可逆性原則",
+      "D. 使用者不可直接介入推論過程"
+    ],
+    "answer": "C",
+    "explanation": "可逆性原則（Reversibility Principle）是人機協作倫理的核心要求，確保使用者始終保有對 AI 決策的控制權，可隨時中止、修改或推翻系統輸出，防止過度依賴或 AI 失控造成的不可逆後果。"
+  },
+  {
+    "id": 670,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某航空公司在引入 AI 自動飛行輔助系統後，發現飛行員因長期依賴自動化系統，導致在緊急狀況下手動操作能力明顯退化。這種現象最適合用什麼概念描述，應如何應對？",
+    "options": [
+      "A. 限制 AI 準確率上限以強迫人工介入",
+      "B. 將所有任務完全自動化以降低人為失誤",
+      "C. 技能侵蝕效應（Skill Atrophy）——需強化使用者的介面互動訓練",
+      "D. 移除所有人工監控環節以降低系統風險"
+    ],
+    "answer": "C",
+    "explanation": "技能侵蝕效應（Skill Atrophy）指人員因過度依賴自動化系統而喪失關鍵技能，在 AI 故障時無法有效應對。應對策略包括設計強制性手動練習機制與維持適度人工干預的介面設計。"
+  },
+  {
+    "id": 671,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某自動駕駛公司希望確保 AI 系統的決策符合人類的道路倫理與社會期望，例如在不可避免的碰撞中如何取捨。這需要在模型設計中融入什麼機制？",
+    "options": [
+      "A. 僅使用大規模語料庫學習行為樣式",
+      "B. 禁止任何人類價值觀念介入模型",
+      "C. 透過人類偏好資料與倫理目標共同導引模型學習（價值一致性）",
+      "D. 採用完全隨機決策避免價值偏見"
+    ],
+    "answer": "C",
+    "explanation": "價值一致性（Value Alignment）要求 AI 系統的行為目標與人類價值觀一致，需在訓練過程中融入人類偏好數據、倫理約束與社會規範，是 AI 安全與倫理設計的核心挑戰。"
+  },
+  {
+    "id": 672,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某跨部門 AI 專案委員會在討論複雜 AI 系統的管理時，引用了「常態事故理論」，認為即使在正常運作條件下，複雜系統也無可避免會產生意外。對此，最合適的工程應對策略是？",
+    "options": [
+      "A. 提高模型效能以自動解決所有意外",
+      "B. 禁止使用者操作以避免人為失誤",
+      "C. 引入多層級冗餘設計與監測機制以預防不可預期錯誤",
+      "D. 限制模型功能以降低系統複雜度"
+    ],
+    "answer": "C",
+    "explanation": "常態事故理論（Normal Accident Theory）指出高度複雜與緊密耦合的系統必然存在失控風險，應對策略是建立多層防禦（Defense in Depth）、容錯機制與即時監測系統，而非試圖完全消除複雜性。"
+  },
+  {
+    "id": 673,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某石化廠導入 AI 系統進行工廠流程控制，需要同時監控溫度、壓力、流量等多個變數，並在滿足安全約束的前提下最大化生產效率。這屬於 AI 在什麼場域的應用挑戰？",
+    "options": [
+      "A. 提升 CPU 單核運算效能",
+      "B. 多變量程序控制（MPC）——模型需具備即時預測與約束滿足能力",
+      "C. 減少感測器佈建數量",
+      "D. 將監控全面改為無監督學習架構"
+    ],
+    "answer": "B",
+    "explanation": "模型預測控制（MPC）在智慧製造中需動態預測多變量系統的未來行為，並在滿足物理與安全約束的條件下優化控制輸出，對 AI 模型的即時性、穩定性與可解釋性都有高度要求。"
+  },
+  {
+    "id": 674,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某自動倉儲系統有多個 AI 機器人代理在同一空間協作，每個代理不僅需要完成自己的任務，還需要預判其他機器人的移動意圖以避免衝突。這種能力屬於什麼？",
+    "options": [
+      "A. 隨機移動策略以分散碰撞風險",
+      "B. 學習環境潛在報酬分布",
+      "C. 社會感知（Social Awareness）——推論他人目標與行動意圖",
+      "D. 強化模型深度以提升泛化能力"
+    ],
+    "answer": "C",
+    "explanation": "社會感知（Social Awareness）是多智能體系統中協作代理的關鍵能力，涉及對其他代理意圖、目標與行為軌跡的推斷，使代理能夠進行預測性協作而非純反應性規避。"
+  },
+  {
+    "id": 675,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某醫療 AI 系統在更新新版本後，舊有的辨識技能明顯退步，同時獲得新技能。醫療團隊擔心這會影響既有診斷流程的穩定性。請問這是什麼現象？",
+    "options": [
+      "A. 記憶單元過度擴張",
+      "B. 災難性遺忘（Catastrophic Forgetting）",
+      "C. 強化學習過度強化先前任務",
+      "D. 訓練收斂過快導致泛化不足"
+    ],
+    "answer": "B",
+    "explanation": "災難性遺忘（Catastrophic Forgetting）是連續學習（Continual Learning）的核心挑戰，當模型學習新任務時，原有任務的知識可能被覆蓋，導致舊任務效能顯著下降，需採用 EWC 或 Progressive Networks 等技術緩解。"
+  },
+  {
+    "id": 676,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某政策分析師使用 AI 工具評估：「如果 2020 年政府未實施某項補貼政策，失業率會是多少？」這種分析屬於哪種 AI 推理能力？",
+    "options": [
+      "A. 預測已發生事件的概率分布",
+      "B. 反事實推理（Counterfactual Reasoning）——預測在假設情境下的潛在結果",
+      "C. 維度縮減以提升計算效率",
+      "D. 強化隨機初始化的效果"
+    ],
+    "answer": "B",
+    "explanation": "反事實推理（Counterfactual Reasoning）探討「若當時做了不同的選擇，結果會如何」的假設性問題，是因果推論的核心工具，對政策評估、醫療決策與公平性分析具有重要應用價值。"
+  },
+  {
+    "id": 677,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某博物館開發了 AI 導覽系統，能自動為上傳的展品照片生成詳細的文字描述。這個任務的技術核心在於解決什麼問題？",
+    "options": [
+      "A. 卷積池化的空間降維",
+      "B. Cross-Attention 機制融合視覺語意對齊",
+      "C. 使用 GAN 判別語意真假",
+      "D. 分別訓練語言與圖像模組後再合併"
+    ],
+    "answer": "B",
+    "explanation": "圖像描述生成（Image Captioning）的核心是視覺語意對齊，需透過 Cross-Attention 機制將視覺特徵（CNN/ViT 提取的影像嵌入）與語言語意空間進行對齊，CLIP 與 Flamingo 等模型皆採用此架構。"
+  },
+  {
+    "id": 678,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某城市在颱風期間啟用 AI 緊急應變系統，但系統因感測器受損導致部分功能失效。應急管理委員會要求系統必須能在降級條件下繼續提供關鍵決策支援。這需要 AI 系統具備什麼設計特性？",
+    "options": [
+      "A. 限制模型最大記憶長度",
+      "B. 僅允許人工處理輸出",
+      "C. 系統韌性（Resilience）——提供快速恢復與替代推論能力",
+      "D. 移除回饋學習功能"
+    ],
+    "answer": "C",
+    "explanation": "AI 系統韌性（Resilience）設計要求系統在部分組件失效時仍能維持核心功能，包含降級服務（graceful degradation）、故障自動切換（failover）與快速恢復機制，是關鍵基礎設施 AI 應用的必要要素。"
+  },
+  {
+    "id": 679,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "哲學學者在討論 AI 倫理責任時提出：如果一個 AI 系統能感知自己行動的後果，並根據規範做出選擇，是否可以賦予其倫理責任？請問判斷 AI 是否具備道德代理（Moral Agency）的核心依據是什麼？",
+    "options": [
+      "A. 模型使用的 GPU 數量",
+      "B. 模型是否為開源系統",
+      "C. 模型是否具備自主性與對行動後果的預測控制能力",
+      "D. 模型運行地區的法律體系"
+    ],
+    "answer": "C",
+    "explanation": "道德代理（Moral Agency）理論認為責任主體需具備感知行動後果的能力、基於規範做出選擇的自主性，以及預測後果的推理能力。目前主流觀點認為 AI 尚不具備完整道德代理能力，責任仍歸屬於開發者與使用者。"
+  },
+  {
+    "id": 680,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某金融監理機構發現，市場上多家銀行都使用相同的第三方 AI 信用評分模型，且各家系統的評分結果存在高度相關性。監管人員最擔心的潛在系統性風險是什麼？",
+    "options": [
+      "A. 模型運算資源競爭",
+      "B. 模型決策協同偏誤（Collusive Bias）",
+      "C. 訓練時間過短導致欠擬合",
+      "D. 模型無法再現性問題"
+    ],
+    "answer": "B",
+    "explanation": "當多個 AI 模型共享相同訓練資料來源並在相同環境中部署時，可能產生決策協同偏誤（Collusive Bias），各系統互相強化相同的錯誤判斷，在金融市場中可能引發系統性風險，如同步拒絕貸款或同步做出錯誤投資決策。"
+  },
+  {
+    "id": 681,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "智慧交通系統需整合來自路口攝影機、車速感測器、氣象站與 GPS 的資料。在進行多源資料融合前，最關鍵的前處理步驟是什麼？",
+    "options": [
+      "A. 建立向量語意相似度",
+      "B. 將所有資料轉為 CSV 格式",
+      "C. 資料對齊與時間同步處理",
+      "D. 對所有資料進行 One-hot 編碼"
+    ],
+    "answer": "C",
+    "explanation": "來自不同感測器的異質資料在採集時間與頻率上存在差異，必須先進行時間戳對齊與同步處理，才能確保多源資料在相同時間基準上進行有意義的融合分析，是多感測器系統的基礎前處理步驟。"
+  },
+  {
+    "id": 682,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "資料科學新人加入團隊後，主管要求他在開始訓練模型前先完成資料處理工作。請問標準的機器學習資料處理流程順序為何？",
+    "options": [
+      "A. 特徵萃取 → 標準化 → 收集資料",
+      "B. 蒐集資料 → 清理資料 → 特徵工程 → 模型訓練",
+      "C. 訓練模型 → 清理資料 → 評估模型",
+      "D. 模型選擇 → 演算法選定 → 資料轉檔"
+    ],
+    "answer": "B",
+    "explanation": "機器學習的標準流程遵循「資料蒐集 → 清理（去除雜訊、處理缺值）→ 特徵工程（轉換、選擇、建構特徵）→ 模型訓練」的順序，資料品質是模型效能的根本基礎。"
+  },
+  {
+    "id": 683,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "法規遵循主任正在盤點公司 AI 系統中使用的資料隱私保護技術。他列出了聯邦學習、差分隱私、資料正規化、PII 去識別化四項，其中哪一項與隱私保護無直接關係？",
+    "options": [
+      "A. 聯邦學習",
+      "B. 差分隱私",
+      "C. 資料正規化（Normalization）",
+      "D. PII 去識別化"
+    ],
+    "answer": "C",
+    "explanation": "資料正規化（Normalization）是將數值特徵縮放至特定範圍的資料前處理技術，目的在於改善模型訓練收斂，與個人資料隱私保護無直接關係。其他三項皆為 AI 隱私保護的核心技術。"
+  },
+  {
+    "id": 684,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "物流公司希望用 AI 預測未來三個月的各據點包裹量，以提前調配人力。由於包裹量數據有明顯的時間規律（如週末高峰、節日旺季），請問最適合的模型架構是什麼？",
+    "options": [
+      "A. CNN 卷積神經網路",
+      "B. GAN 生成對抗網路",
+      "C. RNN / LSTM 時序模型",
+      "D. Autoencoder 自編碼器"
+    ],
+    "answer": "C",
+    "explanation": "LSTM（Long Short-Term Memory）具備記憶單元能保留長期時間依賴性，特別適合具有時間規律的序列資料預測任務，如銷售預測、物流量預測、股票走勢等。"
+  },
+  {
+    "id": 685,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某企業部署了一個讓員工能用中文提問、AI 自動回答公司政策的系統。請問這套系統最可能整合了哪兩項核心技術？",
+    "options": [
+      "A. 自然語言處理 + 強化學習",
+      "B. 語音辨識 + 自監督學習",
+      "C. 自然語言處理（NLP）+ 問答系統",
+      "D. 圖像分類 + 卷積神經網路"
+    ],
+    "answer": "C",
+    "explanation": "企業問答系統結合 NLP 的語意理解技術（如語意搜尋、意圖識別）與問答系統（QA System）的資訊擷取能力，讓使用者能以自然語言查詢結構化知識庫，是企業知識管理的常見 AI 應用。"
+  },
+  {
+    "id": 686,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "半導體製造廠希望在生產線上自動偵測晶圓表面的微小瑕疵，以取代人工目視檢查。請問最適合用於這類影像瑕疵偵測任務的模型架構是什麼？",
+    "options": [
+      "A. K-means 分群演算法",
+      "B. 卷積神經網路（CNN）",
+      "C. RNN 時序模型",
+      "D. 強化學習代理"
+    ],
+    "answer": "B",
+    "explanation": "CNN 在影像特徵提取上表現卓越，透過卷積層學習局部紋理與形狀特徵，是製造業瑕疵偵測、醫學影像分析等視覺 AI 任務的標準架構。"
+  },
+  {
+    "id": 687,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 客服系統在正式上線後的第一個月表現良好，但三個月後隨著公司推出新產品線，系統開始無法正確回答客戶問題。這最可能是哪種部署後風險？",
+    "options": [
+      "A. 模型欠擬合",
+      "B. 訓練資料不足",
+      "C. 模型漂移（Model Drift）",
+      "D. 程式碼 bug"
+    ],
+    "answer": "C",
+    "explanation": "模型漂移（Model Drift）是指部署後現實環境發生變化（如新產品、新術語、用戶行為改變），導致訓練時的資料分佈與當前環境不符，造成模型效能下降，需建立監控機制並定期觸發再訓練。"
+  },
+  {
+    "id": 688,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 HR 科技公司的 AI 績效評估系統，對於少數族裔員工的評分系統性地低於其白人同事，即便兩者工作表現相似。稽核人員應使用哪種工具來量化這種不公平現象？",
+    "options": [
+      "A. 混淆矩陣（Confusion Matrix）",
+      "B. SHAP 特徵解釋工具",
+      "C. 公平性指標（如 Disparate Impact Ratio）",
+      "D. 決策樹視覺化"
+    ],
+    "answer": "C",
+    "explanation": "Disparate Impact Ratio（差別影響比率）等公平性指標可量化 AI 模型對不同族群的決策差異，是偏誤偵測與公平性審計的專用工具，符合美國 EEOC 等反歧視法規的評估要求。"
+  },
+  {
+    "id": 689,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某醫院的 AI 診斷輔助系統需要通過監管機構審查，要求能清楚解釋為何模型對特定病患做出高風險判斷。工程師應優先導入哪種技術？",
+    "options": [
+      "A. 使用 GAN 生成對比病例",
+      "B. 建立更深的感知機結構",
+      "C. 導入 LIME 或 SHAP 可解釋性工具",
+      "D. 減少訓練資料量以降低模型複雜度"
+    ],
+    "answer": "C",
+    "explanation": "LIME 與 SHAP 是主流的模型後解釋（Post-hoc Explanation）工具，能針對每個單一預測說明各特徵的貢獻度，幫助醫生理解模型決策依據，是高風險 AI 應用合規審查的重要技術支援。"
+  },
+  {
+    "id": 690,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某食品廠計畫導入 AI 品質管控系統，管理顧問建議採用漸進式的導入策略，而非一次性全廠部署。根據製造業 AI 導入指引，最建議的起始點是什麼？",
+    "options": [
+      "A. 先更換全廠所有攝影機與感測器",
+      "B. 先將 AI 系統整合至 ERP 後台",
+      "C. 聚焦單一製程節點進行模組化試行（POC）",
+      "D. 全廠同步推動 AI 自動化決策流程"
+    ],
+    "answer": "C",
+    "explanation": "根據工業 AI 導入最佳實務，應從具有高回報潛力且影響範圍可控的單一節點開始驗證（POC），成功後再逐步擴展，以最小化技術風險與組織衝擊，確保導入效益可衡量。"
+  },
+  {
+    "id": 691,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 團隊發現資料集中某個欄位有 40% 的缺失值。資料科學家建議直接刪除含缺值的列，但另一位工程師提出反對。直接刪除缺值列的主要潛在風險是什麼？",
+    "options": [
+      "A. 使用中位數填補反而最安全",
+      "B. 直接刪除可能造成樣本選擇偏誤（Sample Selection Bias），損害泛化能力",
+      "C. 使用神經網路自動補值會讓模型過複雜",
+      "D. One-hot 編碼缺值會造成維度爆炸"
+    ],
+    "answer": "B",
+    "explanation": "若缺值的出現並非完全隨機（MCAR），直接刪除含缺值的樣本可能使訓練資料系統性地排除某類樣本，造成樣本選擇偏誤，導致模型在真實部署環境中對這些群體表現不佳。"
+  },
+  {
+    "id": 692,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "基因體學研究需要分析數萬個 SNP 特徵的資料，但樣本數只有幾百個病患。在這種特徵數遠多於樣本數的高維場景中，哪種監督式演算法最適合？",
+    "options": [
+      "A. K-Nearest Neighbors",
+      "B. 決策樹（Decision Tree）",
+      "C. 邏輯回歸（Logistic Regression）",
+      "D. 支援向量機（SVM）"
+    ],
+    "answer": "D",
+    "explanation": "SVM 透過核技巧（Kernel Trick）在高維特徵空間中構建最大間隔超平面，並具備 L2 正則化效果，能有效處理特徵維度遠超樣本數的問題（如基因組資料），是高維小樣本場景的常用方法。"
+  },
+  {
+    "id": 693,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 團隊訓練隨機森林分類器來預測客戶流失，但使用了非常少量的決策樹（只有 5 棵）。測試集的表現相當差。請問問題最可能是什麼？",
+    "options": [
+      "A. 欠擬合：樹太少無法捕捉資料複雜度",
+      "B. 過擬合：對訓練資料學習過度",
+      "C. 高偏差與低變異的平衡問題",
+      "D. 模型無法產生預測結果"
+    ],
+    "answer": "A",
+    "explanation": "隨機森林是集成學習方法，需要足夠數量的決策樹（通常 100 棵以上）才能通過集成效應降低方差。樹太少時模型無法充分學習資料的複雜模式，導致高偏差（偏差-方差權衡）。"
+  },
+  {
+    "id": 694,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "深度學習研究員在設計 CNN 架構時，選擇使用 ReLU 作為啟用函數，而非 Sigmoid。請問 ReLU 相對於 Sigmoid 的主要優勢是什麼？",
+    "options": [
+      "A. 引入非線性並有效解決梯度消失問題",
+      "B. 顯著降低模型參數量",
+      "C. 提供更強的負值處理能力",
+      "D. 完全避免過擬合問題"
+    ],
+    "answer": "A",
+    "explanation": "ReLU（Rectified Linear Unit）對正值保持梯度為 1，對負值輸出 0（稀疏激活），有效解決了深層網路中 Sigmoid 函數造成的梯度消失問題，同時引入非線性特性，加速模型訓練收斂。"
+  },
+  {
+    "id": 695,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "情感運算研究室正在開發語音情緒辨識系統，需要區分憤怒、快樂、悲傷等情緒。針對語音訊號的時序特性與聲學特徵，最適合的模型與特徵組合是什麼？",
+    "options": [
+      "A. CNN + 圖像特徵",
+      "B. LSTM + MFCC（梅爾頻率倒譜係數）",
+      "C. Transformer + TF-IDF",
+      "D. 自回歸模型 + 基頻（Pitch）特徵"
+    ],
+    "answer": "B",
+    "explanation": "語音是時序訊號，LSTM 的記憶機制能捕捉語音的時間動態特性；MFCC 模擬人耳對頻率的感知方式，是能有效表達情緒相關聲學特徵的標準語音特徵提取方法，兩者的組合是語音情緒辨識的主流方案。"
+  },
+  {
+    "id": 696,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某強化學習工程師正在實作機器人手臂控制系統。在任意狀態 s 下，系統依據策略函數決定動作。請問策略函數 π(a|s) 的數學意義為何？",
+    "options": [
+      "A. 記錄代理人至今所有的歷史動作序列",
+      "B. 定義在狀態 s 下選擇動作 a 的機率",
+      "C. 決定回報函數的梯度更新方向",
+      "D. 衡量當前學習速率的動態變化"
+    ],
+    "answer": "B",
+    "explanation": "策略函數 π(a|s) 定義了代理人在給定狀態 s 下選擇每個動作 a 的機率分佈，是強化學習的核心組件，可以是確定性策略（直接輸出動作）或隨機性策略（輸出動作機率分佈）。"
+  },
+  {
+    "id": 697,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某翻譯平台工程師在分析 Transformer 模型的內部機制時，發現 Self-Attention 能讓模型在翻譯一個詞時，考量整個句子中所有其他詞的相關程度。這個機制解決了什麼問題？",
+    "options": [
+      "A. 為每個 token 引入唯一的位置編碼",
+      "B. 模擬遞迴機制以減少參數量",
+      "C. 動態計算序列中每個詞對其他詞的注意力權重",
+      "D. 將輸入序列分群以實現平行計算"
+    ],
+    "answer": "C",
+    "explanation": "Self-Attention 機制讓模型在處理每個詞時，能動態計算其與序列中所有其他詞的相關性（注意力權重），從而捕捉長距離語意依賴，這是 Transformer 取代 RNN 的關鍵技術突破。"
+  },
+  {
+    "id": 698,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "AI 繪圖工具的工程師向用戶解釋：系統先對原始圖像逐步加入高斯噪音，訓練時學習如何將純噪音逐步還原為清晰圖像。請問這是哪種生成模型的原理？",
+    "options": [
+      "A. GAN（生成對抗網路）",
+      "B. VAE（變分自編碼器）",
+      "C. Diffusion Model（擴散模型）",
+      "D. BERT（雙向編碼器預訓練）"
+    ],
+    "answer": "C",
+    "explanation": "擴散模型（Diffusion Model）基於「前向加噪 → 逆向去噪」的學習框架，訓練時學習將高斯噪音逐步還原為真實資料的過程，已在高品質圖像生成（Stable Diffusion、DALL-E 3）中取得最先進的效果。"
+  },
+  {
+    "id": 699,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某音樂串流平台的資料科學家希望基於使用者隱含的聆聽偏好（如播放次數、跳過行為）建立推薦模型，找出使用者與歌曲之間的潛在特徵向量。最適合的演算法是？",
+    "options": [
+      "A. 隨機森林（Random Forest）",
+      "B. 支援向量機（SVM）",
+      "C. 矩陣分解（Matrix Factorization）",
+      "D. 卷積神經網路（CNN）"
+    ],
+    "answer": "C",
+    "explanation": "矩陣分解（Matrix Factorization）將使用者-物品互動矩陣分解為低維潛在向量，能捕捉隱含的偏好特徵，是協同過濾推薦系統的核心技術，廣泛應用於音樂、影片、電商推薦場景。"
+  },
+  {
+    "id": 700,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 藝術創作平台使用 VAE 生成圖像，用戶希望透過微調潛在向量 z 來控制生成風格。請問 VAE 的潛在變數 z 通常服從什麼分佈？",
+    "options": [
+      "A. 完全不可預測的任意分佈",
+      "B. 標準正態分佈（Normal Distribution）",
+      "C. 保留空間資訊的均勻分佈",
+      "D. 高維稀疏分佈"
+    ],
+    "answer": "B",
+    "explanation": "VAE 在設計上將潛在變數 z 正規化為標準正態分佈，透過 KL 散度項約束潛在空間的形狀，並利用重參數技巧（Reparameterization Trick）使梯度可反向傳播，確保潛在空間的連續性與可操控性。"
+  },
+  {
+    "id": 701,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某 NLP 工程師在訓練文字分類模型前，需要將原始的句子轉換為模型可以計算的數值向量。請問這個關鍵步驟稱為什麼？",
+    "options": [
+      "A. 分詞（Tokenization）",
+      "B. 詞嵌入（Embedding）",
+      "C. 剖析（Parsing）",
+      "D. 分塊（Chunking）"
+    ],
+    "answer": "B",
+    "explanation": "詞嵌入（Embedding）是將詞語或句子映射到連續向量空間的技術，如 Word2Vec、BERT Embedding，讓模型能進行向量運算並捕捉語意關係，是 NLP 模型處理文字輸入的核心步驟。"
+  },
+  {
+    "id": 702,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某企業 AI 系統已上線運作半年，法規遵循部門要求能追蹤每次模型更新的訓練資料版本、參數設定與效能變化記錄。以下哪種機制最能滿足此需求？",
+    "options": [
+      "A. 最小化模型推論架構以降低複雜度",
+      "B. 模型訓練記錄與版本控制（Model Card + Logging）",
+      "C. 演算法開源並不定期重訓",
+      "D. 使用嵌入式部署限制參數修改"
+    ],
+    "answer": "B",
+    "explanation": "模型卡（Model Card）結合訓練流程日誌記錄、資料版本控制（如 DVC）與效能追蹤，是 AI 模型生命週期管理的最佳實務，確保模型行為的可再現性、可追溯性與合規性。"
+  },
+  {
+    "id": 703,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某 GAN 模型在訓練過程中出現生成器學習完全停滯的情況，即使增加訓練輪數也無改善。工程師診斷後認為原因是判別器與生成器的學習速度嚴重失衡。這最可能是什麼問題？",
+    "options": [
+      "A. 判別器架構過於簡單",
+      "B. 生成器訓練速度過快導致 GAN 訓練失衡",
+      "C. 潛在向量分佈未正規化",
+      "D. 未使用隨機初始化策略"
+    ],
+    "answer": "B",
+    "explanation": "GAN 訓練的穩定性高度依賴生成器與判別器的學習速度平衡。若生成器訓練過快，判別器尚未學會有效辨別，梯度信號失去意義；反之判別器太強則生成器梯度消失。可透過學習率調整、梯度懲罰（WGAN-GP）等方法改善。"
+  },
+  {
+    "id": 704,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某新聞平台的 AI 文章分類系統涉及數千個類別，直接使用 One-hot 編碼導致向量維度過高，嚴重影響訓練效率與記憶體使用。最適合解決這個問題的技術組合是什麼？",
+    "options": [
+      "A. 熵編碼（Entropy Encoding）",
+      "B. TF-IDF 詞頻統計",
+      "C. One-hot 編碼加上稀疏矩陣優化",
+      "D. 子詞分段（BPE/SentencePiece）+ 向量嵌入（Embedding）"
+    ],
+    "answer": "D",
+    "explanation": "子詞分段技術（如 BPE）可將詞彙表壓縮至可管理的規模（通常 3~5 萬），搭配密集的向量嵌入（Dense Embedding）取代稀疏的 One-hot 表示，大幅降低維度負擔並學習到語意相似性。"
+  },
+  {
+    "id": 705,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "網路資安系統需要偵測前所未見的新型攻擊模式，正常流量資料充足但異常樣本極少。在這種資料嚴重不平衡的情境下，哪種模型最適合偵測異常行為？",
+    "options": [
+      "A. 主成分分析（PCA）",
+      "B. Autoencoder 或 One-Class SVM",
+      "C. 邏輯回歸 + 隨機森林",
+      "D. 遞迴神經網路"
+    ],
+    "answer": "B",
+    "explanation": "Autoencoder 可學習正常資料的壓縮表示，對異常資料的重建誤差會顯著偏高；One-Class SVM 則只從正常樣本學習決策邊界。兩者都適合在缺乏異常標記資料的情境中進行異常偵測。"
+  },
+  {
+    "id": 706,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某語音轉文字系統面臨輸入語音片段長度與文字標注長度不一致的挑戰（例如連音或靜音處理）。工程師選擇了一種專門解決序列輸入與輸出長度對齊問題的損失函數。這是哪種技術？",
+    "options": [
+      "A. 對語音進行噪音過濾的損失函數",
+      "B. 建立上下文語意依賴的注意力損失",
+      "C. 解決輸入與標注長度不對齊的 CTC 損失（Connectionist Temporal Classification）",
+      "D. 增強模型生成能力的對抗損失"
+    ],
+    "answer": "C",
+    "explanation": "CTC（Connectionist Temporal Classification）損失函數透過動態規劃允許輸入序列（語音幀）與輸出序列（文字標籤）長度不一致，透過引入空白標籤處理對齊問題，是語音辨識與手寫字識別的關鍵技術。"
+  },
+  {
+    "id": 707,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某借貸平台的信用模型被監管機構要求解釋為何特定申請者被拒貸。工程師需要針對這一個申請案例說明各特徵的影響。請問 LIME 的核心工作原理是什麼？",
+    "options": [
+      "A. 使用訓練資料重新微調模型",
+      "B. 對輸入樣本進行局部擾動後建立線性模型以解釋局部預測",
+      "C. 對模型所有層的參數加總計算權重貢獻",
+      "D. 對所有測試資料計算全域特徵重要性"
+    ],
+    "answer": "B",
+    "explanation": "LIME（Local Interpretable Model-agnostic Explanations）對待解釋的輸入樣本附近進行隨機擾動，觀察這些小變化對模型輸出的影響，再擬合一個局部可解釋的線性模型，以近似黑箱模型在該點的局部行為。"
+  },
+  {
+    "id": 708,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某銀行 AI 核貸系統在金管會稽查時，被要求提供每筆拒貸決策的說明文件，並展示模型的驗證流程。根據《金融業 AI 指引》，模型設計最需遵循哪項原則？",
+    "options": [
+      "A. 模型一旦上線便不可再訓練更新",
+      "B. 模型需可說明決策依據且可稽核",
+      "C. 使用商業軟體授權即可免除責任",
+      "D. 模型只要準確率超過 70% 就符合標準"
+    ],
+    "answer": "B",
+    "explanation": "金管會《金融業人工智慧（AI）應用指引》要求影響消費者的 AI 模型須具備可稽核性（Auditability）、可解釋性（Explainability）及明確的問責制度（Accountability），確保金融消費者權益。"
+  },
+  {
+    "id": 709,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某新創公司在開發 AI 系統時，使用了網路爬蟲抓取的大量資料，但無法確認這些資料是否有合法授權使用。法律顧問指出這違反了 AI 治理的某項原則。請問是哪一項？",
+    "options": [
+      "A. 模型偏差最小化原則",
+      "B. 資料完整性原則",
+      "C. 資料來源正當性原則",
+      "D. 訓練效率最大化原則"
+    ],
+    "answer": "C",
+    "explanation": "資料來源正當性原則要求 AI 訓練資料的取得方式合法、有授權，不涉及侵犯著作權、個人隱私或未經同意的資料使用，是 AI 治理與企業合規的基本要求，違反可能面臨法律訴訟。"
+  },
+  {
+    "id": 710,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某科技公司開發了一套「智慧會議助理」，能同時識別與會者說話的語音內容，並自動生成結構化的會議紀錄摘要。這個系統最可能採用哪種核心架構？",
+    "options": [
+      "A. 單通道 LSTM 序列模型",
+      "B. 多任務學習（Multi-task Learning）架構",
+      "C. 多模態融合模型（Encoder-Decoder with Cross-Attention）",
+      "D. 隨機森林與分群演算法混合架構"
+    ],
+    "answer": "C",
+    "explanation": "智慧會議系統需整合語音辨識（ASR）與自然語言處理（NLP）兩種模態，利用 Encoder-Decoder with Cross-Attention 架構對齊語音與文字語意，再生成摘要輸出，是多模態語音轉文字摘要的主流架構。"
+  },
+  {
+    "id": 711,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "AI 研究員正在介紹 BERT 模型的預訓練方法，他解釋 BERT 能理解雙向語境的原因。請問 BERT 預訓練使用了哪兩個核心任務？",
+    "options": [
+      "A. 句子排序 + 字詞分類",
+      "B. 遮蔽語言模型（MLM）+ 下一句預測（NSP）",
+      "C. 主題建模 + 命名實體識別",
+      "D. 情緒分析 + 機率詞彙預測"
+    ],
+    "answer": "B",
+    "explanation": "BERT 預訓練的兩大核心任務：MLM（Masked Language Modeling）隨機遮蔽 15% 的詞彙讓模型預測，建立雙向語境理解；NSP（Next Sentence Prediction）判斷兩個句子是否連貫，建立跨句子的語意推理能力。"
+  },
+  {
+    "id": 712,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 寫作助理被用戶抱怨輸出內容過於保守、千篇一律，缺乏創意與語言多樣性。工程師排查後發現可能與生成參數設定有關。最可能是哪個參數設定問題？",
+    "options": [
+      "A. 溫度（Temperature）設定過低",
+      "B. 潛在空間維度過大",
+      "C. 使用梯度裁剪機制",
+      "D. 模型訓練輪數過多導致過擬合"
+    ],
+    "answer": "A",
+    "explanation": "Temperature 控制生成時機率分佈的「尖銳程度」，數值過低（接近 0）使模型總選擇最高機率的詞彙，導致輸出保守且重複；適當提高 Temperature 可增加生成的多樣性與創意性。"
+  },
+  {
+    "id": 713,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某法律文件分析系統需要處理動輒數萬字的合約，但標準 Transformer 模型受限於輸入長度上限，無法一次處理完整文件。工程師希望在不大幅增加計算成本的情況下擴展處理能力。最適合的方法是？",
+    "options": [
+      "A. 使用卷積層壓縮輸入表示",
+      "B. 使用 LSTM 遞迴處理長序列",
+      "C. 使用稀疏注意力（Sparse Attention）與滑動窗口（Sliding Window）機制",
+      "D. 模型剪枝與量化降低記憶體需求"
+    ],
+    "answer": "C",
+    "explanation": "Sparse Attention（如 Longformer、BigBird 採用的滑動窗口注意力）只計算局部與少數全域位置的注意力，將複雜度從 O(n²) 降低至 O(n)，能在有限記憶體內處理遠超標準限制的長文本。"
+  },
+  {
+    "id": 714,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某機器學習模型在訓練集上達到 99% 準確率，但在測試集上只有 65% 準確率，表現極差。請問這個模型發生了什麼問題？",
+    "options": [
+      "A. 欠擬合（Underfitting）",
+      "B. 資料分佈偏移",
+      "C. 模型漂移",
+      "D. 過擬合（Overfitting）"
+    ],
+    "answer": "D",
+    "explanation": "過擬合（Overfitting）指模型對訓練資料學習過度，記住了資料中的噪音與特定樣本，導致在未見過的測試資料上泛化能力差。解決方法包括正則化（L1/L2）、Dropout、資料增強與增加訓練樣本。"
+  },
+  {
+    "id": 715,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某深度學習模型訓練時 loss 收斂速度很慢，工程師嘗試了多種優化器後發現 Adam 效果最好。請問 Adam 優化器的主要技術優勢是什麼？",
+    "options": [
+      "A. 完全不需計算梯度",
+      "B. 能同時自適應調整學習率與動量",
+      "C. 強制將梯度設為 0 避免爆炸",
+      "D. 使用標準正態分佈初始化所有參數"
+    ],
+    "answer": "B",
+    "explanation": "Adam（Adaptive Moment Estimation）結合了 RMSprop 的自適應學習率與 Momentum 的梯度動量估計，能根據每個參數的梯度歷史自動調整學習率，收斂速度快且穩定，是深度學習訓練的主流優化器。"
+  },
+  {
+    "id": 716,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某博物館開發了多模態語音導覽 APP，需要同時處理展品圖像與語音解說，讓視障用戶能以語音提問圖像內容。請問最適合此場景的核心架構是？",
+    "options": [
+      "A. 單通道 Transformer 文字模型",
+      "B. 雙塔模型（Two-Tower）或融合式 Encoder with Cross-Attention",
+      "C. GAN 與 ResNet 串接架構",
+      "D. 卷積式 LSTM 混合模型"
+    ],
+    "answer": "B",
+    "explanation": "雙塔模型讓圖像與語音分別通過各自的 Encoder 生成嵌入向量，再透過 Cross-Attention 進行跨模態語意對齊；這種架構是多模態融合的主流設計，廣泛應用於視覺問答（VQA）與多模態搜尋系統。"
+  },
+  {
+    "id": 717,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 新創公司需要在邊緣裝置（如手機）上部署影像辨識模型，但設備算力有限，無法直接運行訓練時使用的大型模型。工程師建議採用一種「師生學習」的壓縮技術。這是什麼技術？",
+    "options": [
+      "A. 使用更大的參數模型提升準確率",
+      "B. 模型蒸餾（Knowledge Distillation）",
+      "C. 重新訓練並重新設計架構",
+      "D. 降低訓練資料的取樣頻率"
+    ],
+    "answer": "B",
+    "explanation": "模型蒸餾（Knowledge Distillation）讓較小的學生模型模仿大型教師模型的「軟輸出」（Soft Labels），轉移教師模型的知識而不需匹配其架構，是部署輕量化模型的最常用壓縮技術。"
+  },
+  {
+    "id": 718,
+    "chapter": "MIX",
+    "difficulty": "hard",
+    "question": "某生成式 AI 研究員發現，透過操控 VAE 潛在空間的單一維度，可以獨立控制生成人臉的年齡而不影響其他特徵。這種特性在生成式模型研究中稱為什麼？",
+    "options": [
+      "A. 完全不可解釋的黑箱特性",
+      "B. 潛在空間非線性失衡",
+      "C. 語意可分性（Disentanglement）",
+      "D. 模型過擬合的副作用"
+    ],
+    "answer": "C",
+    "explanation": "語意可分性（Disentanglement）指潛在空間的不同維度能獨立對應特定的語意屬性（如年齡、性別、光線），使生成結果可被精確控制，有利於模型解釋性研究與可控生成應用（如 β-VAE）。"
+  },
+  {
+    "id": 719,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某歐洲用戶要求一家台灣 AI 新創公司刪除其在訓練資料中的個人照片，並要求確認模型已不再受該資料影響。這對應到哪項法律權利？",
+    "options": [
+      "A. 模型可解釋性要求",
+      "B. 訓練偏差揭露義務",
+      "C. 被遺忘權（Right to be Forgotten）",
+      "D. 模型公平性驗證要求"
+    ],
+    "answer": "C",
+    "explanation": "被遺忘權（Right to be Forgotten）源自歐盟 GDPR 第 17 條，賦予個人要求資料控管方刪除其個人資料的權利。在 AI 場景中，這延伸為要求從模型訓練資料中移除個人資料，並盡可能消除其對模型的影響，是機器學習隱私法規的新興挑戰。"
+  },
+  {
+    "id": 720,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某金融交易系統部署了 AI 異常偵測模型，需要即時處理每秒數千筆新交易，並根據最新的交易模式不斷更新模型。這種學習架構的名稱是什麼？",
+    "options": [
+      "A. 半監督式學習",
+      "B. 線上學習（Online Learning）",
+      "C. 懲罰式再訓練（Penalty-based Training）",
+      "D. 無回報強化學習"
+    ],
+    "answer": "B",
+    "explanation": "線上學習（Online Learning）能在接收每批新資料時即時更新模型參數，無需重新訓練完整模型，特別適合資料流式更新的動態環境，如金融交易監控、即時推薦系統與 IoT 感測資料分析。"
+  },
+  {
+    "id": 721,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某中小企業 AI 負責人考慮使用 Google AutoML 來訓練產品圖像分類模型，但擔心不懂技術。業務顧問向他說明 AutoML 可以自動完成哪些工作？",
+    "options": [
+      "A. 模型部署監控與告警設定",
+      "B. 資料擴增（Data Augmentation）、架構搜尋（NAS）與超參數調整",
+      "C. 資料標注與資料清理工作",
+      "D. 自動生成前端應用程式介面"
+    ],
+    "answer": "B",
+    "explanation": "AutoML 平台（如 Google AutoML、Azure Automated ML）能自動執行資料擴增、神經架構搜尋（NAS）與超參數優化（HPO），大幅降低機器學習的技術門檻，讓非專家也能訓練高效模型。"
+  },
+  {
+    "id": 722,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "社群媒體分析師需要從大量推文中自動提取出品牌名稱、地點和重要人物，以便建立輿情監測系統。請問最適合用哪種 NLP 技術？",
+    "options": [
+      "A. 語音辨識（ASR）",
+      "B. 命名實體識別（NER）",
+      "C. 詞幹還原（Stemming）",
+      "D. 詞頻分析（TF-IDF）"
+    ],
+    "answer": "B",
+    "explanation": "命名實體識別（NER）專門從非結構化文本中識別並分類具特定語意功能的實體（人名、地點、組織、品牌等），是輿情分析、事件追蹤與知識圖譜建構的基礎 NLP 技術。"
+  },
+  {
+    "id": 723,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某 AI 研究室有多位研究員需要協作標注大量醫療影像（X 光、MRI），以建立疾病偵測訓練集。請問最適合的資料標注工具是什麼？",
+    "options": [
+      "A. Tableau 資料視覺化工具",
+      "B. Scikit-learn 機器學習函式庫",
+      "C. Label Studio 開源資料標注平台",
+      "D. TensorBoard 訓練監控工具"
+    ],
+    "answer": "C",
+    "explanation": "Label Studio 是功能豐富的開源資料標注平台，支援影像、文字、音訊、影片等多種資料類型，提供多人協作標注、品質控制與標注流程管理功能，是 AI 訓練資料準備的重要工具。"
+  },
+  {
+    "id": 724,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某機器學習工程師在進行特徵預處理時，將所有數值特徵轉換為平均值為 0、標準差為 1 的標準化形式。請問這種方法的專業名稱是什麼？",
+    "options": [
+      "A. 最小-最大縮放（Min-Max Scaling）",
+      "B. One-hot 編碼",
+      "C. Z-score 標準化",
+      "D. 主成分分析（PCA）"
+    ],
+    "answer": "C",
+    "explanation": "Z-score 標準化（也稱 Standardization）將特徵轉換為均值 0、標準差 1 的標準常態分佈，能消除不同量級特徵對梯度計算的影響，有助於模型訓練收斂，適用於大多數基於距離或梯度的機器學習模型。"
+  },
+  {
+    "id": 725,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "開發者使用 HuggingFace Transformers 函式庫載入預訓練的 BERT 模型時，發現需要先下載特定的設定檔。請問最基本的必要步驟是什麼？",
+    "options": [
+      "A. 先用 pip 安裝 numpy 函式庫",
+      "B. 下載對應的 Tokenizer 與模型設定檔（config）",
+      "C. 將模型先轉為 ONNX 格式再進行訓練",
+      "D. 手動撰寫反向傳播函數"
+    ],
+    "answer": "B",
+    "explanation": "使用 HuggingFace 載入預訓練模型時，必須同時下載對應的 Tokenizer（定義如何對文字進行分詞）與 config.json（定義模型架構），才能正確將文字轉換為模型輸入並載入對應的權重。"
+  },
+  {
+    "id": 726,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某房價預測模型中包含了「建坪」、「室內面積」、「使用面積」三個高度相關的特徵。模型表現異常不穩定，係數估計跳動劇烈。這最可能是什麼問題？",
+    "options": [
+      "A. 模型訓練速度過快",
+      "B. 過度正規化",
+      "C. 多重共線性（Multicollinearity）",
+      "D. 模型偏差過小"
+    ],
+    "answer": "C",
+    "explanation": "多重共線性是指多個輸入特徵高度相關，導致迴歸係數估計不穩定、解釋性降低。解決方法包括使用 VIF 篩選特徵、進行 PCA 降維，或改用 Ridge Regression 加入 L2 正則化。"
+  },
+  {
+    "id": 727,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某文本分類模型使用詞袋（Bag-of-Words）模型，造成特徵向量維度超過十萬維，訓練記憶體嚴重不足。以下哪種方法最有效地降低維度同時保留語意資訊？",
+    "options": [
+      "A. TF-IDF 加上 L2 正規化",
+      "B. 主成分分析（PCA）或密集詞向量嵌入（Word Embedding）",
+      "C. One-hot 編碼轉稀疏矩陣",
+      "D. 隨機森林特徵重要性降維"
+    ],
+    "answer": "B",
+    "explanation": "PCA 可將高維稀疏特徵投影至低維主成分空間；密集詞向量嵌入（如 Word2Vec、GloVe）則直接學習低維語意表示（通常 128~768 維），兩者都能有效降低維度同時保留或增強語意關係。"
+  },
+  {
+    "id": 728,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某工廠的設備感測器資料中包含一些異常高溫讀數。資料工程師需要判斷這些讀數是感測器故障的錯誤資料，還是真實的設備過熱事件，再決定如何處理。最正確的處理流程是什麼？",
+    "options": [
+      "A. 全部自動刪除異常值",
+      "B. 統一填補為 0",
+      "C. 使用盒狀圖或 Z-score 方法識別離群點後，視情況保留或處理",
+      "D. 將資料轉為文字描述再分析"
+    ],
+    "answer": "C",
+    "explanation": "離群點（Outlier）處理需先分析其成因：若為測量錯誤則應修正或刪除；若為真實的極端事件則應保留，甚至可能是最有價值的資訊。盲目刪除可能導致模型無法偵測真實的異常事件。"
+  },
+  {
+    "id": 729,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "工業 IoT 平台需要儲存來自數千台機器每秒產生的溫度、壓力、震動等感測器讀數，並支援快速查詢歷史趨勢。請問最適合的資料儲存架構是什麼？",
+    "options": [
+      "A. 靜態 CSV 檔案儲存",
+      "B. 圖形資料庫（Graph Database）",
+      "C. 時序資料庫（Time Series Database，如 InfluxDB）",
+      "D. 卷積網路嵌入模組"
+    ],
+    "answer": "C",
+    "explanation": "時序資料庫（TSDB）專為大量帶有時間戳記的連續資料設計，提供高效的時間範圍查詢、資料壓縮與聚合統計功能，InfluxDB、TimescaleDB 是常見選擇，是 IoT 系統資料管理的最佳選項。"
+  },
+  {
+    "id": 730,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某醫療 NLP 系統在訓練罕見疾病分類器時，90% 的訓練資料是正常病例，罕見疾病只有 10%，導致模型幾乎不識別罕見疾病。最適合的處理策略是？",
+    "options": [
+      "A. 直接忽略少數類別",
+      "B. 隨機打亂資料集順序",
+      "C. 使用 SMOTE 過採樣或類別加權損失函數",
+      "D. 減少類別數量以方便分類"
+    ],
+    "answer": "C",
+    "explanation": "SMOTE（Synthetic Minority Oversampling Technique）透過插值生成少數類別的合成樣本；類別加權損失函數則讓模型對少數類別的分類錯誤給予更高的懲罰，兩者皆是處理類別不平衡的有效策略。"
+  },
+  {
+    "id": 731,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某公司在正式投入資源開發 AI 系統前，先以小規模實驗驗證技術方案是否可行，並評估能否解決核心業務問題。請問這個階段的名稱是什麼？",
+    "options": [
+      "A. 將模型直接部署到生產系統",
+      "B. 概念驗證（POC，Proof of Concept）",
+      "C. 進行資料視覺化呈現",
+      "D. 自動產生決策規則"
+    ],
+    "answer": "B",
+    "explanation": "概念驗證（POC）是在正式開發前，以有限資源快速驗證技術可行性與商業價值的關鍵階段。成功的 POC 能降低全面開發的風險，是 AI 專案導入流程中的標準第一步。"
+  },
+  {
+    "id": 732,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某保險公司的核保 AI 系統需要通過金融監理機關的審查，要求系統能為每筆核保決策提供可理解的說明。在醫療、金融等高風險場域，哪種技術最能有效提升模型解釋能力？",
+    "options": [
+      "A. 多層感知器（MLP）",
+      "B. 模型集成（Ensemble）",
+      "C. 局部解釋模型（SHAP 或 LIME）",
+      "D. 自我學習演算法"
+    ],
+    "answer": "C",
+    "explanation": "SHAP（SHapley Additive exPlanations）基於博弈論的 Shapley 值，能公平分配每個特徵對預測結果的貢獻度；LIME 提供局部線性近似解釋。兩者皆是高風險 AI 應用合規審查的關鍵工具。"
+  },
+  {
+    "id": 733,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某老牌保險公司使用的 AI 理賠審核系統，其底層技術是一套明確的規則庫（如：若受傷部位為手，且工作性質為辦公室，則理賠比例為 X%）。請問這屬於哪種 AI 推理架構？",
+    "options": [
+      "A. 神經網路與注意力機制",
+      "B. 規則式邏輯與知識庫查詢的專家系統",
+      "C. 時間序列建模系統",
+      "D. 模糊聚類演算法"
+    ],
+    "answer": "B",
+    "explanation": "專家系統（Expert System）是 AI 的早期重要範式，基於領域專家的知識建構明確的規則庫（if-then rules）進行推理，在知識可編碼、規則清晰的應用場景（如保險理賠、醫療診斷輔助）中仍廣泛使用。"
+  },
+  {
+    "id": 734,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 研究員在探索高維基因表達資料集時，希望先對資料分佈、群聚結構與異常點進行視覺化理解，再決定分析策略。最適合用哪種技術進行初步探索？",
+    "options": [
+      "A. Z-score 標準化後繪製折線圖",
+      "B. 使用 CNN 提取嵌入特徵視覺化",
+      "C. 降維方法如 t-SNE 或 PCA 後視覺化",
+      "D. 使用 RNN 預測資料趨勢"
+    ],
+    "answer": "C",
+    "explanation": "t-SNE（t-distributed Stochastic Neighbor Embedding）和 PCA 能將高維資料投影到 2D/3D 空間，使研究員能夠觀察群聚結構、類別邊界與離群點分佈，是高維資料探索性分析（EDA）的標準工具。"
+  },
+  {
+    "id": 735,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某 AI 課程導師向學生解釋人工智慧的五大核心能力模組，並要求學生找出不在標準分類中的一項。下列哪一個不是 AI 系統的主要能力模組？",
+    "options": [
+      "A. 感知能力（Perception）",
+      "B. 推理能力（Reasoning）",
+      "C. 創新能力（Creativity）",
+      "D. 行動能力（Action）"
+    ],
+    "answer": "C",
+    "explanation": "AI 系統的五大核心能力模組為：感知（Perception）、理解（Comprehension）、推理（Reasoning）、決策（Decision）與行動（Action）。創新能力（Creativity）是延伸目標，並非目前定義中的核心標準模組。"
+  },
+  {
+    "id": 736,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 AI 翻譯系統在台灣辦公室測試時表現良好，但實際部署給全球用戶使用後效果卻明顯下降，特別是在俚語和口語表達上。最可能的根本原因是什麼？",
+    "options": [
+      "A. 測試集設計過於簡單",
+      "B. 模型未保存最佳版本",
+      "C. 資料分佈差異導致概念漂移（Concept Drift）",
+      "D. 伺服器延遲過高"
+    ],
+    "answer": "C",
+    "explanation": "概念漂移（Concept Drift）是指模型訓練時的資料分佈與實際部署環境的資料分佈存在差異（如地區用語、時代語境不同），導致模型在訓練集外表現失準，是跨文化、跨地區 AI 部署的常見挑戰。"
+  },
+  {
+    "id": 737,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某智慧客服系統需要理解客戶語音投訴的情緒，並根據前後幾句話的語境做出適當回應。請問最適合處理這種具有時序性語音資料的模型是什麼？",
+    "options": [
+      "A. 全連接層神經網路（MLP）",
+      "B. RNN / LSTM 時序模型",
+      "C. 隨機森林",
+      "D. 決策樹"
+    ],
+    "answer": "B",
+    "explanation": "語音資料具有時間序列特性，RNN/LSTM 的記憶機制能保留前後時間步的上下文資訊，是處理語音辨識、語音情緒分析等需要考量時間依賴性任務的適合架構。"
+  },
+  {
+    "id": 738,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某公司 DBA 發現資料庫中的部分資料在傳輸過程中被未授權修改，導致 AI 模型的訓練結果出現異常。這違反了資料治理的哪項核心原則？",
+    "options": [
+      "A. 資料必須符合 GDPR 規範",
+      "B. 模型結果須可追溯",
+      "C. 資料在儲存、處理與傳輸過程中不得被未授權更動（資料完整性）",
+      "D. 使用者可隨時編輯任何資料"
+    ],
+    "answer": "C",
+    "explanation": "資料完整性（Data Integrity）是資料治理的五大核心原則之一，確保資料在全生命週期（收集、儲存、處理、傳輸）中保持正確性與一致性，不被未授權篡改，是 AI 系統可信賴運作的基礎。"
+  },
+  {
+    "id": 739,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "AI 新人工程師在建置機器學習模型時，主管強調必須嚴格分開訓練資料與測試資料，不得混用。請問這樣做的主要目的是什麼？",
+    "options": [
+      "A. 降低模型的運算負載",
+      "B. 增加可用的訓練樣本數",
+      "C. 驗證模型對未見資料的泛化能力",
+      "D. 減少模型的參數維度"
+    ],
+    "answer": "C",
+    "explanation": "訓練集與測試集分離是機器學習的基本原則，測試集模擬真實部署時模型面對的未知資料，能客觀評估模型的泛化能力（Generalization），防止過擬合帶來的誤導性評估結果。"
+  },
+  {
+    "id": 740,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某電商平台計畫引入 AI 定價系統，法務部門擔心可能涉及消費者保護法規與個資使用問題，要求在正式採購前先進行全面評估。請問應優先進行哪項評估工作？",
+    "options": [
+      "A. 模型推論速度測試",
+      "B. 伺服器硬體資源盤點",
+      "C. AI 應用風險評估與法規合規性審查",
+      "D. 資料格式轉換效率評估"
+    ],
+    "answer": "C",
+    "explanation": "在 AI 應用導入前，必須進行系統性的風險評估（包括技術風險、倫理風險與法律風險）及合規性審查（確認符合個資法、消保法等相關法規），才能確保導入後的可控性與可追責性。"
+  },
+  {
+    "id": 741,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某語言模型在預訓練時採用的任務是：給定一段文字，隨機遮蔽其中部分詞彙後，讓模型根據上下文預測被遮蔽的詞。請問這是哪種預訓練方法？",
+    "options": [
+      "A. 序列標注（Sequence Labeling）",
+      "B. 遮蔽語言建模（Masked Language Modeling，MLM）",
+      "C. 文本分類（Text Classification）",
+      "D. 自動摘要（Automatic Summarization）"
+    ],
+    "answer": "B",
+    "explanation": "遮蔽語言建模（MLM）是 BERT 等雙向語言模型的核心預訓練任務，透過讓模型預測被遮蔽的詞彙，迫使模型同時理解左右兩側的語境，建立深度雙向語意表示能力。"
+  },
+  {
+    "id": 742,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某零售集團的 AI 模型需要同時分析客戶的購買歷史（結構性表格資料）與商品評論文字（非結構性文字資料）。請問最合理的系統設計方式是什麼？",
+    "options": [
+      "A. 直接刪除非結構性資料",
+      "B. 將所有資料統一轉為圖像格式後處理",
+      "C. 結構性資料用傳統 ML 處理，非結構性資料用深度模型處理，再融合表示",
+      "D. 僅使用單一模型強制處理所有類型資料"
+    ],
+    "answer": "C",
+    "explanation": "混合資料架構中，表格資料適合用 XGBoost、隨機森林等傳統 ML 模型；文字資料適合使用 BERT 等深度 NLP 模型提取特徵；最後透過特徵融合層整合兩種模型的輸出，能充分發揮各類資料的價值。"
+  },
+  {
+    "id": 743,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某機器學習工程師在特徵工程階段，將「面積」特徵進行了平方與立方展開，以捕捉房價與面積之間的非線性關係。請問這種技術稱為什麼？它的主要潛在風險是？",
+    "options": [
+      "A. 將類別變數轉為數值的 One-hot 編碼",
+      "B. 多項式特徵擴充——引入非線性，但可能導致維度爆炸與過擬合",
+      "C. 降低特徵維度以防止過擬合的 PCA",
+      "D. 篩選掉低重要性特徵的特徵選擇"
+    ],
+    "answer": "B",
+    "explanation": "多項式特徵擴充（Polynomial Feature Expansion）透過生成原始特徵的高次項與交叉積，讓線性模型能學習非線性邊界；但特徵維度呈指數級增長，容易導致過擬合，需搭配正則化技術使用。"
+  },
+  {
+    "id": 744,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某 AI 客服系統的處理流程為：客戶說話 → 語音轉文字 → AI 分析文字情緒 → 給出回覆。請問這個系統從架構層面屬於哪種類型？",
+    "options": [
+      "A. 單模態推論系統",
+      "B. 強化式分類系統",
+      "C. 多模態處理系統",
+      "D. 分層式機器翻譯系統"
+    ],
+    "answer": "C",
+    "explanation": "該系統涉及語音（音訊模態）與文字（語言模態）兩種不同資料形式的處理，語音需先透過 ASR 轉換為文字，再進行 NLP 分析，屬於跨模態的多模態處理系統架構。"
+  },
+  {
+    "id": 745,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某 NLP 工程師在訓練大型語言模型時，觀察到 loss 曲線劇烈震盪，始終無法穩定收斂。在尋找原因前，應優先排查哪個可能的問題？",
+    "options": [
+      "A. 訓練樣本數量太少",
+      "B. 輸入特徵欄位太少",
+      "C. 學習率（Learning Rate）與批次大小（Batch Size）設定不合理",
+      "D. 資料格式不正確"
+    ],
+    "answer": "C",
+    "explanation": "Loss 震盪不收斂的最常見原因是學習率過大（導致梯度更新幅度過大）或 Batch Size 過小（梯度估計噪音大）。優化器參數設定是模型訓練穩定性的關鍵，應作為第一優先排查項目。"
+  },
+  {
+    "id": 746,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某深度學習模型的訓練準確率達到 95%，但驗證集準確率只有 72%，且兩者差距隨訓練輪數增加而持續擴大。這最可能代表什麼問題？",
+    "options": [
+      "A. 模型架構過於簡單，無法學習資料模式",
+      "B. 訓練時間不足",
+      "C. 模型過擬合（Overfitting）——缺乏正則化或訓練資料不足",
+      "D. 測試集標注品質不佳"
+    ],
+    "answer": "C",
+    "explanation": "訓練集與驗證集效能差距極大且隨訓練持續擴大，是過擬合（Overfitting）的典型症狀，表示模型記憶了訓練資料的特定模式而非學習到通用規律。解決方法包括 Dropout、L2 正則化、早停（Early Stopping）或資料增強。"
+  },
+  {
+    "id": 747,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某深度學習工程師在訓練卷積神經網路時，使用了 TensorBoard 工具持續監看訓練狀況。請問 TensorBoard 的主要用途是什麼？",
+    "options": [
+      "A. 自動標注訓練資料",
+      "B. 設計與修改神經網路架構",
+      "C. 視覺化訓練過程並監控模型效能指標",
+      "D. 測試雲端部署的網路延遲"
+    ],
+    "answer": "C",
+    "explanation": "TensorBoard 是 TensorFlow 生態的訓練監控工具，能即時視覺化 Loss、Accuracy、學習率曲線、梯度分佈、模型架構圖與特徵嵌入等，是深度學習訓練過程中不可或缺的診斷與分析工具。"
+  },
+  {
+    "id": 748,
+    "chapter": "MIX",
+    "difficulty": "medium",
+    "question": "某公司計畫建立一個可供多個部門共享的顧客資料集，以支援行銷、客服與產品分析等不同用途。在正式開放使用前，最重要的準備工作是什麼？",
+    "options": [
+      "A. 將所有資料清洗為純數值格式",
+      "B. 建立資料目錄與欄位說明文件（Data Dictionary）",
+      "C. 對所有欄位進行加密",
+      "D. 將所有資料統一轉為圖像格式"
+    ],
+    "answer": "B",
+    "explanation": "資料字典（Data Dictionary）描述每個欄位的名稱、資料類型、值域、單位、更新頻率與業務意義，是資料治理的基礎文件，確保不同部門對資料的理解一致，避免誤用，是多部門資料共享的前置必要條件。"
+  },
+  {
+    "id": 749,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某 AI 新人正在學習資料前處理，主管要求他列出「資料清理」階段通常需要完成的工作。以下哪一組選項最正確地描述了資料清理的主要內容？",
+    "options": [
+      "A. 模型蒸餾與知識壓縮",
+      "B. 類別編碼、缺值處理與離群值篩選",
+      "C. 雲端部署測試與 API 整合",
+      "D. 模型過採樣與 SMOTE"
+    ],
+    "answer": "B",
+    "explanation": "資料清理（Data Cleaning）的核心工作包括：處理缺值（填補、刪除）、類別變數編碼（One-hot、Label Encoding）、離群值偵測與處理、重複資料移除與資料一致性檢查，是模型訓練前的必要前置步驟。"
+  },
+  {
+    "id": 750,
+    "chapter": "MIX",
+    "difficulty": "easy",
+    "question": "某製造業 AI 導入顧問建議客戶，在將 AI 應用於預測設備故障前，應先選擇一條重要且影響範圍可控的生產線，以小規模方式驗證可行性後再擴展。這符合哪種導入策略？",
+    "options": [
+      "A. 全廠設備同步佈建感測器再開始",
+      "B. 先增加更多預測變數以提升準確率",
+      "C. 選擇單一高價值流程節點建立預測模型進行 POC",
+      "D. 先設計大型企業資料湖再開始建模"
+    ],
+    "answer": "C",
+    "explanation": "根據製造業 AI 導入最佳實務，應選擇具有高商業價值且影響範圍有限的單一節點進行概念驗證（POC），降低技術與業務風險，待驗證成功並取得利害關係人信任後，再逐步擴展至其他製程節點。"
+  }
+]
