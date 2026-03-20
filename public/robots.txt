@@ -1,3 +1,26 @@
 User-agent: *
 Allow: /
+
+# AI Search Engines - explicitly allowed for AEO
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
 Sitemap: https://aipm-insider.vercel.app/sitemap-index.xml

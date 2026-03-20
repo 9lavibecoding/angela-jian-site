@@ -19,6 +19,41 @@ const currentIdx = allLessons.findIndex(l => l.id === lesson.id);
 const prevLesson = currentIdx > 0 ? allLessons[currentIdx - 1] : null;
 const nextLesson = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1] : null;
 const canonicalURL = new URL(`/ipas/${lesson.id}`, Astro.site);
+
+// Extract FAQ from markdown: find lines starting with **Q or **第 and their answer from the answer table
+const rawBody = lesson.body || '';
+const faqItems: { question: string; answer: string }[] = [];
+
+// Parse answer table: | Q1 | **(B)** | 解析文字 |
+const answerTableMatch = rawBody.match(/### 解答與解析[\s\S]*?\|[\s\S]*?\|/g);
+if (answerTableMatch) {
+  const tableRows = rawBody
+    .split('### 解答與解析')[1]
+    ?.match(/\|\s*(?:Q?\d+|第\s*\d+\s*題?)\s*\|\s*\*?\*?\(?[A-D]\)?\*?\*?\s*\|\s*(.+?)\s*\|/g);
+
+  // Also extract questions
+  const questions = rawBody.match(/\*\*(?:Q\d+\.?|第\s*\d+\s*題)\*?\*?\s*(.+?)(?:\n|$)/g);
+
+  if (questions && tableRows) {
+    const limit = Math.min(questions.length, tableRows.length, 3); // max 3 FAQs per page
+    for (let i = 0; i < limit; i++) {
+      const q = questions[i]?.replace(/\*\*/g, '').replace(/^Q\d+\.?\s*|^第\s*\d+\s*題\s*/,'').trim();
+      const aMatch = tableRows[i]?.match(/\|\s*(?:Q?\d+|第\s*\d+\s*題?)\s*\|\s*\*?\*?\(?([A-D])\)?\*?\*?\s*\|\s*(.+?)\s*\|/);
+      const a = aMatch?.[2]?.replace(/\*\*/g, '').trim();
+      if (q && a) {
+        faqItems.push({ question: q, answer: a });
+      }
+    }
+  }
+}
+
+// Fallback: always include a FAQ about the topic itself
+if (faqItems.length === 0) {
+  faqItems.push({
+    question: lesson.data.title.replace(/[：:]/g, '？').replace(/？$/, '') + '？',
+    answer: lesson.data.summary
+  });
+}
 ---
 
 <Base title={`${lesson.data.title} — iPAS AI 應用規劃師證照教學`} description={lesson.data.summary}>
@@ -54,6 +89,19 @@ const canonicalURL = new URL(`/ipas/${lesson.id}`, Astro.site);
       { "@type": "ListItem", "position": 3, "name": lesson.data.title, "item": canonicalURL.toString() }
     ]
   })} />
+
+  <!-- JSON-LD: FAQ for Answer Engine Optimization -->
+  {faqItems.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+      }))
+    })} />
+  )}
 
   <!-- Article Header -->
   <section class="relative pt-28 md:pt-32 pb-4 md:pb-6 overflow-hidden bg-[#FFFEF7]">
