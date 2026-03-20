@@ -1,0 +1,267 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="AI Prompt 模板產生器 — Angela Jian" description="選擇你的工作場景，一鍵生成結構化 Prompt。五大 PM 常用模板：競品分析、PRD 撰寫、用戶訪談整理、數據分析、週報生成。">
+
+<main class="pt-28 pb-20 min-h-screen bg-brand-light-surface">
+  <div class="site-container px-6">
+
+    <!-- Header -->
+    <div class="mb-12">
+      <a href="/#portfolio" class="inline-flex items-center gap-2 text-brand-subtle hover:text-brand-accent transition-colors duration-300 font-body text-sm mb-6 group">
+        <iconify-icon icon="solar:arrow-left-linear" class="text-lg transition-transform duration-300 group-hover:-translate-x-1"></iconify-icon>
+        <span>返回作品集</span>
+      </a>
+      <h1 class="font-heading font-bold text-3xl md:text-4xl text-brand-text mt-4">AI Prompt 模板產生器</h1>
+      <p class="font-body text-brand-subtle mt-3 text-base md:text-lg">選擇你的工作場景，一鍵生成結構化 Prompt</p>
+    </div>
+
+    <!-- Scene Selector Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-10" id="sceneCards">
+      <button data-scene="competitive" class="scene-card group flex flex-col items-center gap-3 p-5 rounded-2xl border-2 border-brand-light-border bg-white cursor-pointer transition-all duration-300 hover:border-brand-accent hover:shadow-lg hover:-translate-y-1">
+        <iconify-icon icon="solar:chart-2-bold" class="text-3xl text-brand-subtle group-hover:text-brand-accent transition-colors duration-300"></iconify-icon>
+        <span class="font-body text-sm font-medium text-brand-text text-center">競品分析</span>
+      </button>
+      <button data-scene="prd" class="scene-card group flex flex-col items-center gap-3 p-5 rounded-2xl border-2 border-brand-light-border bg-white cursor-pointer transition-all duration-300 hover:border-brand-accent hover:shadow-lg hover:-translate-y-1">
+        <iconify-icon icon="solar:document-text-bold" class="text-3xl text-brand-subtle group-hover:text-brand-accent transition-colors duration-300"></iconify-icon>
+        <span class="font-body text-sm font-medium text-brand-text text-center">PRD 撰寫</span>
+      </button>
+      <button data-scene="interview" class="scene-card group flex flex-col items-center gap-3 p-5 rounded-2xl border-2 border-brand-light-border bg-white cursor-pointer transition-all duration-300 hover:border-brand-accent hover:shadow-lg hover:-translate-y-1">
+        <iconify-icon icon="solar:users-group-rounded-bold" class="text-3xl text-brand-subtle group-hover:text-brand-accent transition-colors duration-300"></iconify-icon>
+        <span class="font-body text-sm font-medium text-brand-text text-center">用戶訪談整理</span>
+      </button>
+      <button data-scene="data" class="scene-card group flex flex-col items-center gap-3 p-5 rounded-2xl border-2 border-brand-light-border bg-white cursor-pointer transition-all duration-300 hover:border-brand-accent hover:shadow-lg hover:-translate-y-1">
+        <iconify-icon icon="solar:graph-new-bold" class="text-3xl text-brand-subtle group-hover:text-brand-accent transition-colors duration-300"></iconify-icon>
+        <span class="font-body text-sm font-medium text-brand-text text-center">數據分析</span>
+      </button>
+      <button data-scene="weekly" class="scene-card group flex flex-col items-center gap-3 p-5 rounded-2xl border-2 border-brand-light-border bg-white cursor-pointer transition-all duration-300 hover:border-brand-accent hover:shadow-lg hover:-translate-y-1">
+        <iconify-icon icon="solar:calendar-bold" class="text-3xl text-brand-subtle group-hover:text-brand-accent transition-colors duration-300"></iconify-icon>
+        <span class="font-body text-sm font-medium text-brand-text text-center">週報生成</span>
+      </button>
+    </div>
+
+    <!-- Output Box -->
+    <div id="outputWrapper" class="opacity-0 translate-y-4 transition-all duration-500 ease-out" style="display:none;">
+      <div class="bg-white rounded-2xl border border-brand-light-border shadow-sm overflow-hidden">
+        <!-- Output Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-brand-light-border bg-gray-50/60">
+          <div class="flex items-center gap-2">
+            <iconify-icon icon="solar:magic-stick-3-bold" class="text-brand-accent text-lg"></iconify-icon>
+            <span class="font-heading font-semibold text-sm text-brand-text" id="outputTitle">生成的 Prompt</span>
+          </div>
+          <button id="copyBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-accent text-white text-sm font-body font-medium hover:opacity-90 transition-opacity duration-200 cursor-pointer">
+            <iconify-icon icon="solar:copy-bold" class="text-base"></iconify-icon>
+            <span>複製 Prompt</span>
+          </button>
+        </div>
+        <!-- Output Content -->
+        <div class="p-6">
+          <pre id="outputContent" class="font-body text-sm md:text-base text-brand-text whitespace-pre-wrap leading-relaxed"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tip -->
+    <div class="mt-10 p-5 rounded-xl bg-indigo-50/60 border border-indigo-100">
+      <p class="font-body text-sm text-brand-subtle leading-relaxed">
+        💡 <span class="font-medium text-brand-text">小技巧：</span>好的 Prompt = 角色 + 任務 + 維度 + 格式。修改 <code class="px-1.5 py-0.5 rounded bg-white text-brand-accent font-medium text-xs border border-indigo-100">[ ]</code> 中的內容，就能得到客製化的結果。
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-brand-accent text-white font-body text-sm font-medium shadow-lg opacity-0 pointer-events-none transition-all duration-300 translate-y-4">
+  已複製！
+</div>
+
+<style>
+  .scene-card.active {
+    border-color: var(--color-brand-accent, #6366f1) !important;
+    background: linear-gradient(135deg, rgba(99,102,241,0.04), rgba(99,102,241,0.08));
+    box-shadow: 0 4px 24px rgba(99,102,241,0.15);
+    transform: translateY(-2px);
+  }
+  .scene-card.active iconify-icon {
+    color: var(--color-brand-accent, #6366f1) !important;
+  }
+  .scene-card.active span {
+    color: var(--color-brand-accent, #6366f1) !important;
+  }
+  #outputContent {
+    font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  const templates = {
+    competitive: {
+      title: '競品分析 Prompt',
+      content: `【角色】你是一個資深的 B2B SaaS 產品分析師。
+
+【任務】請幫我比較以下競品：[請填入競品名稱]
+
+【分析維度】
+1. 目標用戶與市場定位
+2. 核心功能與差異化
+3. 定價策略與商業模式
+4. 主要優勢與劣勢
+5. 近期重大更新或動態
+
+【輸出格式】
+- 用表格呈現各維度比較
+- 最後附上 200 字觀察摘要
+- 標注資訊的時效性與可信度`
+    },
+    prd: {
+      title: 'PRD 撰寫 Prompt',
+      content: `【角色】你是一個有 10 年經驗的產品經理。
+
+【任務】請幫我撰寫以下功能的 PRD 初稿：[請填入功能描述]
+
+【包含內容】
+1. 功能概述（Feature Overview）
+2. 用戶故事（User Stories）— 至少 5 個
+3. 驗收條件（Acceptance Criteria）
+4. Edge Cases 列舉 — 至少 8 個
+5. 名詞定義（Glossary）
+
+【輸出格式】
+- 使用清晰的標題層級
+- User Story 格式：As a [角色], I want [目標], so that [價值]
+- Edge Cases 依嚴重程度排序`
+    },
+    interview: {
+      title: '用戶訪談整理 Prompt',
+      content: `【角色】你是一個資深的用戶研究員。
+
+【任務】請幫我整理以下用戶訪談的逐字稿：[請貼上逐字稿]
+
+【整理維度】
+1. 用戶背景摘要
+2. 主要痛點（依嚴重程度排序）
+3. 對現有解決方案的評價
+4. 值得注意的原話引用（Verbatim Quotes）
+5. 未被滿足的需求
+6. 建議的後續行動
+
+【輸出格式】
+- 每個痛點附上支持的原話引用
+- 用 🔴🟡🟢 標示痛點嚴重程度
+- 最後附上一段整體洞察摘要`
+    },
+    data: {
+      title: '數據分析 Prompt',
+      content: `【角色】你是一個資深的數據分析師。
+
+【任務】請分析以下數據：[請描述數據或上傳檔案]
+
+【分析要求】
+1. 列出前 5 個有趣的 Pattern 或異常值
+2. 對每個 Pattern 說明：
+   - 你觀察到什麼
+   - 可能的原因假設
+   - 建議進一步驗證的方向
+3. 標注你的 Confidence Level（高/中/低）
+
+【輸出格式】
+- 用表格或條列呈現
+- 高信心的發現放前面
+- 最後附上「建議下一步」清單`
+    },
+    weekly: {
+      title: '週報生成 Prompt',
+      content: `【角色】你是一個資深產品經理的助理。
+
+【任務】請根據以下資訊生成本週週報：[請貼上本週工作內容]
+
+【週報結構】
+1. 本週重點成果（Top 3）
+2. 進行中項目狀態更新
+3. 遇到的阻礙與解決方案
+4. 下週計畫與優先級
+5. 需要協助或決策的事項
+
+【輸出格式】
+- 每個段落控制在 3-5 行
+- 用 ✅ 🔄 ⚠️ 標示狀態
+- 語氣專業但不僵硬
+- 總長度控制在 500 字以內`
+    }
+  };
+
+  const cards = document.querySelectorAll('.scene-card');
+  const outputWrapper = document.getElementById('outputWrapper');
+  const outputTitle = document.getElementById('outputTitle');
+  const outputContent = document.getElementById('outputContent');
+  const copyBtn = document.getElementById('copyBtn');
+  const toast = document.getElementById('toast');
+
+  let currentScene = null;
+
+  cards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      var scene = this.getAttribute('data-scene');
+
+      // Update active state
+      cards.forEach(function(c) { c.classList.remove('active'); });
+      this.classList.add('active');
+
+      // Show output
+      var tpl = templates[scene];
+      if (!tpl) return;
+
+      outputTitle.textContent = tpl.title;
+      outputContent.textContent = tpl.content;
+      currentScene = scene;
+
+      // Animate in
+      outputWrapper.style.display = 'block';
+      // Force reflow for animation
+      void outputWrapper.offsetHeight;
+      outputWrapper.classList.remove('opacity-0', 'translate-y-4');
+      outputWrapper.classList.add('opacity-100', 'translate-y-0');
+
+      // Scroll to output
+      setTimeout(function() {
+        outputWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    });
+  });
+
+  // Copy functionality
+  copyBtn.addEventListener('click', function() {
+    var text = outputContent.textContent;
+    if (!text) return;
+
+    navigator.clipboard.writeText(text).then(function() {
+      showToast();
+    }).catch(function() {
+      // Fallback for older browsers
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showToast();
+    });
+  });
+
+  function showToast() {
+    toast.classList.remove('opacity-0', 'translate-y-4');
+    toast.classList.add('opacity-100', 'translate-y-0');
+    setTimeout(function() {
+      toast.classList.add('opacity-0', 'translate-y-4');
+      toast.classList.remove('opacity-100', 'translate-y-0');
+    }, 2000);
+  }
+})();
+</script>
+
+</Base>

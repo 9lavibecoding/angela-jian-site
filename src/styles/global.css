@@ -138,7 +138,8 @@
     border-left: 3px solid var(--color-brand-accent-dark); padding: 1rem 1.5rem; margin: 1.5rem 0;
     background: rgba(55, 48, 163, 0.05); border-radius: 0 0.75rem 0.75rem 0;
   }
-  .article-content-light img { border-radius: 1rem; margin: 2rem 0; width: 100%; }
+  .article-content-light img { border-radius: 1rem; margin: 2rem 0; width: 100%; min-height: 0; }
+  .article-content-light img[src=""], .article-content-light img:not([src]) { display: none; }
   .article-content-light code { background: rgba(55, 48, 163, 0.08); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.9em; color: var(--color-brand-accent-dark); }
   .article-content-light pre { background: #1e1e2e; color: #cdd6f4; padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; }
   .article-content-light pre code { background: none; padding: 0; color: inherit; }

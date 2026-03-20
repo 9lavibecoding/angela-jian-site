@@ -134,4 +134,10 @@ const related = others
     </div>
   </section>
 
+<script is:inline>
+  document.querySelectorAll('.article-content-light img').forEach(img => {
+    img.addEventListener('error', () => { img.style.display = 'none'; });
+  });
+</script>
+
 </Base>

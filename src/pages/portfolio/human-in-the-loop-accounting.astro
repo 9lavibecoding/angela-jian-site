@@ -1,0 +1,354 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Human-in-the-Loop AI 會計流程設計 — AI PM INSIDER" description="設計一套 AI 半自動化會計流程，作帳時間下降 60%、分類準確率 97%、人工審核量減少 75%。">
+
+<!-- HEADER -->
+<section class="relative bg-white pt-28 md:pt-36 pb-12 md:pb-16">
+  <div class="site-container px-6">
+    <a href="/#portfolio" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors mb-8">
+      <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
+      <span>返回作品集</span>
+    </a>
+
+    <div class="flex flex-wrap gap-2 mb-4">
+      <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">AI 流程設計</span>
+      <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-purple-600/10 text-purple-600">Human-in-the-Loop</span>
+    </div>
+
+    <h1 class="font-heading font-black text-3xl md:text-5xl lg:text-6xl text-brand-text leading-tight mb-4">
+      Human-in-the-Loop<br>
+      <span class="text-brand-accent">AI 會計流程設計</span>
+    </h1>
+
+    <p class="font-body text-brand-subtle text-sm md:text-base">
+      <span class="text-brand-text font-medium">Role:</span> Product Designer & AI Strategist
+    </p>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="relative py-16 md:py-20 bg-brand-light-surface">
+  <div class="site-container px-6">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Overview</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="flex items-center gap-2 mb-3">
+          <iconify-icon icon="solar:danger-triangle-bold" class="text-xl text-red-400"></iconify-icon>
+          <h3 class="font-heading font-bold text-base text-brand-text">問題</h3>
+        </div>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          傳統人工記帳每月耗時 40+ 小時，錯誤率高，且會計人員花大量時間在重複性分類工作。
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="flex items-center gap-2 mb-3">
+          <iconify-icon icon="solar:target-bold" class="text-xl text-brand-accent"></iconify-icon>
+          <h3 class="font-heading font-bold text-base text-brand-text">目標</h3>
+        </div>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          設計一套 AI 半自動化流程，在保持準確度的前提下大幅縮短作帳時間。
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="flex items-center gap-2 mb-3">
+          <iconify-icon icon="solar:cup-star-bold" class="text-xl text-amber-500"></iconify-icon>
+          <h3 class="font-heading font-bold text-base text-brand-text">成果</h3>
+        </div>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          作帳時間下降 60%、分類準確率 97%、人工審核量減少 75%。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY METRICS -->
+<section class="relative py-16 md:py-20 bg-white">
+  <div class="site-container px-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="text-center p-8 md:p-10 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/50 border border-indigo-100">
+        <div class="font-heading font-black text-5xl md:text-6xl text-brand-accent mb-2">-60%</div>
+        <div class="font-body text-sm text-brand-subtle">作帳時間</div>
+      </div>
+      <div class="text-center p-8 md:p-10 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100">
+        <div class="font-heading font-black text-5xl md:text-6xl text-emerald-600 mb-2">97%</div>
+        <div class="font-body text-sm text-brand-subtle">準確率</div>
+      </div>
+      <div class="text-center p-8 md:p-10 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-100">
+        <div class="font-heading font-black text-5xl md:text-6xl text-purple-600 mb-2">-75%</div>
+        <div class="font-body text-sm text-brand-subtle">人工審核</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 設計思路 -->
+<section class="relative py-16 md:py-20 bg-brand-light-surface">
+  <div class="site-container px-6">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Design Thinking</span>
+    </div>
+    <h2 class="font-heading font-black text-2xl md:text-4xl text-brand-text mb-6">
+      設計<span class="text-brand-accent">思路</span>
+    </h2>
+
+    <div class="max-w-3xl">
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8 mb-8">
+        <div class="flex items-start gap-3 mb-4">
+          <iconify-icon icon="solar:lightbulb-bolt-bold" class="text-2xl text-brand-accent mt-0.5"></iconify-icon>
+          <div>
+            <h3 class="font-heading font-bold text-lg text-brand-text mb-2">核心洞察</h3>
+            <p class="font-body text-brand-subtle text-base leading-relaxed italic">
+              「不是所有環節都需要 AI，關鍵是找到人機協作的最佳切分點。」
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="font-heading font-bold text-lg text-brand-text mb-4">Confidence Threshold 機制</h3>
+      <p class="font-body text-sm text-brand-subtle leading-relaxed mb-6">
+        我們根據 AI 模型的信心分數，將帳務分類結果分為三個處理路徑，確保高效率與高準確率兼顧：
+      </p>
+
+      <div class="space-y-3">
+        <div class="flex items-center gap-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+          <div class="shrink-0 w-20 md:w-24 text-center">
+            <span class="font-heading font-bold text-emerald-600 text-sm">> 95%</span>
+          </div>
+          <div class="w-px h-8 bg-emerald-200"></div>
+          <div>
+            <span class="font-heading font-semibold text-sm text-brand-text">Auto-Approve</span>
+            <p class="font-body text-xs text-brand-subtle">高信心結果自動通過，無需人工介入</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 bg-amber-50 rounded-xl p-4 border border-amber-100">
+          <div class="shrink-0 w-20 md:w-24 text-center">
+            <span class="font-heading font-bold text-amber-600 text-sm">70–95%</span>
+          </div>
+          <div class="w-px h-8 bg-amber-200"></div>
+          <div>
+            <span class="font-heading font-semibold text-sm text-brand-text">Human Review</span>
+            <p class="font-body text-xs text-brand-subtle">中信心結果由會計人員快速審核確認</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 bg-red-50 rounded-xl p-4 border border-red-100">
+          <div class="shrink-0 w-20 md:w-24 text-center">
+            <span class="font-heading font-bold text-red-500 text-sm">< 70%</span>
+          </div>
+          <div class="w-px h-8 bg-red-200"></div>
+          <div>
+            <span class="font-heading font-semibold text-sm text-brand-text">Manual Processing</span>
+            <p class="font-body text-xs text-brand-subtle">低信心結果交由人工完整處理</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 流程架構圖 -->
+<section class="relative py-16 md:py-20 bg-white">
+  <div class="site-container px-6">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Process Architecture</span>
+    </div>
+    <h2 class="font-heading font-black text-2xl md:text-4xl text-brand-text mb-10">
+      流程<span class="text-brand-accent">架構圖</span>
+    </h2>
+
+    <!-- Flowchart -->
+    <div class="max-w-4xl mx-auto">
+      <!-- Step 1 -->
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="background:linear-gradient(135deg, #eef2ff, #e0e7ff); border:2px solid #c7d2fe; border-radius:16px; padding:20px 32px; text-align:center; max-width:360px; width:100%;">
+          <div style="font-family:Inter,sans-serif; font-size:11px; font-weight:700; color:#6366f1; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Step 1</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:16px; font-weight:700; color:#1e1b4b;">原始帳務資料輸入</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:12px; color:#6b7280; margin-top:4px;">CSV / Excel / API 匯入</div>
+        </div>
+
+        <!-- Arrow -->
+        <div style="display:flex; flex-direction:column; align-items:center; padding:8px 0;">
+          <div style="width:2px; height:24px; background:#c7d2fe;"></div>
+          <div style="width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:10px solid #c7d2fe;"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="background:linear-gradient(135deg, #f0fdf4, #dcfce7); border:2px solid #bbf7d0; border-radius:16px; padding:20px 32px; text-align:center; max-width:360px; width:100%;">
+          <div style="font-family:Inter,sans-serif; font-size:11px; font-weight:700; color:#16a34a; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Step 2</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:16px; font-weight:700; color:#14532d;">AI 自動分類 + Confidence Score</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:12px; color:#6b7280; margin-top:4px;">GPT 模型分析每筆交易</div>
+        </div>
+
+        <!-- Arrow -->
+        <div style="display:flex; flex-direction:column; align-items:center; padding:8px 0;">
+          <div style="width:2px; height:24px; background:#bbf7d0;"></div>
+          <div style="width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:10px solid #bbf7d0;"></div>
+        </div>
+
+        <!-- Step 3: Three branches -->
+        <div style="background:linear-gradient(135deg, #fefce8, #fef9c3); border:2px solid #fde68a; border-radius:16px; padding:20px 24px; text-align:center; max-width:460px; width:100%; margin-bottom:0;">
+          <div style="font-family:Inter,sans-serif; font-size:11px; font-weight:700; color:#ca8a04; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:10px;">Step 3 — 三路分流</div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+            <div style="background:rgba(255,255,255,0.8); border-radius:10px; padding:12px 8px; border:1px solid #bbf7d0;">
+              <div style="font-family:Inter,sans-serif; font-size:18px; font-weight:800; color:#16a34a;">> 95%</div>
+              <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:11px; color:#14532d; font-weight:600; margin-top:4px;">自動通過</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.8); border-radius:10px; padding:12px 8px; border:1px solid #fde68a;">
+              <div style="font-family:Inter,sans-serif; font-size:18px; font-weight:800; color:#ca8a04;">70-95%</div>
+              <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:11px; color:#713f12; font-weight:600; margin-top:4px;">人工審核</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.8); border-radius:10px; padding:12px 8px; border:1px solid #fecaca;">
+              <div style="font-family:Inter,sans-serif; font-size:18px; font-weight:800; color:#dc2626;">< 70%</div>
+              <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:11px; color:#7f1d1d; font-weight:600; margin-top:4px;">手動處理</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div style="display:flex; flex-direction:column; align-items:center; padding:8px 0;">
+          <div style="width:2px; height:24px; background:#fde68a;"></div>
+          <div style="width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-top:10px solid #fde68a;"></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div style="background:linear-gradient(135deg, #faf5ff, #f3e8ff); border:2px solid #e9d5ff; border-radius:16px; padding:20px 32px; text-align:center; max-width:360px; width:100%;">
+          <div style="font-family:Inter,sans-serif; font-size:11px; font-weight:700; color:#9333ea; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Step 4</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:16px; font-weight:700; color:#3b0764;">結果回饋至模型</div>
+          <div style="font-family:Inter,'Noto Sans TC',sans-serif; font-size:12px; color:#6b7280; margin-top:4px;">持續學習，不斷提升準確率</div>
+          <!-- Loop arrow icon -->
+          <div style="margin-top:8px;">
+            <iconify-icon icon="solar:refresh-circle-bold" style="font-size:24px; color:#9333ea;"></iconify-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 關鍵設計決策 -->
+<section class="relative py-16 md:py-20 bg-brand-light-surface">
+  <div class="site-container px-6">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Key Decisions</span>
+    </div>
+    <h2 class="font-heading font-black text-2xl md:text-4xl text-brand-text mb-10">
+      關鍵設計<span class="text-brand-accent">決策</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mb-4">
+          <iconify-icon icon="solar:shield-check-bold" class="text-xl text-brand-accent"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">漸進式信任</h3>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          初期閾值設高（99%），隨著模型準確率經過驗證逐步降低門檻，讓系統在信任中成長。
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+          <iconify-icon icon="solar:shield-warning-bold" class="text-xl text-amber-500"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">Fallback 優先</h3>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          AI 出錯時的體驗比 AI 正確時更重要。每個自動化環節都設計了清晰的回退機制和人工介入點。
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+          <iconify-icon icon="solar:refresh-circle-bold" class="text-xl text-emerald-600"></iconify-icon>
+        </div>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">數據飛輪</h3>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          每次人工審核都是模型改進的訓練數據。系統使用越久，需要人工介入的比例越低，形成正向循環。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 技術棧 -->
+<section class="relative py-16 md:py-20 bg-white">
+  <div class="site-container px-6">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Tech Stack</span>
+    </div>
+    <h2 class="font-heading font-black text-2xl md:text-4xl text-brand-text mb-8">
+      技術<span class="text-brand-accent">棧</span>
+    </h2>
+
+    <div class="flex flex-wrap gap-3">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light-surface border border-brand-light-border font-body text-sm text-brand-text">
+        <iconify-icon icon="simple-icons:python" class="text-[#3776AB]"></iconify-icon>
+        Python
+      </span>
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light-surface border border-brand-light-border font-body text-sm text-brand-text">
+        <iconify-icon icon="simple-icons:openai" class="text-brand-text"></iconify-icon>
+        OpenAI API
+      </span>
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light-surface border border-brand-light-border font-body text-sm text-brand-text">
+        <iconify-icon icon="simple-icons:pandas" class="text-[#150458]"></iconify-icon>
+        Pandas
+      </span>
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light-surface border border-brand-light-border font-body text-sm text-brand-text">
+        <iconify-icon icon="simple-icons:streamlit" class="text-[#FF4B4B]"></iconify-icon>
+        Streamlit
+      </span>
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light-surface border border-brand-light-border font-body text-sm text-brand-text">
+        <iconify-icon icon="simple-icons:postgresql" class="text-[#4169E1]"></iconify-icon>
+        PostgreSQL
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- 反思與學習 -->
+<section class="relative py-16 md:py-24 bg-gradient-to-br from-indigo-50 to-purple-50">
+  <div class="site-container px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="flex items-center justify-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-6">
+        <div class="w-8 h-px bg-brand-accent"></div>
+        <span>Reflection</span>
+        <div class="w-8 h-px bg-brand-accent"></div>
+      </div>
+      <h2 class="font-heading font-black text-2xl md:text-4xl text-brand-text mb-8">
+        反思與<span class="text-brand-accent">學習</span>
+      </h2>
+
+      <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-brand-light-border p-8 md:p-12">
+        <iconify-icon icon="solar:chat-square-like-bold" class="text-4xl text-brand-accent mb-6"></iconify-icon>
+        <blockquote class="font-heading text-lg md:text-xl text-brand-text leading-relaxed mb-6 italic">
+          「AI 產品設計的核心不是追求 100% 自動化，而是找到那個讓人與機器各自發揮最大價值的平衡點。真正的智慧，是知道什麼時候該讓 AI 做決定，什麼時候該把決定權交回給人。」
+        </blockquote>
+        <div class="w-12 h-px bg-brand-accent mx-auto mb-4"></div>
+        <p class="font-body text-sm text-brand-subtle">
+          這個專案讓我深刻體會到：最好的 AI 產品不是取代人類，而是放大人類的判斷力。當我們把 AI 定位為「輔助者」而非「替代者」，使用者的接受度和信任感會大幅提升。
+        </p>
+      </div>
+
+      <a href="/#portfolio" class="inline-flex items-center gap-2 mt-10 font-body text-sm text-brand-subtle hover:text-brand-accent transition-colors">
+        <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
+        <span>返回作品集</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</Base>
