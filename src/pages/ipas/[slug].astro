@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('ipas');
+  return lessons.map(lesson => ({
+    params: { slug: lesson.id },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const { Content } = await render(lesson);
+
+// Get all lessons for prev/next navigation
+const allLessons = (await getCollection('ipas')).sort((a, b) => a.data.order - b.data.order);
+const currentIdx = allLessons.findIndex(l => l.id === lesson.id);
+const prevLesson = currentIdx > 0 ? allLessons[currentIdx - 1] : null;
+const nextLesson = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1] : null;
+---
+
+<Base title={`${lesson.data.title} — iPAS AI 課程`} description={lesson.data.summary}>
+
+  <!-- Article Header -->
+  <section class="relative pt-28 md:pt-32 pb-4 md:pb-6 overflow-hidden bg-[#FFFEF7]">
+    <div class="site-container px-6 md:px-12 relative z-10">
+      <div class="max-w-3xl mx-auto">
+
+        <!-- Back Link -->
+        <a href="/ipas" class="inline-flex items-center gap-2 text-brand-light-subtle text-sm font-body mb-8 md:mb-10 hover:text-brand-accent-dark transition-colors">
+          <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
+          <span>回到課程總覽</span>
+        </a>
+
+        <!-- Tags -->
+        <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-6 flex-wrap">
+          <span class="px-3 py-1.5 text-xs bg-brand-accent-dark/10 text-brand-accent-dark rounded-full font-body">
+            第 {lesson.data.order} 篇
+          </span>
+          <span class="px-3 py-1.5 text-xs bg-purple-600/10 text-purple-600 rounded-full font-body">
+            {lesson.data.courseId}
+          </span>
+          <span class="px-3 py-1.5 text-xs bg-emerald-600/10 text-emerald-600 rounded-full font-body">
+            {lesson.data.stage}
+          </span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="font-heading font-bold text-2xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-5 text-brand-light-text">
+          {lesson.data.title}
+        </h1>
+
+        <!-- Author -->
+        <div class="flex items-center gap-4 mb-4 md:mb-6 pb-4 md:pb-6 border-b border-brand-light-border">
+          <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-accent-dark/30">
+            <img src="/angela.jpeg" alt="Angela Jian" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <div class="font-heading font-semibold text-sm text-brand-light-text">Angela Jian 簡琬庭</div>
+            <div class="text-xs text-brand-light-subtle font-body">iPAS AI 應用規劃師 / AI Product Builder</div>
+          </div>
+        </div>
+        <!-- Article Content -->
+        <div class="article-content-light text-base">
+          <Content />
+        </div>
+
+        <!-- Prev / Next Navigation -->
+        <div class="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-brand-light-border">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {prevLesson ? (
+              <a href={`/ipas/${prevLesson.id}`}
+                 class="group block p-4 md:p-5 rounded-xl border border-brand-light-border hover:border-brand-accent-dark/30 hover:shadow-sm transition-all no-underline">
+                <div class="text-xs text-brand-light-subtle font-body mb-1">上一篇</div>
+                <div class="font-heading font-semibold text-sm leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">
+                  {prevLesson.data.title}
+                </div>
+              </a>
+            ) : <div />}
+            {nextLesson && (
+              <a href={`/ipas/${nextLesson.id}`}
+                 class="group block p-4 md:p-5 rounded-xl border border-brand-light-border hover:border-brand-accent-dark/30 hover:shadow-sm transition-all no-underline text-right">
+                <div class="text-xs text-brand-light-subtle font-body mb-1">下一篇</div>
+                <div class="font-heading font-semibold text-sm leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">
+                  {nextLesson.data.title}
+                </div>
+              </a>
+            )}
+          </div>
+        </div>
+
+        <!-- Back to Course -->
+        <div class="mt-6 md:mt-8 pb-20 md:pb-32">
+          <a href="/ipas" class="mag-btn px-6 md:px-8 py-3 md:py-4 border border-brand-light-border text-brand-light-text font-heading font-medium rounded-full text-sm tracking-wide hover:border-brand-accent-dark hover:text-brand-accent-dark transition-colors">
+            <span>← 回到課程總覽</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</Base>
