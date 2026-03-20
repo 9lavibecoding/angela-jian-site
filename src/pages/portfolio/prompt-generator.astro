@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base title="AI Prompt 模板產生器 — Angela Jian" description="選擇你的工作場景，一鍵生成結構化 Prompt。五大 PM 常用模板：競品分析、PRD 撰寫、用戶訪談整理、數據分析、週報生成。">
+<Base title="AI Prompt 模板產生器 — Angela Jian" description="選擇你的工作場景，AI 即時生成客製化結構化 Prompt。五大 PM 常用模板：競品分析、PRD 撰寫、用戶訪談整理、數據分析、週報生成。">
 
 <main class="pt-28 pb-20 min-h-screen bg-brand-light-surface">
   <div class="site-container px-6">
@@ -14,7 +14,7 @@ import Base from '../../layouts/Base.astro';
         <span>返回作品集</span>
       </a>
       <h1 class="font-heading font-bold text-3xl md:text-4xl text-brand-text mt-4">AI Prompt 模板產生器</h1>
-      <p class="font-body text-brand-subtle mt-3 text-base md:text-lg">選擇你的工作場景，一鍵生成結構化 Prompt</p>
+      <p class="font-body text-brand-subtle mt-3 text-base md:text-lg">選擇你的工作場景，AI 即時生成客製化 Prompt</p>
     </div>
 
     <!-- Scene Selector Cards -->
@@ -41,6 +41,51 @@ import Base from '../../layouts/Base.astro';
       </button>
     </div>
 
+    <!-- Context Input Area -->
+    <div id="contextInputArea" class="opacity-0 translate-y-4 transition-all duration-500 ease-out mb-8" style="display:none;">
+      <div class="bg-white rounded-2xl border border-brand-light-border shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-brand-light-border bg-gray-50/60">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <iconify-icon icon="solar:pen-new-round-bold" class="text-brand-accent text-lg"></iconify-icon>
+              <span class="font-heading font-semibold text-sm text-brand-text" id="contextLabel">請輸入你的具體情境</span>
+            </div>
+            <span id="usageCounter" class="font-body text-xs text-brand-subtle bg-gray-100 px-3 py-1 rounded-full">剩餘次數: --/50</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <textarea
+            id="contextInput"
+            class="w-full font-body text-sm md:text-base text-brand-text bg-gray-50/50 border border-brand-light-border rounded-xl px-4 py-3 resize-none overflow-hidden focus:outline-none focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 transition-all duration-200 placeholder:text-brand-subtle/60"
+            rows="3"
+            placeholder=""
+          ></textarea>
+          <div class="flex items-center justify-between mt-4">
+            <p class="font-body text-xs text-brand-subtle">AI 將根據你的情境生成客製化 Prompt</p>
+            <button
+              id="generateBtn"
+              class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-brand-accent text-white text-sm font-body font-medium hover:opacity-90 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <iconify-icon icon="solar:magic-stick-3-bold" class="text-base" id="generateIcon"></iconify-icon>
+              <span id="generateBtnText">生成 Prompt</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="hidden mb-8">
+      <div class="bg-white rounded-2xl border border-brand-light-border shadow-sm p-10 flex flex-col items-center justify-center gap-4">
+        <div class="loading-dots flex items-center gap-2">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <p class="font-body text-sm text-brand-subtle">AI 正在生成客製化 Prompt...</p>
+      </div>
+    </div>
+
     <!-- Output Box -->
     <div id="outputWrapper" class="opacity-0 translate-y-4 transition-all duration-500 ease-out" style="display:none;">
       <div class="bg-white rounded-2xl border border-brand-light-border shadow-sm overflow-hidden">
@@ -49,6 +94,7 @@ import Base from '../../layouts/Base.astro';
           <div class="flex items-center gap-2">
             <iconify-icon icon="solar:magic-stick-3-bold" class="text-brand-accent text-lg"></iconify-icon>
             <span class="font-heading font-semibold text-sm text-brand-text" id="outputTitle">生成的 Prompt</span>
+            <span id="outputBadge" class="hidden font-body text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">靜態模板</span>
           </div>
           <button id="copyBtn" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-accent text-white text-sm font-body font-medium hover:opacity-90 transition-opacity duration-200 cursor-pointer">
             <iconify-icon icon="solar:copy-bold" class="text-base"></iconify-icon>
@@ -60,12 +106,14 @@ import Base from '../../layouts/Base.astro';
           <pre id="outputContent" class="font-body text-sm md:text-base text-brand-text whitespace-pre-wrap leading-relaxed"></pre>
         </div>
       </div>
+      <!-- Error fallback note -->
+      <p id="fallbackNote" class="hidden font-body text-xs text-amber-600 mt-3 px-2">AI 生成暫時不可用，已顯示靜態模板。你可以手動修改 [ ] 中的內容來客製化。</p>
     </div>
 
     <!-- Tip -->
     <div class="mt-10 p-5 rounded-xl bg-indigo-50/60 border border-indigo-100">
       <p class="font-body text-sm text-brand-subtle leading-relaxed">
-        💡 <span class="font-medium text-brand-text">小技巧：</span>好的 Prompt = 角色 + 任務 + 維度 + 格式。修改 <code class="px-1.5 py-0.5 rounded bg-white text-brand-accent font-medium text-xs border border-indigo-100">[ ]</code> 中的內容，就能得到客製化的結果。
+        <span class="font-medium text-brand-text">小技巧：</span>提供越具體的情境描述，AI 生成的 Prompt 品質越高。例如：寫明產業、目標用戶、具體功能等細節。
       </p>
     </div>
 
@@ -93,144 +141,267 @@ import Base from '../../layouts/Base.astro';
   #outputContent {
     font-family: 'Noto Sans TC', 'Inter', sans-serif;
   }
+  #contextInput {
+    min-height: 80px;
+    font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  }
+
+  /* Loading dots animation */
+  .loading-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-brand-accent, #6366f1);
+    animation: dotPulse 1.4s ease-in-out infinite;
+  }
+  .loading-dots .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .loading-dots .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes dotPulse {
+    0%, 80%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    40% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  /* Spinner for generate button */
+  .btn-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 </style>
 
 <script is:inline>
 (function() {
-  const templates = {
+  var templates = {
     competitive: {
       title: '競品分析 Prompt',
-      content: `【角色】你是一個資深的 B2B SaaS 產品分析師。
-
-【任務】請幫我比較以下競品：[請填入競品名稱]
-
-【分析維度】
-1. 目標用戶與市場定位
-2. 核心功能與差異化
-3. 定價策略與商業模式
-4. 主要優勢與劣勢
-5. 近期重大更新或動態
-
-【輸出格式】
-- 用表格呈現各維度比較
-- 最後附上 200 字觀察摘要
-- 標注資訊的時效性與可信度`
+      content: "\u3010\u89D2\u8272\u3011\u4F60\u662F\u4E00\u500B\u8CC7\u6DF1\u7684 B2B SaaS \u7522\u54C1\u5206\u6790\u5E2B\u3002\n\n\u3010\u4EFB\u52D9\u3011\u8ACB\u5E6B\u6211\u6BD4\u8F03\u4EE5\u4E0B\u7AF6\u54C1\uFF1A[\u8ACB\u586B\u5165\u7AF6\u54C1\u540D\u7A31]\n\n\u3010\u5206\u6790\u7DAD\u5EA6\u3011\n1. \u76EE\u6A19\u7528\u6236\u8207\u5E02\u5834\u5B9A\u4F4D\n2. \u6838\u5FC3\u529F\u80FD\u8207\u5DEE\u7570\u5316\n3. \u5B9A\u50F9\u7B56\u7565\u8207\u5546\u696D\u6A21\u5F0F\n4. \u4E3B\u8981\u512A\u52E2\u8207\u52A3\u52E2\n5. \u8FD1\u671F\u91CD\u5927\u66F4\u65B0\u6216\u52D5\u614B\n\n\u3010\u8F38\u51FA\u683C\u5F0F\u3011\n- \u7528\u8868\u683C\u5448\u73FE\u5404\u7DAD\u5EA6\u6BD4\u8F03\n- \u6700\u5F8C\u9644\u4E0A 200 \u5B57\u89C0\u5BDF\u6458\u8981\n- \u6A19\u6CE8\u8CC7\u8A0A\u7684\u6642\u6548\u6027\u8207\u53EF\u4FE1\u5EA6"
     },
     prd: {
-      title: 'PRD 撰寫 Prompt',
-      content: `【角色】你是一個有 10 年經驗的產品經理。
-
-【任務】請幫我撰寫以下功能的 PRD 初稿：[請填入功能描述]
-
-【包含內容】
-1. 功能概述（Feature Overview）
-2. 用戶故事（User Stories）— 至少 5 個
-3. 驗收條件（Acceptance Criteria）
-4. Edge Cases 列舉 — 至少 8 個
-5. 名詞定義（Glossary）
-
-【輸出格式】
-- 使用清晰的標題層級
-- User Story 格式：As a [角色], I want [目標], so that [價值]
-- Edge Cases 依嚴重程度排序`
+      title: 'PRD \u64B0\u5BEB Prompt',
+      content: "\u3010\u89D2\u8272\u3011\u4F60\u662F\u4E00\u500B\u6709 10 \u5E74\u7D93\u9A57\u7684\u7522\u54C1\u7D93\u7406\u3002\n\n\u3010\u4EFB\u52D9\u3011\u8ACB\u5E6B\u6211\u64B0\u5BEB\u4EE5\u4E0B\u529F\u80FD\u7684 PRD \u521D\u7A3F\uFF1A[\u8ACB\u586B\u5165\u529F\u80FD\u63CF\u8FF0]\n\n\u3010\u5305\u542B\u5167\u5BB9\u3011\n1. \u529F\u80FD\u6982\u8FF0\uFF08Feature Overview\uFF09\n2. \u7528\u6236\u6545\u4E8B\uFF08User Stories\uFF09\u2014 \u81F3\u5C11 5 \u500B\n3. \u9A57\u6536\u689D\u4EF6\uFF08Acceptance Criteria\uFF09\n4. Edge Cases \u5217\u8209 \u2014 \u81F3\u5C11 8 \u500B\n5. \u540D\u8A5E\u5B9A\u7FA9\uFF08Glossary\uFF09\n\n\u3010\u8F38\u51FA\u683C\u5F0F\u3011\n- \u4F7F\u7528\u6E05\u6670\u7684\u6A19\u984C\u5C64\u7D1A\n- User Story \u683C\u5F0F\uFF1AAs a [\u89D2\u8272], I want [\u76EE\u6A19], so that [\u50F9\u503C]\n- Edge Cases \u4F9D\u56B4\u91CD\u7A0B\u5EA6\u6392\u5E8F"
     },
     interview: {
-      title: '用戶訪談整理 Prompt',
-      content: `【角色】你是一個資深的用戶研究員。
-
-【任務】請幫我整理以下用戶訪談的逐字稿：[請貼上逐字稿]
-
-【整理維度】
-1. 用戶背景摘要
-2. 主要痛點（依嚴重程度排序）
-3. 對現有解決方案的評價
-4. 值得注意的原話引用（Verbatim Quotes）
-5. 未被滿足的需求
-6. 建議的後續行動
-
-【輸出格式】
-- 每個痛點附上支持的原話引用
-- 用 🔴🟡🟢 標示痛點嚴重程度
-- 最後附上一段整體洞察摘要`
+      title: '\u7528\u6236\u8A2A\u8AC7\u6574\u7406 Prompt',
+      content: "\u3010\u89D2\u8272\u3011\u4F60\u662F\u4E00\u500B\u8CC7\u6DF1\u7684\u7528\u6236\u7814\u7A76\u54E1\u3002\n\n\u3010\u4EFB\u52D9\u3011\u8ACB\u5E6B\u6211\u6574\u7406\u4EE5\u4E0B\u7528\u6236\u8A2A\u8AC7\u7684\u9010\u5B57\u7A3F\uFF1A[\u8ACB\u8CBC\u4E0A\u9010\u5B57\u7A3F]\n\n\u3010\u6574\u7406\u7DAD\u5EA6\u3011\n1. \u7528\u6236\u80CC\u666F\u6458\u8981\n2. \u4E3B\u8981\u75DB\u9EDE\uFF08\u4F9D\u56B4\u91CD\u7A0B\u5EA6\u6392\u5E8F\uFF09\n3. \u5C0D\u73FE\u6709\u89E3\u6C7A\u65B9\u6848\u7684\u8A55\u50F9\n4. \u503C\u5F97\u6CE8\u610F\u7684\u539F\u8A71\u5F15\u7528\uFF08Verbatim Quotes\uFF09\n5. \u672A\u88AB\u6EFF\u8DB3\u7684\u9700\u6C42\n6. \u5EFA\u8B70\u7684\u5F8C\u7E8C\u884C\u52D5\n\n\u3010\u8F38\u51FA\u683C\u5F0F\u3011\n- \u6BCF\u500B\u75DB\u9EDE\u9644\u4E0A\u652F\u6301\u7684\u539F\u8A71\u5F15\u7528\n- \u7528 \uD83D\uDD34\uD83D\uDFE1\uD83D\uDFE2 \u6A19\u793A\u75DB\u9EDE\u56B4\u91CD\u7A0B\u5EA6\n- \u6700\u5F8C\u9644\u4E0A\u4E00\u6BB5\u6574\u9AD4\u6D1E\u5BDF\u6458\u8981"
     },
     data: {
-      title: '數據分析 Prompt',
-      content: `【角色】你是一個資深的數據分析師。
-
-【任務】請分析以下數據：[請描述數據或上傳檔案]
-
-【分析要求】
-1. 列出前 5 個有趣的 Pattern 或異常值
-2. 對每個 Pattern 說明：
-   - 你觀察到什麼
-   - 可能的原因假設
-   - 建議進一步驗證的方向
-3. 標注你的 Confidence Level（高/中/低）
-
-【輸出格式】
-- 用表格或條列呈現
-- 高信心的發現放前面
-- 最後附上「建議下一步」清單`
+      title: '\u6578\u64DA\u5206\u6790 Prompt',
+      content: "\u3010\u89D2\u8272\u3011\u4F60\u662F\u4E00\u500B\u8CC7\u6DF1\u7684\u6578\u64DA\u5206\u6790\u5E2B\u3002\n\n\u3010\u4EFB\u52D9\u3011\u8ACB\u5206\u6790\u4EE5\u4E0B\u6578\u64DA\uFF1A[\u8ACB\u63CF\u8FF0\u6578\u64DA\u6216\u4E0A\u50B3\u6A94\u6848]\n\n\u3010\u5206\u6790\u8981\u6C42\u3011\n1. \u5217\u51FA\u524D 5 \u500B\u6709\u8DA3\u7684 Pattern \u6216\u7570\u5E38\u503C\n2. \u5C0D\u6BCF\u500B Pattern \u8AAA\u660E\uFF1A\n   - \u4F60\u89C0\u5BDF\u5230\u4EC0\u9EBC\n   - \u53EF\u80FD\u7684\u539F\u56E0\u5047\u8A2D\n   - \u5EFA\u8B70\u9032\u4E00\u6B65\u9A57\u8B49\u7684\u65B9\u5411\n3. \u6A19\u6CE8\u4F60\u7684 Confidence Level\uFF08\u9AD8/\u4E2D/\u4F4E\uFF09\n\n\u3010\u8F38\u51FA\u683C\u5F0F\u3011\n- \u7528\u8868\u683C\u6216\u689D\u5217\u5448\u73FE\n- \u9AD8\u4FE1\u5FC3\u7684\u767C\u73FE\u653E\u524D\u9762\n- \u6700\u5F8C\u9644\u4E0A\u300C\u5EFA\u8B70\u4E0B\u4E00\u6B65\u300D\u6E05\u55AE"
     },
     weekly: {
-      title: '週報生成 Prompt',
-      content: `【角色】你是一個資深產品經理的助理。
-
-【任務】請根據以下資訊生成本週週報：[請貼上本週工作內容]
-
-【週報結構】
-1. 本週重點成果（Top 3）
-2. 進行中項目狀態更新
-3. 遇到的阻礙與解決方案
-4. 下週計畫與優先級
-5. 需要協助或決策的事項
-
-【輸出格式】
-- 每個段落控制在 3-5 行
-- 用 ✅ 🔄 ⚠️ 標示狀態
-- 語氣專業但不僵硬
-- 總長度控制在 500 字以內`
+      title: '\u9031\u5831\u751F\u6210 Prompt',
+      content: "\u3010\u89D2\u8272\u3011\u4F60\u662F\u4E00\u500B\u8CC7\u6DF1\u7522\u54C1\u7D93\u7406\u7684\u52A9\u7406\u3002\n\n\u3010\u4EFB\u52D9\u3011\u8ACB\u6839\u64DA\u4EE5\u4E0B\u8CC7\u8A0A\u751F\u6210\u672C\u9031\u9031\u5831\uFF1A[\u8ACB\u8CBC\u4E0A\u672C\u9031\u5DE5\u4F5C\u5167\u5BB9]\n\n\u3010\u9031\u5831\u7D50\u69CB\u3011\n1. \u672C\u9031\u91CD\u9EDE\u6210\u679C\uFF08Top 3\uFF09\n2. \u9032\u884C\u4E2D\u9805\u76EE\u72C0\u614B\u66F4\u65B0\n3. \u9047\u5230\u7684\u963B\u7919\u8207\u89E3\u6C7A\u65B9\u6848\n4. \u4E0B\u9031\u8A08\u756B\u8207\u512A\u5148\u7D1A\n5. \u9700\u8981\u5354\u52A9\u6216\u6C7A\u7B56\u7684\u4E8B\u9805\n\n\u3010\u8F38\u51FA\u683C\u5F0F\u3011\n- \u6BCF\u500B\u6BB5\u843D\u63A7\u5236\u5728 3-5 \u884C\n- \u7528 \u2705 \uD83D\uDD04 \u26A0\uFE0F \u6A19\u793A\u72C0\u614B\n- \u8A9E\u6C23\u5C08\u696D\u4F46\u4E0D\u50F5\u786C\n- \u7E3D\u9577\u5EA6\u63A7\u5236\u5728 500 \u5B57\u4EE5\u5167"
     }
   };
 
-  const cards = document.querySelectorAll('.scene-card');
-  const outputWrapper = document.getElementById('outputWrapper');
-  const outputTitle = document.getElementById('outputTitle');
-  const outputContent = document.getElementById('outputContent');
-  const copyBtn = document.getElementById('copyBtn');
-  const toast = document.getElementById('toast');
+  var placeholders = {
+    competitive: '請輸入你要分析的競品名稱和產業（例如：Notion, Coda, Airtable — 專案管理工具）',
+    prd: '請描述你要寫的功能（例如：電商平台的 AI 商品推薦功能，根據用戶瀏覽歷史推薦相關商品）',
+    interview: '請貼上訪談逐字稿或描述訪談對象與主題',
+    data: '請描述你的數據內容和分析目標（例如：過去 6 個月的用戶活躍數據，想找出留存下降的原因）',
+    weekly: '請簡述本週的主要工作內容'
+  };
 
-  let currentScene = null;
+  var contextLabels = {
+    competitive: '輸入你要分析的競品資訊',
+    prd: '描述你要撰寫 PRD 的功能',
+    interview: '貼上訪談內容或描述背景',
+    data: '描述你的數據和分析目標',
+    weekly: '簡述本週主要工作內容'
+  };
 
+  var cards = document.querySelectorAll('.scene-card');
+  var contextInputArea = document.getElementById('contextInputArea');
+  var contextInput = document.getElementById('contextInput');
+  var contextLabel = document.getElementById('contextLabel');
+  var generateBtn = document.getElementById('generateBtn');
+  var generateBtnText = document.getElementById('generateBtnText');
+  var generateIcon = document.getElementById('generateIcon');
+  var loadingState = document.getElementById('loadingState');
+  var outputWrapper = document.getElementById('outputWrapper');
+  var outputTitle = document.getElementById('outputTitle');
+  var outputContent = document.getElementById('outputContent');
+  var outputBadge = document.getElementById('outputBadge');
+  var fallbackNote = document.getElementById('fallbackNote');
+  var copyBtn = document.getElementById('copyBtn');
+  var toast = document.getElementById('toast');
+  var usageCounter = document.getElementById('usageCounter');
+
+  var currentScene = null;
+  var isGenerating = false;
+
+  // Auto-grow textarea
+  contextInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+  });
+
+  // Scene card selection
   cards.forEach(function(card) {
     card.addEventListener('click', function() {
       var scene = this.getAttribute('data-scene');
+      currentScene = scene;
 
       // Update active state
       cards.forEach(function(c) { c.classList.remove('active'); });
       this.classList.add('active');
 
-      // Show output
-      var tpl = templates[scene];
-      if (!tpl) return;
+      // Hide output if visible
+      outputWrapper.style.display = 'none';
+      outputWrapper.classList.add('opacity-0', 'translate-y-4');
+      outputWrapper.classList.remove('opacity-100', 'translate-y-0');
 
-      outputTitle.textContent = tpl.title;
-      outputContent.textContent = tpl.content;
-      currentScene = scene;
+      // Hide loading
+      loadingState.classList.add('hidden');
 
-      // Animate in
-      outputWrapper.style.display = 'block';
-      // Force reflow for animation
-      void outputWrapper.offsetHeight;
-      outputWrapper.classList.remove('opacity-0', 'translate-y-4');
-      outputWrapper.classList.add('opacity-100', 'translate-y-0');
+      // Show context input area
+      contextLabel.textContent = contextLabels[scene] || '請輸入你的具體情境';
+      contextInput.placeholder = placeholders[scene] || '';
+      contextInput.value = '';
+      contextInput.style.height = 'auto';
 
-      // Scroll to output
+      contextInputArea.style.display = 'block';
+      void contextInputArea.offsetHeight;
+      contextInputArea.classList.remove('opacity-0', 'translate-y-4');
+      contextInputArea.classList.add('opacity-100', 'translate-y-0');
+
+      // Reset button state
+      generateBtn.disabled = false;
+      generateBtnText.textContent = '生成 Prompt';
+      generateIcon.setAttribute('icon', 'solar:magic-stick-3-bold');
+      generateIcon.classList.remove('btn-spinner');
+
+      // Scroll to input area
       setTimeout(function() {
-        outputWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        contextInputArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
     });
   });
+
+  // Generate button click
+  generateBtn.addEventListener('click', function() {
+    if (isGenerating || !currentScene) return;
+
+    var context = contextInput.value.trim();
+    if (!context) {
+      contextInput.focus();
+      contextInput.classList.add('ring-2', 'ring-red-300', 'border-red-300');
+      setTimeout(function() {
+        contextInput.classList.remove('ring-2', 'ring-red-300', 'border-red-300');
+      }, 1500);
+      return;
+    }
+
+    generatePrompt(currentScene, context);
+  });
+
+  // Also allow Ctrl+Enter / Cmd+Enter to generate
+  contextInput.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      e.preventDefault();
+      generateBtn.click();
+    }
+  });
+
+  function generatePrompt(scene, context) {
+    isGenerating = true;
+
+    // Update button to loading state
+    generateBtn.disabled = true;
+    generateBtnText.textContent = '生成中...';
+    generateIcon.removeAttribute('icon');
+    generateIcon.classList.add('btn-spinner');
+
+    // Show loading animation
+    loadingState.classList.remove('hidden');
+
+    // Hide previous output
+    outputWrapper.style.display = 'none';
+    outputWrapper.classList.add('opacity-0', 'translate-y-4');
+    outputWrapper.classList.remove('opacity-100', 'translate-y-0');
+    fallbackNote.classList.add('hidden');
+    outputBadge.classList.add('hidden');
+
+    fetch('/api/generate-prompt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scene: scene, context: context })
+    })
+    .then(function(res) {
+      return res.json().then(function(data) {
+        return { ok: res.ok, status: res.status, data: data };
+      });
+    })
+    .then(function(result) {
+      loadingState.classList.add('hidden');
+
+      if (result.ok && result.data.prompt) {
+        // Success: show AI-generated prompt
+        showOutput(templates[scene].title, result.data.prompt, false);
+
+        // Update usage counter
+        if (typeof result.data.remaining === 'number') {
+          usageCounter.textContent = '剩餘次數: ' + result.data.remaining + '/50';
+        }
+      } else {
+        // API error: fall back to static template
+        console.warn('API error:', result.data.error);
+        showOutput(templates[scene].title, templates[scene].content, true);
+      }
+    })
+    .catch(function(err) {
+      // Network error: fall back to static template
+      console.warn('Network error:', err);
+      loadingState.classList.add('hidden');
+      showOutput(templates[scene].title, templates[scene].content, true);
+    })
+    .finally(function() {
+      isGenerating = false;
+      generateBtn.disabled = false;
+      generateBtnText.textContent = '生成 Prompt';
+      generateIcon.classList.remove('btn-spinner');
+      generateIcon.setAttribute('icon', 'solar:magic-stick-3-bold');
+    });
+  }
+
+  function showOutput(title, content, isFallback) {
+    outputTitle.textContent = title;
+    outputContent.textContent = content;
+
+    if (isFallback) {
+      outputBadge.classList.remove('hidden');
+      fallbackNote.classList.remove('hidden');
+    } else {
+      outputBadge.classList.add('hidden');
+      fallbackNote.classList.add('hidden');
+    }
+
+    outputWrapper.style.display = 'block';
+    void outputWrapper.offsetHeight;
+    outputWrapper.classList.remove('opacity-0', 'translate-y-4');
+    outputWrapper.classList.add('opacity-100', 'translate-y-0');
+
+    setTimeout(function() {
+      outputWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
 
   // Copy functionality
   copyBtn.addEventListener('click', function() {
@@ -240,7 +411,6 @@ import Base from '../../layouts/Base.astro';
     navigator.clipboard.writeText(text).then(function() {
       showToast();
     }).catch(function() {
-      // Fallback for older browsers
       var textarea = document.createElement('textarea');
       textarea.value = text;
       textarea.style.position = 'fixed';

@@ -2,421 +2,802 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base title="PM → AI PM 能力自評表 — Angela Jian" description="評估你的 AI 產品經理準備度，獲取個人化學習建議">
+<Base title="AI PM 能力測驗 — Angela Jian" description="16 道情境題，測試你的 AI 產品經理實戰能力，獲取個人化評分與學習建議">
 
 <main class="pt-28 pb-20 min-h-screen bg-white">
   <div class="site-container px-6">
 
-    <!-- Header -->
-    <div class="mb-12">
+    <!-- Header with back link -->
+    <div class="mb-8">
       <a href="/#portfolio" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors mb-6">
         <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
         返回作品集
       </a>
-      <h1 class="font-heading font-bold text-3xl md:text-4xl text-brand-text mb-3">PM → AI PM 能力自評表</h1>
-      <p class="font-body text-brand-subtle text-lg">評估你的 AI 產品經理準備度，獲取個人化學習建議</p>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-8">
+    <!-- Quiz Container -->
+    <div id="quizApp" class="max-w-3xl mx-auto">
 
-      <!-- Left: Assessment Form -->
-      <div class="lg:col-span-2 space-y-8">
+      <!-- ==================== START SCREEN ==================== -->
+      <div id="startScreen" class="text-center py-8">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 text-brand-accent text-sm font-body font-medium mb-6">
+          <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+          10 道情境題 / 約 5 分鐘
+        </div>
+        <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-text mb-4 leading-tight">AI PM 能力測驗</h1>
+        <p class="font-body text-brand-subtle text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed">
+          模擬真實產品場景，測試你在產品管理、AI 素養、Prompt Engineering 和數據思維四大維度的實戰能力。
+        </p>
 
-        <!-- Category 1 -->
-        <div class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-              <iconify-icon icon="solar:clipboard-list-bold" class="text-xl text-brand-accent"></iconify-icon>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 max-w-2xl mx-auto">
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
+            <div class="w-9 h-9 rounded-lg bg-indigo-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:clipboard-list-bold" class="text-lg text-brand-accent"></iconify-icon>
             </div>
-            <div>
-              <h2 class="font-heading font-bold text-lg text-brand-text">產品管理基礎</h2>
-              <span class="text-xs font-body text-brand-subtle">每項 5 分</span>
-            </div>
+            <p class="font-body text-xs text-brand-subtle">PM 基礎</p>
+            <p class="font-heading font-bold text-sm text-brand-text">20 分</p>
           </div>
-          <div class="space-y-3">
-            <label class="assessment-item group" data-weight="5">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">能獨立撰寫 PRD 和 User Story</span>
-            </label>
-            <label class="assessment-item group" data-weight="5">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">有 A/B Testing 實戰經驗</span>
-            </label>
-            <label class="assessment-item group" data-weight="5">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">熟悉敏捷開發流程</span>
-            </label>
-            <label class="assessment-item group" data-weight="5">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">能進行用戶訪談並提取洞察</span>
-            </label>
-            <label class="assessment-item group" data-weight="5">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">有數據驅動決策的習慣</span>
-            </label>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
+            <div class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:cpu-bolt-bold" class="text-lg text-violet-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle">AI 素養</p>
+            <p class="font-heading font-bold text-sm text-brand-text">30 分</p>
+          </div>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
+            <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:chat-round-dots-bold" class="text-lg text-amber-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle">Prompt Eng.</p>
+            <p class="font-heading font-bold text-sm text-brand-text">30 分</p>
+          </div>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
+            <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:database-bold" class="text-lg text-emerald-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle">數據思維</p>
+            <p class="font-heading font-bold text-sm text-brand-text">20 分</p>
           </div>
         </div>
 
-        <!-- Category 2 -->
-        <div class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center">
-              <iconify-icon icon="solar:cpu-bolt-bold" class="text-xl text-violet-600"></iconify-icon>
-            </div>
-            <div>
-              <h2 class="font-heading font-bold text-lg text-brand-text">AI 素養</h2>
-              <span class="text-xs font-body text-brand-subtle">每項 8 分</span>
-            </div>
-          </div>
-          <div class="space-y-3">
-            <label class="assessment-item group" data-weight="8">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">理解 LLM、ML 模型的基本原理</span>
-            </label>
-            <label class="assessment-item group" data-weight="8">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">知道什麼問題適合用 AI 解決</span>
-            </label>
-            <label class="assessment-item group" data-weight="8">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">了解 Hallucination、Model Drift 等概念</span>
-            </label>
-            <label class="assessment-item group" data-weight="8">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">能評估 AI 功能的 Precision 和 Recall</span>
-            </label>
-            <label class="assessment-item group" data-weight="8">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">理解 Fine-tuning vs Prompt Engineering 的 trade-off</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Category 3 -->
-        <div class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-              <iconify-icon icon="solar:chat-round-dots-bold" class="text-xl text-amber-600"></iconify-icon>
-            </div>
-            <div>
-              <h2 class="font-heading font-bold text-lg text-brand-text">Prompt Engineering</h2>
-              <span class="text-xs font-body text-brand-subtle">每項 7 分</span>
-            </div>
-          </div>
-          <div class="space-y-3">
-            <label class="assessment-item group" data-weight="7">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">會使用 Role + Context + Format 框架</span>
-            </label>
-            <label class="assessment-item group" data-weight="7">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">理解 System Prompt 的設計邏輯</span>
-            </label>
-            <label class="assessment-item group" data-weight="7">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">知道 Few-shot vs Zero-shot 的差異</span>
-            </label>
-            <label class="assessment-item group" data-weight="7">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">能設計 Prompt 的評估指標</span>
-            </label>
-            <label class="assessment-item group" data-weight="7">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">有在產品中設計 AI Workflow 的經驗</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Category 4 -->
-        <div class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-              <iconify-icon icon="solar:database-bold" class="text-xl text-emerald-600"></iconify-icon>
-            </div>
-            <div>
-              <h2 class="font-heading font-bold text-lg text-brand-text">數據思維</h2>
-              <span class="text-xs font-body text-brand-subtle">每項 6 分</span>
-            </div>
-          </div>
-          <div class="space-y-3">
-            <label class="assessment-item group" data-weight="6">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">會寫基礎 SQL 查詢</span>
-            </label>
-            <label class="assessment-item group" data-weight="6">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">能判斷數據品質和潛在 bias</span>
-            </label>
-            <label class="assessment-item group" data-weight="6">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">理解 Data Pipeline 的基本架構</span>
-            </label>
-            <label class="assessment-item group" data-weight="6">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">有定義數據指標（北極星指標）的經驗</span>
-            </label>
-            <label class="assessment-item group" data-weight="6">
-              <input type="checkbox" class="assessment-checkbox sr-only" />
-              <span class="checkbox-visual"></span>
-              <span class="font-body text-brand-text group-hover:text-brand-accent transition-colors">了解 AI 模型對訓練數據品質的依賴</span>
-            </label>
-          </div>
-        </div>
-
+        <button id="startBtn" class="mag-btn inline-flex px-10 py-4 bg-brand-accent text-white font-heading font-semibold rounded-full text-base tracking-wide hover:opacity-90 transition-opacity">
+          <span>開始測驗</span>
+        </button>
       </div>
 
-      <!-- Right: Score Panel (sticky) -->
-      <div class="lg:col-span-1">
-        <div class="lg:sticky lg:top-28 space-y-6">
+      <!-- ==================== QUESTION SCREEN ==================== -->
+      <div id="questionScreen" class="hidden">
 
-          <!-- Score Card -->
-          <div class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border text-center">
-            <p class="font-body text-sm text-brand-subtle mb-4">你的 AI PM 準備度</p>
-            <div class="relative w-40 h-40 mx-auto mb-4">
-              <svg class="w-40 h-40 -rotate-90" viewBox="0 0 160 160">
-                <circle cx="80" cy="80" r="70" fill="none" stroke="#e5e7eb" stroke-width="10" />
-                <circle id="scoreRing" cx="80" cy="80" r="70" fill="none" stroke="#6366f1" stroke-width="10"
-                  stroke-linecap="round"
-                  stroke-dasharray="439.82"
-                  stroke-dashoffset="439.82"
-                  style="transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;" />
-              </svg>
-              <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span id="scoreNumber" class="font-heading font-bold text-4xl text-brand-text">0</span>
-                <span class="font-body text-xs text-brand-subtle">/ 130</span>
-              </div>
-            </div>
-            <div id="levelBadge" class="inline-block px-4 py-1.5 rounded-full text-sm font-body font-medium bg-gray-100 text-brand-subtle transition-all duration-300">
-              開始勾選吧！
+        <!-- Progress Bar -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span id="progressLabel" class="font-body text-sm text-brand-subtle">第 1 題 / 共 16 題</span>
+            <span id="categoryBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body font-medium"></span>
+          </div>
+          <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full bg-brand-accent rounded-full transition-all duration-500 ease-out" style="width: 6.25%"></div>
+          </div>
+        </div>
+
+        <!-- Question -->
+        <div id="questionCard">
+          <h2 id="questionText" class="font-heading font-bold text-lg md:text-xl text-brand-text leading-relaxed mb-5">
+            <!-- filled by JS -->
+          </h2>
+
+          <!-- Options -->
+          <div id="optionsContainer" class="space-y-2.5">
+            <!-- filled by JS -->
+          </div>
+
+          <!-- Inline Explanation (hidden until answered) -->
+          <div id="explanationBox" class="hidden mt-5 transition-all duration-300">
+            <div id="explanationInner" class="rounded-xl p-4 md:p-5">
+              <p id="explanationResult" class="font-heading font-bold text-sm mb-1.5"></p>
+              <p id="explanationText" class="font-body text-sm text-brand-subtle leading-relaxed"></p>
             </div>
           </div>
 
-          <!-- Result Card -->
-          <div id="resultCard" class="bg-brand-light-surface rounded-2xl p-6 md:p-8 border border-brand-light-border hidden">
-            <p id="resultEmoji" class="text-3xl mb-3"></p>
-            <h3 id="resultTitle" class="font-heading font-bold text-lg text-brand-text mb-2"></h3>
-            <p id="resultDesc" class="font-body text-sm text-brand-subtle leading-relaxed mb-5"></p>
-            <div id="resultLinks" class="space-y-2">
-              <p class="font-heading font-semibold text-sm text-brand-text mb-1">推薦閱讀</p>
+          <!-- Next Button — inline, always visible after answer -->
+          <div id="nextBtnWrapper" class="hidden mt-5">
+            <button id="nextBtn" class="w-full py-3.5 bg-brand-accent text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+              <span id="nextBtnText">下一題</span>
+              <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== RESULTS SCREEN ==================== -->
+      <div id="resultsScreen" class="hidden">
+
+        <!-- Score Header -->
+        <div class="text-center mb-10">
+          <div class="relative w-48 h-48 mx-auto mb-6">
+            <svg class="w-48 h-48 -rotate-90" viewBox="0 0 192 192">
+              <circle cx="96" cy="96" r="84" fill="none" stroke="#e5e7eb" stroke-width="12" />
+              <circle id="resultRing" cx="96" cy="96" r="84" fill="none" stroke="#6366f1" stroke-width="12"
+                stroke-linecap="round"
+                stroke-dasharray="527.79"
+                stroke-dashoffset="527.79"
+                style="transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s ease;" />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="resultScore" class="font-heading font-bold text-5xl text-brand-text">0</span>
+              <span class="font-body text-sm text-brand-subtle">/ 100</span>
             </div>
           </div>
 
-          <!-- Reset Button -->
-          <button id="resetBtn" class="w-full py-3 rounded-xl border border-brand-light-border font-body text-sm text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-colors duration-300">
-            <iconify-icon icon="solar:refresh-linear" class="mr-1 align-middle"></iconify-icon>
-            重新評估
+          <!-- Level Badge -->
+          <div id="resultLevelBadge" class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-base font-heading font-semibold mb-3">
+            <!-- filled by JS -->
+          </div>
+          <p id="resultLevelDesc" class="font-body text-brand-subtle text-sm md:text-base max-w-lg mx-auto leading-relaxed"></p>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore0">
+            <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:clipboard-list-bold" class="text-brand-accent"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle mb-1">PM 基礎</p>
+            <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal0">0</span><span class="text-sm text-brand-subtle font-normal"> / 20</span></p>
+          </div>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore1">
+            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:cpu-bolt-bold" class="text-violet-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle mb-1">AI 素養</p>
+            <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal1">0</span><span class="text-sm text-brand-subtle font-normal"> / 30</span></p>
+          </div>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore2">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:chat-round-dots-bold" class="text-amber-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle mb-1">Prompt Eng.</p>
+            <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal2">0</span><span class="text-sm text-brand-subtle font-normal"> / 30</span></p>
+          </div>
+          <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mx-auto mb-2">
+              <iconify-icon icon="solar:database-bold" class="text-emerald-600"></iconify-icon>
+            </div>
+            <p class="font-body text-xs text-brand-subtle mb-1">數據思維</p>
+            <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal3">0</span><span class="text-sm text-brand-subtle font-normal"> / 20</span></p>
+          </div>
+        </div>
+
+        <!-- Per-question Review -->
+        <div class="mb-10">
+          <button id="toggleReview" class="w-full flex items-center justify-between px-6 py-4 bg-brand-light-surface rounded-2xl border border-brand-light-border hover:border-brand-accent/30 transition-colors">
+            <span class="font-heading font-semibold text-brand-text">逐題回顧</span>
+            <iconify-icon id="toggleReviewIcon" icon="solar:alt-arrow-down-linear" class="text-xl text-brand-subtle transition-transform duration-300"></iconify-icon>
           </button>
-
+          <div id="reviewContainer" class="hidden mt-4 space-y-3">
+            <!-- filled by JS -->
+          </div>
         </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <button id="resultShareBtn" class="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-accent text-white font-heading font-semibold rounded-full text-sm hover:opacity-90 transition-opacity">
+            <iconify-icon icon="solar:share-bold"></iconify-icon>
+            分享結果
+          </button>
+          <button id="retakeBtn" class="inline-flex items-center gap-2 px-8 py-3.5 border border-brand-light-border font-heading font-semibold rounded-full text-sm text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-colors">
+            <iconify-icon icon="solar:refresh-linear"></iconify-icon>
+            重新測驗
+          </button>
+        </div>
+
+        <!-- Newsletter CTA -->
+        <div class="rounded-2xl bg-gradient-to-br from-indigo-50 to-amber-50 p-8 md:p-12 text-center">
+          <iconify-icon icon="solar:letter-bold" class="text-brand-accent text-3xl mb-4"></iconify-icon>
+          <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3">想加速你的 AI PM 轉型？</h3>
+          <p class="font-body text-sm md:text-base text-brand-subtle mb-2 max-w-lg mx-auto">每週一篇 AI 產品實戰觀察，從工具、流程到思維框架，幫你少走彎路。</p>
+          <p class="font-body text-xs text-brand-accent/60 italic mb-6">已有 500+ 產品人訂閱</p>
+          <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn inline-flex px-8 py-3.5 bg-brand-accent text-white font-heading font-semibold rounded-full text-sm tracking-wide no-underline">
+            <span>免費訂閱電子報</span>
+          </a>
+        </div>
+
+        <!-- Bottom Note -->
+        <div class="mt-10 text-center">
+          <p class="font-body text-sm text-brand-subtle">這份測驗基於 Angela Jian 的 AI PM 能力框架設計，僅供參考。真正的能力來自實戰。</p>
+        </div>
+
       </div>
 
     </div>
-
-    <!-- Bottom Note -->
-    <div class="mt-16 text-center">
-      <p class="font-body text-sm text-brand-subtle">這份自評表基於 Angela Jian 的 AI PM 能力框架設計，僅供參考。真正的能力來自實戰。</p>
-    </div>
-
   </div>
 </main>
 
-<style>
-  .assessment-item {
+<style is:global>
+  .quiz-option {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1rem;
     border-radius: 0.75rem;
+    border: 2px solid #e5e7eb;
+    background: #fafafa;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     user-select: none;
   }
-  .assessment-item:hover {
-    background-color: rgba(99, 102, 241, 0.04);
+  .quiz-option:hover:not(.quiz-option-disabled) {
+    border-color: #6366f1;
+    background: #f0f0ff;
+  }
+  .quiz-option-disabled {
+    pointer-events: none;
+  }
+  .quiz-option.selected-correct {
+    border-color: #22c55e;
+    background: #f0fdf4;
+    animation: popCorrect 0.4s ease;
+  }
+  .quiz-option.selected-wrong {
+    border-color: #ef4444;
+    background: #fef2f2;
+    animation: shakeWrong 0.4s ease;
+  }
+  .quiz-option.reveal-correct {
+    border-color: #22c55e;
+    background: #f0fdf4;
+  }
+  .quiz-option.dimmed {
+    opacity: 0.45;
   }
 
-  .checkbox-visual {
+  .option-letter {
     flex-shrink: 0;
-    width: 1.375rem;
-    height: 1.375rem;
-    border-radius: 0.375rem;
-    border: 2px solid #d1d5db;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    background: #e5e7eb;
+    color: #6b7280;
     transition: all 0.2s ease;
-    position: relative;
   }
-  .checkbox-visual::after {
-    content: '';
+  .quiz-option:hover:not(.quiz-option-disabled) .option-letter {
+    background: #6366f1;
+    color: white;
+  }
+  .selected-correct .option-letter {
+    background: #22c55e;
+    color: white;
+  }
+  .selected-wrong .option-letter {
+    background: #ef4444;
+    color: white;
+  }
+  .reveal-correct .option-letter {
+    background: #22c55e;
+    color: white;
+  }
+
+  .explanation-correct {
+    background: #f0fdf4;
+    border-left: 3px solid #22c55e;
+  }
+  .explanation-wrong {
+    background: #fef2f2;
+    border-left: 3px solid #ef4444;
+  }
+
+  @keyframes popCorrect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+
+  .review-item {
+    padding: 1rem 1.25rem;
+    border-radius: 0.875rem;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .review-item:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+  .review-item-detail {
+    display: none;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  .review-item.open .review-item-detail {
     display: block;
-    width: 0.5rem;
-    height: 0.25rem;
-    border-left: 2px solid white;
-    border-bottom: 2px solid white;
-    transform: rotate(-45deg) translateY(-1px);
-    opacity: 0;
-    transition: opacity 0.15s ease;
   }
 
-  .assessment-checkbox:checked + .checkbox-visual {
-    background-color: #6366f1;
-    border-color: #6366f1;
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .assessment-checkbox:checked + .checkbox-visual::after {
-    opacity: 1;
+  .animate-in {
+    animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
-  .assessment-checkbox:checked ~ span:last-child {
-    color: #6366f1;
+  @keyframes countUp {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 </style>
 
 <script is:inline>
 (function() {
-  const MAX_SCORE = 130;
-  const CIRCUMFERENCE = 2 * Math.PI * 70; // ~439.82
-
-  const levels = [
+  /* ============================
+     QUESTION DATA
+     ============================ */
+  var QUESTIONS = [
+    // Category 0: PM Fundamentals (10 pts each, 2 questions = 20 total)
     {
-      min: 0, max: 30,
-      emoji: '\u{1F331}', title: '起步階段',
-      desc: '你有扎實的 PM 基礎，現在是開始接觸 AI 的好時機。建議從 Prompt Engineering 入手，這是投報率最高的起點。',
-      badgeColor: 'bg-green-100 text-green-700',
-      strokeColor: '#22c55e',
-      links: [
-        { text: '從傳統 PM 轉型 AI PM 的職涯路徑', url: '/articles/traditional-pm-to-ai-pm-career' },
-        { text: '產品經理的 AI 工具箱', url: '/articles/ai-tools-for-product-managers' },
-      ]
+      category: 0,
+      text: 'A/B Test 結果顯示新版按鈕 CTR 提升 15%，但客服回報用戶抱怨「找不到原本的功能」。你會？',
+      options: [
+        '數據說了算，直接全量上線新版',
+        '忽略客服反饋，樣本太小不具代表性',
+        '深入分析：拆分新舊用戶數據，確認是否為習慣差異，並評估長期留存影響',
+        '立即回滾到舊版'
+      ],
+      correct: 2,
+      explanation: '單一指標提升不代表整體體驗改善。CTR 上升可能犧牲了其他重要指標。PM 需要看全局，結合定量（數據）和定性（用戶反饋）做判斷。'
     },
     {
-      min: 31, max: 65,
-      emoji: '\u{1F33F}', title: '成長階段',
-      desc: '你已經開始建立 AI 認知，接下來需要更多實戰。建議找一個實際專案練手，把理論轉化為經驗。',
-      badgeColor: 'bg-emerald-100 text-emerald-700',
-      strokeColor: '#10b981',
-      links: [
-        { text: '從傳統 PM 轉型 AI PM 的職涯路徑', url: '/articles/traditional-pm-to-ai-pm-career' },
-        { text: '產品經理的 AI 工具箱', url: '/articles/ai-tools-for-product-managers' },
-      ]
+      category: 0,
+      text: '團隊同時收到 5 個需求：CEO 要的新功能、大客戶的客製化、技術債修復、競品跟進、用戶反饋最多的 Bug。你如何決定優先級？',
+      options: [
+        'CEO 要的最重要，先做',
+        '用 RICE/ICE 框架評估影響力和成本，數據驅動排序',
+        '先修 Bug，用戶體驗最重要',
+        '跟進競品功能，不能落後'
+      ],
+      correct: 1,
+      explanation: '好的 PM 不是按「誰喊最大聲」排序，而是建立可量化的優先級框架。RICE（Reach, Impact, Confidence, Effort）能讓團隊對齊，減少主觀爭論。'
+    },
+    // Category 1: AI Literacy (10 pts each, 3 questions = 30 total)
+    {
+      category: 1,
+      text: '老闆希望在客服系統加入 AI 自動回覆。你的第一步是？',
+      options: [
+        '馬上串接 ChatGPT API',
+        '盤點現有客服數據，評估 AI 能解決的問題範圍和用戶期待',
+        '直接找 AI 工程師開始開發',
+        '先研究市場上所有 AI 客服產品'
+      ],
+      correct: 1,
+      explanation: 'AI 功能的成敗取決於「問題定義」。先搞清楚 AI 要解決什麼問題、現有數據能不能支撐、用戶能接受多少不完美，才不會做出沒人用的功能。'
     },
     {
-      min: 66, max: 100,
-      emoji: '\u{1F333}', title: '進階階段',
-      desc: '你具備了 AI PM 的核心能力，可以開始主導 AI 產品的規劃。建議深入 Evaluation 和 Data Pipeline 的實務操作。',
-      badgeColor: 'bg-indigo-100 text-indigo-700',
-      strokeColor: '#6366f1',
-      links: [
-        { text: 'PM 技能樹 vs AI PM 能力矩陣', url: '/articles/pm-skill-tree-vs-ai-pm-matrix' },
-        { text: 'AI 驅動的競品分析', url: '/articles/ai-powered-competitive-intelligence' },
-      ]
+      category: 1,
+      text: '在設計 AI 產品功能時，以下哪個原則最重要？',
+      options: [
+        'AI 的準確率必須達到 99% 才能上線',
+        '設計 Human-in-the-Loop 機制，讓 AI 出錯時有兜底方案',
+        '盡可能讓 AI 完全自動化，減少人工介入',
+        '用最先進的模型確保效果最好'
+      ],
+      correct: 1,
+      explanation: 'AI 產出有不確定性，100% 準確不現實。好的 AI 產品設計是預設 AI 會出錯，並設計優雅的 fallback 機制，確保錯誤不會造成嚴重後果。'
     },
     {
-      min: 101, max: 130,
-      emoji: '\u{1F680}', title: '專家階段',
-      desc: '你已經是稀缺的 AI PM 人才！建議開始分享經驗、建立影響力，同時關注最新的 AI 產品設計 Pattern。',
-      badgeColor: 'bg-violet-100 text-violet-700',
-      strokeColor: '#8b5cf6',
-      links: [
-        { text: 'PM 技能樹 vs AI PM 能力矩陣', url: '/articles/pm-skill-tree-vs-ai-pm-matrix' },
-        { text: 'AI 驅動的競品分析', url: '/articles/ai-powered-competitive-intelligence' },
-      ]
+      category: 1,
+      text: '以下哪種場景最不適合使用 AI 解決？',
+      options: [
+        '從大量用戶評論中提取共同痛點',
+        '判斷兩份合約的法律條款是否完全等價',
+        '根據用戶歷史行為推薦相關內容',
+        '將會議錄音自動轉為結構化會議記錄'
+      ],
+      correct: 1,
+      explanation: '法律合約的精確比對需要 100% 正確率，且錯誤的後果嚴重（法律責任）。AI 的機率性產出不適合需要絕對精確、零容錯的場景。'
     },
+    // Category 2: Prompt Engineering (10 pts each, 3 questions = 30 total)
+    {
+      category: 2,
+      text: '你要用 LLM 幫 PM 團隊自動生成 PRD 初稿。以下哪個 Prompt 設計最有效？',
+      options: [
+        '「幫我寫一份 PRD」',
+        '「你是資深產品經理。根據以下功能需求 [X]，產出包含 User Story、驗收條件、Edge Cases 的 PRD，用 Markdown 格式輸出」',
+        '「寫一份很詳細的 PRD，越長越好」',
+        '「模仿 Google PM 的風格寫 PRD」'
+      ],
+      correct: 1,
+      explanation: '好的 Prompt = Role（角色）+ Context（輸入）+ Task（任務）+ Format（輸出格式）。結構化的指令讓 AI 的產出更穩定、更符合預期。'
+    },
+    {
+      category: 2,
+      text: '你設計了一個 System Prompt 讓 AI 客服回答用戶問題，但 AI 偶爾會回答產品不支援的功能。最有效的改善方式？',
+      options: [
+        '在 Prompt 加上「不要亂說」',
+        '在 System Prompt 中明確列出產品功能範圍，並加入「超出範圍時回覆：建議聯繫人工客服」的指令',
+        '把 Temperature 調到 0',
+        '換用更大的模型'
+      ],
+      correct: 1,
+      explanation: 'Prompt 的「邊界定義」至關重要。明確告訴 AI 什麼能說、什麼不能說、超出範圍怎麼處理，比模糊的「不要亂說」有效得多。'
+    },
+    {
+      category: 2,
+      text: '你用 GPT-4 做競品分析，發現它回覆中有一段定價資訊跟官網不同。最佳處理方式？',
+      options: [
+        'AI 說的應該是對的，直接用',
+        '把這段標記為「待驗證」，用即時搜尋工具交叉確認',
+        '整份報告都不能用了，重做',
+        '換一個 AI 模型再問一次'
+      ],
+      correct: 1,
+      explanation: 'LLM 會產生 Hallucination（幻覺），尤其是即時性資訊（定價、數據）。正確做法是保留 AI 的框架性產出，但對事實性內容進行人工驗證。'
+    },
+    // Category 3: Data Thinking (10 pts each, 2 questions = 20 total)
+    {
+      category: 3,
+      text: '你發現訓練數據中，女性用戶的樣本只佔 15%。這會造成什麼問題？',
+      options: [
+        '沒有問題，AI 會自動平衡',
+        '模型可能對女性用戶的預測準確度較低，產生 Bias',
+        '只要總數據量夠大就沒關係',
+        '這是工程師的問題，PM 不需要關心'
+      ],
+      correct: 1,
+      explanation: '訓練數據的分佈直接影響模型表現。樣本不均衡會導致模型對少數群體的預測較差（Bias）。PM 有責任在需求階段就提出數據公平性的要求。'
+    },
+    {
+      category: 3,
+      text: '你的 AI 模型的 Precision 是 95%，Recall 是 60%。在什麼場景下這個 trade-off 是合理的？',
+      options: [
+        '垃圾郵件過濾 — 寧可漏掉一些垃圾信，也不要誤判正常郵件',
+        '醫療診斷篩檢 — 不能漏掉任何可能的病例',
+        '任何場景都應該追求 Precision 和 Recall 都高',
+        '這個 trade-off 說明模型有問題，需要重新訓練'
+      ],
+      correct: 0,
+      explanation: '高 Precision + 低 Recall 表示「寧可漏判，不可誤判」。適合誤判成本高的場景（如垃圾信誤判正常郵件很惱人）。醫療篩檢則需要高 Recall（不能漏診），可以接受較低 Precision。'
+    }
   ];
 
-  function getLevel(score) {
-    if (score === 0) return null;
-    return levels.find(l => score >= l.min && score <= l.max);
+  var CATEGORIES = [
+    { name: '產品管理基礎', icon: 'solar:clipboard-list-bold', colorBg: 'background:#eef2ff;', colorText: 'color:#6366f1;', maxScore: 20, perQ: 10 },
+    { name: 'AI 素養', icon: 'solar:cpu-bolt-bold', colorBg: 'background:#ede9fe;', colorText: 'color:#7c3aed;', maxScore: 30, perQ: 10 },
+    { name: 'Prompt Engineering', icon: 'solar:chat-round-dots-bold', colorBg: 'background:#fef3c7;', colorText: 'color:#d97706;', maxScore: 30, perQ: 10 },
+    { name: '數據思維', icon: 'solar:database-bold', colorBg: 'background:#d1fae5;', colorText: 'color:#059669;', maxScore: 20, perQ: 10 }
+  ];
+
+  var LEVELS = [
+    { min: 0, max: 40, emoji: '\u{1F331}', title: '起步階段', badgeBg: '#dcfce7', badgeColor: '#15803d', strokeColor: '#22c55e', desc: '你有基礎的產品思維，現在是開始深入 AI 領域的好時機。建議從 Prompt Engineering 入手，這是投報率最高的起點，同時多閱讀 AI 產品案例來建立直覺。' },
+    { min: 41, max: 60, emoji: '\u{1F33F}', title: '成長階段', badgeBg: '#d1fae5', badgeColor: '#047857', strokeColor: '#10b981', desc: '你已經具備不錯的 AI PM 認知基礎！接下來需要更多實戰經驗。建議找一個實際專案練手，將理論轉化為可驗證的產品決策。' },
+    { min: 61, max: 80, emoji: '\u{1F333}', title: '進階階段', badgeBg: '#e0e7ff', badgeColor: '#4338ca', strokeColor: '#6366f1', desc: '你在多個維度都展現了扎實的 AI PM 能力。建議深入 AI Evaluation、Data Pipeline 和 MLOps 的實務操作，向技術團隊靠攏。' },
+    { min: 81, max: 100, emoji: '\u{1F680}', title: '專家階段', badgeBg: '#ede9fe', badgeColor: '#6d28d9', strokeColor: '#8b5cf6', desc: '你已經是稀缺的 AI PM 人才！建議開始分享經驗、建立個人品牌影響力，同時持續關注前沿的 AI 產品設計 Pattern 和 Agent 架構。' }
+  ];
+
+  var LETTERS = ['A', 'B', 'C', 'D'];
+  var CIRCUMFERENCE = 2 * Math.PI * 84; // ~527.79
+
+  /* ============================
+     STATE
+     ============================ */
+  var currentQ = 0;
+  var answers = []; // { selected: idx, correct: bool }
+  var categoryScores = [0, 0, 0, 0];
+  var answered = false;
+
+  /* ============================
+     DOM REFS
+     ============================ */
+  var startScreen = document.getElementById('startScreen');
+  var questionScreen = document.getElementById('questionScreen');
+  var resultsScreen = document.getElementById('resultsScreen');
+  var startBtn = document.getElementById('startBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var nextBtnWrapper = document.getElementById('nextBtnWrapper');
+  var nextBtnText = document.getElementById('nextBtnText');
+  var progressLabel = document.getElementById('progressLabel');
+  var progressBar = document.getElementById('progressBar');
+  var categoryBadge = document.getElementById('categoryBadge');
+  var questionText = document.getElementById('questionText');
+  var optionsContainer = document.getElementById('optionsContainer');
+  var explanationBox = document.getElementById('explanationBox');
+  var explanationInner = document.getElementById('explanationInner');
+  var explanationResult = document.getElementById('explanationResult');
+  var explanationText = document.getElementById('explanationText');
+
+  /* ============================
+     FUNCTIONS
+     ============================ */
+
+  function showScreen(screen) {
+    startScreen.classList.add('hidden');
+    questionScreen.classList.add('hidden');
+    resultsScreen.classList.add('hidden');
+    screen.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function update() {
-    var score = 0;
-    var items = document.querySelectorAll('.assessment-item');
-    items.forEach(function(item) {
-      var cb = item.querySelector('.assessment-checkbox');
-      if (cb && cb.checked) {
-        score += parseInt(item.getAttribute('data-weight') || '0', 10);
-      }
-    });
+  function renderQuestion() {
+    var q = QUESTIONS[currentQ];
+    var cat = CATEGORIES[q.category];
+    answered = false;
 
-    // Update score number
-    document.getElementById('scoreNumber').textContent = score;
+    // Progress
+    var pct = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
+    progressLabel.textContent = '\u7B2C ' + (currentQ + 1) + ' \u984C / \u5171 ' + QUESTIONS.length + ' \u984C';
+    progressBar.style.width = pct + '%';
 
-    // Update ring
-    var ring = document.getElementById('scoreRing');
-    var offset = CIRCUMFERENCE - (score / MAX_SCORE) * CIRCUMFERENCE;
-    ring.setAttribute('stroke-dashoffset', offset);
+    // Category badge
+    categoryBadge.setAttribute('style', cat.colorBg + cat.colorText);
+    categoryBadge.innerHTML = '<iconify-icon icon="' + cat.icon + '" style="font-size:0.85rem;"></iconify-icon> ' + cat.name;
 
-    var level = getLevel(score);
-    var badge = document.getElementById('levelBadge');
-    var card = document.getElementById('resultCard');
+    // Question text
+    questionText.textContent = q.text;
 
-    if (!level) {
-      badge.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-body font-medium bg-gray-100 text-brand-subtle transition-all duration-300';
-      badge.textContent = '開始勾選吧！';
-      ring.setAttribute('stroke', '#6366f1');
-      card.classList.add('hidden');
-      return;
+    // Options
+    optionsContainer.innerHTML = '';
+    for (var i = 0; i < q.options.length; i++) {
+      var optDiv = document.createElement('div');
+      optDiv.className = 'quiz-option';
+      optDiv.setAttribute('data-idx', i);
+      optDiv.innerHTML = '<div class="option-letter">' + LETTERS[i] + '</div><span class="font-body text-sm text-brand-text leading-relaxed">' + q.options[i] + '</span>';
+      optDiv.addEventListener('click', handleOptionClick);
+      optionsContainer.appendChild(optDiv);
     }
 
-    // Update badge
-    badge.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-body font-medium transition-all duration-300 ' + level.badgeColor;
-    badge.textContent = level.emoji + ' ' + level.title;
+    // Hide explanation and next button
+    explanationBox.classList.add('hidden');
+    nextBtnWrapper.classList.add('hidden');
 
-    // Update ring color
-    ring.setAttribute('stroke', level.strokeColor);
+    // Update next button text
+    if (currentQ === QUESTIONS.length - 1) {
+      nextBtnText.textContent = '\u67E5\u770B\u7D50\u679C';
+    } else {
+      nextBtnText.textContent = '\u4E0B\u4E00\u984C';
+    }
 
-    // Update result card
-    card.classList.remove('hidden');
-    document.getElementById('resultEmoji').textContent = level.emoji;
-    document.getElementById('resultTitle').textContent = level.title;
-    document.getElementById('resultDesc').textContent = level.desc;
-
-    var linksContainer = document.getElementById('resultLinks');
-    linksContainer.innerHTML = '<p class="font-heading font-semibold text-sm text-brand-text mb-1">推薦閱讀</p>';
-    level.links.forEach(function(link) {
-      var a = document.createElement('a');
-      a.href = link.url;
-      a.className = 'block font-body text-sm text-brand-accent hover:underline';
-      a.textContent = '→ ' + link.text;
-      linksContainer.appendChild(a);
+    // Animate in
+    var card = document.getElementById('questionCard');
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    requestAnimationFrame(function() {
+      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
     });
   }
 
-  // Attach listeners
-  document.querySelectorAll('.assessment-checkbox').forEach(function(cb) {
-    cb.addEventListener('change', update);
+  function handleOptionClick(e) {
+    if (answered) return;
+    answered = true;
+
+    var target = e.currentTarget;
+    var selectedIdx = parseInt(target.getAttribute('data-idx'), 10);
+    var q = QUESTIONS[currentQ];
+    var isCorrect = selectedIdx === q.correct;
+
+    // Record answer
+    answers.push({ selected: selectedIdx, correct: isCorrect });
+    if (isCorrect) {
+      categoryScores[q.category] += CATEGORIES[q.category].perQ;
+    }
+
+    // Disable all options and dim non-selected wrong ones
+    var allOpts = optionsContainer.querySelectorAll('.quiz-option');
+    for (var i = 0; i < allOpts.length; i++) {
+      allOpts[i].classList.add('quiz-option-disabled');
+      if (i === q.correct) {
+        allOpts[i].classList.add('reveal-correct');
+      } else if (parseInt(allOpts[i].getAttribute('data-idx'), 10) !== selectedIdx) {
+        allOpts[i].classList.add('dimmed');
+      }
+    }
+
+    // Mark selected
+    if (isCorrect) {
+      target.classList.remove('reveal-correct');
+      target.classList.add('selected-correct');
+    } else {
+      target.classList.add('selected-wrong');
+    }
+
+    // Show explanation inline
+    explanationBox.classList.remove('hidden');
+    explanationInner.className = 'rounded-xl p-4 md:p-5 ' + (isCorrect ? 'explanation-correct' : 'explanation-wrong');
+    if (isCorrect) {
+      explanationResult.innerHTML = '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;vertical-align:-2px;margin-right:4px;"></iconify-icon> \u7B54\u5C0D\u4E86\uFF01';
+      explanationResult.style.color = '#16a34a';
+    } else {
+      explanationResult.innerHTML = '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;vertical-align:-2px;margin-right:4px;"></iconify-icon> \u7B54\u932F\u4E86\uFF01\u6B63\u78BA\u7B54\u6848\u662F ' + LETTERS[q.correct];
+      explanationResult.style.color = '#dc2626';
+    }
+    explanationText.textContent = q.explanation;
+
+    // Show next button immediately below
+    nextBtnWrapper.classList.remove('hidden');
+  }
+
+  function showResults() {
+    showScreen(resultsScreen);
+
+    var totalScore = 0;
+    for (var i = 0; i < categoryScores.length; i++) {
+      totalScore += categoryScores[i];
+    }
+    totalScore = Math.round(totalScore);
+
+    // Animate score number
+    var scoreEl = document.getElementById('resultScore');
+    var ring = document.getElementById('resultRing');
+    var startVal = 0;
+    var duration = 1200;
+    var startTime = null;
+
+    function animateScore(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var currentVal = Math.round(eased * totalScore);
+      scoreEl.textContent = currentVal;
+
+      // Update ring
+      var offset = CIRCUMFERENCE - (eased * totalScore / 100) * CIRCUMFERENCE;
+      ring.setAttribute('stroke-dashoffset', offset);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScore);
+      }
+    }
+
+    // Get level
+    var level = LEVELS[0];
+    for (var j = 0; j < LEVELS.length; j++) {
+      if (totalScore >= LEVELS[j].min && totalScore <= LEVELS[j].max) {
+        level = LEVELS[j];
+        break;
+      }
+    }
+
+    ring.setAttribute('stroke', level.strokeColor);
+
+    setTimeout(function() {
+      requestAnimationFrame(animateScore);
+    }, 300);
+
+    // Level badge
+    var badge = document.getElementById('resultLevelBadge');
+    badge.setAttribute('style', 'background:' + level.badgeBg + ';color:' + level.badgeColor + ';');
+    badge.textContent = level.emoji + ' ' + level.title;
+
+    document.getElementById('resultLevelDesc').textContent = level.desc;
+
+    // Category scores
+    for (var k = 0; k < 4; k++) {
+      document.getElementById('catVal' + k).textContent = Math.round(categoryScores[k]);
+    }
+
+    // Per-question review
+    var reviewContainer = document.getElementById('reviewContainer');
+    reviewContainer.innerHTML = '';
+    for (var m = 0; m < QUESTIONS.length; m++) {
+      var q = QUESTIONS[m];
+      var a = answers[m];
+      var cat = CATEGORIES[q.category];
+      var statusIcon = a.correct
+        ? '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;font-size:1.25rem;"></iconify-icon>'
+        : '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;font-size:1.25rem;"></iconify-icon>';
+
+      var div = document.createElement('div');
+      div.className = 'review-item';
+      div.innerHTML =
+        '<div style="display:flex;align-items:center;gap:0.75rem;">' +
+          statusIcon +
+          '<span style="flex:1;" class="font-body text-sm text-brand-text">' + (m + 1) + '. ' + q.text.substring(0, 50) + (q.text.length > 50 ? '...' : '') + '</span>' +
+          '<iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle" style="font-size:1rem;flex-shrink:0;transition:transform 0.2s;"></iconify-icon>' +
+        '</div>' +
+        '<div class="review-item-detail">' +
+          '<p class="font-body text-sm text-brand-text mb-2" style="font-weight:600;">' + q.text + '</p>' +
+          '<p class="font-body text-xs text-brand-subtle mb-1">\u4F60\u7684\u7B54\u6848\uFF1A<span style="color:' + (a.correct ? '#16a34a' : '#dc2626') + ';font-weight:600;">' + LETTERS[a.selected] + '. ' + q.options[a.selected] + '</span></p>' +
+          (!a.correct ? '<p class="font-body text-xs text-brand-subtle mb-1">\u6B63\u78BA\u7B54\u6848\uFF1A<span style="color:#16a34a;font-weight:600;">' + LETTERS[q.correct] + '. ' + q.options[q.correct] + '</span></p>' : '') +
+          '<p class="font-body text-xs text-brand-subtle mt-2" style="padding:0.5rem 0.75rem;background:#f9fafb;border-radius:0.5rem;border:1px solid #e5e7eb;">' + q.explanation + '</p>' +
+        '</div>';
+
+      div.addEventListener('click', function() {
+        var isOpen = this.classList.contains('open');
+        this.classList.toggle('open');
+        var arrow = this.querySelector('iconify-icon[icon="solar:alt-arrow-down-linear"]');
+        if (arrow) {
+          arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+
+      reviewContainer.appendChild(div);
+    }
+  }
+
+  /* ============================
+     EVENT LISTENERS
+     ============================ */
+
+  startBtn.addEventListener('click', function() {
+    showScreen(questionScreen);
+    renderQuestion();
   });
 
-  // Reset
-  document.getElementById('resetBtn').addEventListener('click', function() {
-    document.querySelectorAll('.assessment-checkbox').forEach(function(cb) {
-      cb.checked = false;
-    });
-    update();
+  nextBtn.addEventListener('click', function() {
+    if (currentQ < QUESTIONS.length - 1) {
+      currentQ++;
+      renderQuestion();
+      document.getElementById('questionScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      showResults();
+    }
   });
 
-  // Initial
-  update();
+  // Toggle review
+  document.getElementById('toggleReview').addEventListener('click', function() {
+    var container = document.getElementById('reviewContainer');
+    var icon = document.getElementById('toggleReviewIcon');
+    var isHidden = container.classList.contains('hidden');
+    if (isHidden) {
+      container.classList.remove('hidden');
+      icon.style.transform = 'rotate(180deg)';
+    } else {
+      container.classList.add('hidden');
+      icon.style.transform = 'rotate(0deg)';
+    }
+  });
+
+  // Share
+  document.getElementById('resultShareBtn').addEventListener('click', function() {
+    var totalScore = 0;
+    for (var i = 0; i < categoryScores.length; i++) {
+      totalScore += categoryScores[i];
+    }
+    totalScore = Math.round(totalScore);
+    var level = LEVELS[0];
+    for (var j = 0; j < LEVELS.length; j++) {
+      if (totalScore >= LEVELS[j].min && totalScore <= LEVELS[j].max) {
+        level = LEVELS[j];
+        break;
+      }
+    }
+
+    var text = '\u6211\u5728\u300CAI PM \u80FD\u529B\u6E2C\u9A57\u300D\u5F97\u5230 ' + totalScore + '/100 \u5206 ' + level.emoji + ' ' + level.title + '\uFF01\u4F60\u4E5F\u4F86\u6E2C\u6E2C\u770B \u{1F449}';
+    var url = window.location.href;
+
+    if (navigator.share) {
+      navigator.share({ title: 'AI PM \u80FD\u529B\u6E2C\u9A57', text: text, url: url }).catch(function(){});
+    } else {
+      navigator.clipboard.writeText(text + ' ' + url).then(function() {
+        var btn = document.getElementById('resultShareBtn');
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<iconify-icon icon="solar:check-circle-bold"></iconify-icon> \u5DF2\u8907\u88FD\u5206\u4EAB\u6587\u5B57\uFF01';
+        setTimeout(function() { btn.innerHTML = orig; }, 2000);
+      });
+    }
+  });
+
+  // Retake
+  document.getElementById('retakeBtn').addEventListener('click', function() {
+    currentQ = 0;
+    answers = [];
+    categoryScores = [0, 0, 0, 0];
+    answered = false;
+    showScreen(startScreen);
+  });
+
 })();
 </script>
 
