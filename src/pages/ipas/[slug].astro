@@ -18,9 +18,42 @@ const allLessons = (await getCollection('ipas')).sort((a, b) => a.data.order - b
 const currentIdx = allLessons.findIndex(l => l.id === lesson.id);
 const prevLesson = currentIdx > 0 ? allLessons[currentIdx - 1] : null;
 const nextLesson = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1] : null;
+const canonicalURL = new URL(`/ipas/${lesson.id}`, Astro.site);
 ---
 
-<Base title={`${lesson.data.title} — iPAS AI 課程`} description={lesson.data.summary}>
+<Base title={`${lesson.data.title} — iPAS AI 應用規劃師證照教學`} description={lesson.data.summary}>
+
+  <!-- JSON-LD: Article + Course structured data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": lesson.data.title,
+    "description": lesson.data.summary,
+    "author": { "@type": "Person", "name": "Angela Jian 簡琬庭", "url": Astro.site?.toString() },
+    "publisher": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL.toString() },
+    "isPartOf": {
+      "@type": "Course",
+      "name": "iPAS AI 應用規劃師初級證照備考教學",
+      "description": "51 篇白話教學文章，從零基礎到考取經濟部 iPAS AI 應用規劃師初級證照",
+      "provider": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+      "educationalLevel": "Beginner",
+      "inLanguage": "zh-TW"
+    },
+    "position": lesson.data.order,
+    "keywords": ["iPAS", "AI應用規劃師", "證照", lesson.data.stage, lesson.data.courseId, "人工智慧"]
+  })} />
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "首頁", "item": Astro.site?.toString() },
+      { "@type": "ListItem", "position": 2, "name": "iPAS AI 課程", "item": new URL("/ipas", Astro.site).toString() },
+      { "@type": "ListItem", "position": 3, "name": lesson.data.title, "item": canonicalURL.toString() }
+    ]
+  })} />
 
   <!-- Article Header -->
   <section class="relative pt-28 md:pt-32 pb-4 md:pb-6 overflow-hidden bg-[#FFFEF7]">
