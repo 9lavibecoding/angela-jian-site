@@ -12,6 +12,7 @@ export interface Article {
   date: string;
   image: string;
   summary: string;
+  summaryEn: string;
   content: string;
   url: string;
 }
@@ -39,6 +40,7 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2026.03.08',
     image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&q=80&auto=format',
     summary: '傳統 PM 技能樹已不足以應對 AI 產品，提出「π 型」能力模型，結合產品判斷力與 AI 技術理解...',
+    summaryEn: 'Traditional PM skill trees fall short for AI products. A "π-shaped" competency model combining product judgment with AI literacy is proposed.',
     content: '',
     url: 'https://www.linkedin.com/pulse/%E6%B7%BA%E8%AB%87%E5%82%B3%E7%B5%B1-pm-%E6%8A%80%E8%83%BD%E6%A8%B9-vs-ai-%E8%83%BD%E5%8A%9B%E7%9F%A9%E9%99%A3-angela-jian-rjamc',
   },
@@ -50,6 +52,7 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2026.02.11',
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80&auto=format',
     summary: '透過 AI 設計工具補足美感缺口，減少反覆下 Prompt 的成本，展現 AI 時代產品開發新可能...',
+    summaryEn: 'Using AI design tools to bridge the aesthetics gap, reducing iterative prompt costs and showcasing new possibilities for product development in the AI era.',
     content: '',
     url: 'https://www.linkedin.com/pulse/%E7%BE%8E%E6%84%9F%E4%B8%8D%E5%86%8D%E6%98%AF%E9%96%80%E6%AA%BBpencildev-%E5%B9%AB%E6%88%91%E5%AF%A6%E7%8F%BE%E8%A8%AD%E8%A8%88%E5%8D%B3%E7%94%A2%E5%93%81-angela-jian-mexgc',
   },
@@ -61,6 +64,7 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2026.01.21',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80&auto=format',
     summary: 'Built an AI-powered competitive intelligence dashboard using Python, Streamlit, and Gemini AI...',
+    summaryEn: 'Built an AI-powered competitive intelligence dashboard using Python, Streamlit, and Gemini AI to automate market analysis.',
     content: '',
     url: 'https://www.linkedin.com/pulse/how-ai-changes-product-sense-building-ai-powered-competitive-jian-fuctc',
   },
@@ -72,6 +76,7 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2025.12.26',
     image: '',
     summary: '不是盲目自動化，而是設置信心度閾值讓系統智能標記需要審核的項目，最終作帳時間下降 60%...',
+    summaryEn: 'Instead of blind automation, confidence thresholds intelligently flag items for human review — reducing bookkeeping time by 60%.',
     content: '',
     url: 'https://www.linkedin.com/pulse/%E5%88%86%E4%BA%AB%E6%88%91%E5%A6%82%E4%BD%95%E8%A8%AD%E8%A8%88human-in-the-loop-%E7%9A%84-ai-%E6%9C%83%E8%A8%88%E4%BD%9C%E5%B8%B3%E6%B5%81%E7%A8%8B%E8%80%8C%E9%9D%9E%E7%B4%94%E8%87%AA%E5%8B%95%E5%8C%96-angela-jian-85xtc',
   },
@@ -83,6 +88,7 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2025.12.13',
     image: '',
     summary: 'AI 的價值在於流程優化而非技術本身，提出正確的問題比得到答案更重要...',
+    summaryEn: 'AI\'s value lies in process optimization, not the technology itself. Asking the right questions matters more than getting answers.',
     content: '',
     url: 'https://www.linkedin.com/pulse/ai-%E6%87%89%E7%94%A8%E8%A6%8F%E5%8A%83%E5%B8%AB%E6%95%99%E6%88%91%E7%9A%84-3-%E5%80%8B%E6%AE%98%E9%85%B7%E7%8F%BE%E5%AF%A6-angela-jian-jufnc',
   },
@@ -94,13 +100,14 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2026.03.18',
     image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&q=80&auto=format',
     summary: '從行動應用 PM 到 AI 產品經理的完整轉型路徑，拆解需要的能力、踩過的坑，以及最實際的轉型建議。',
+    summaryEn: 'The complete path from mobile app PM to AI product manager — skills needed, pitfalls encountered, and practical transition advice.',
     content: `<blockquote>老實說，兩年前的我完全沒想過自己會走上 AI 產品經理這條路。</blockquote><hr /><p>當時我還在做行動應用的 PM，每天的工作是畫 wireframe、寫 user story、跟工程師 sync 開發進度。日子過得很充實，但心裡有個隱隱的不安——我看到身邊越來越多產品開始加入 AI 功能，而我對這些東西一無所知。</p><p>那種感覺很像你在搭一班即將到站的列車，而下一班車已經進站了，你不確定該不該跳。</p><p>後來我跳了。這篇文章想跟你分享的，就是我從傳統 PM 轉型到 AI 產品經理的完整路徑，包含那些踩過的坑、學到的事，以及我認為最實際的轉型建議。</p><hr /><h2>為什麼 AI 產品經理正在崛起</h2><p>這兩年 AI 產品經理的職缺數量成長幅度，用「爆炸」來形容並不誇張。不管是大廠還是新創，只要產品裡有用到 LLM、推薦系統、或任何 ML 模型，都需要一個「<strong>懂 AI 能力邊界的人</strong>」來主導產品方向。</p><p>殘酷的現實是：<strong>市場不缺會寫 PRD 的 PM，缺的是能跟 AI 工程師對話、能判斷模型能不能解決用戶問題的 PM。</strong>（關於能力差異的深入分析，可以參考我之前寫的 <a href="/articles/pm-skill-tree-vs-ai-pm-matrix">傳統 PM 技能樹 vs. AI PM 能力矩陣</a>）</p><p>傳統 PM 的核心能力——用戶研究、需求拆解、專案管理——這些當然還是重要的基礎。但光有這些已經不夠了。當產品的核心引擎從「邏輯規則」變成「機率模型」，PM 的思維方式必須跟著改變。</p><hr /><h2>AI 產品經理到底在做什麼</h2><p>很多人問我：「AI 產品經理的日常跟傳統 PM 差在哪？」</p><p>最大的差異不在工具或流程，而在<strong>思考方式</strong>。</p><h3>傳統 PM vs AI PM 的核心差異</h3><p>傳統 PM 做產品，邏輯是：<strong>用戶要什麼 → 定義規格 → 工程師照著做 → 產出確定的結果。</strong></p><p>AI PM 做產品，邏輯變成：<strong>用戶要什麼 → 判斷 AI 能不能做到 → 定義「夠好」的標準 → 持續調整模型表現。</strong> 結果是機率性的，你要管理的不是「對不對」，而是「對的機率夠不夠高」。</p><h3>日常工作長什麼樣</h3><ul><li><strong>定義 AI 功能的 Evaluation 標準</strong>：不是寫驗收條件就好，而是要定義 Precision、Recall 的目標值</li></ul><ul><li><strong>設計 Prompt 和 AI Workflow</strong>：很多 LLM 產品的核心體驗取決於 Prompt 設計</li></ul><ul><li><strong>管理 Data Pipeline 的優先級</strong>：AI 產品的品質取決於數據</li></ul><ul><li><strong>跟用戶溝通 AI 的限制</strong>：怎麼設定用戶預期、怎麼設計 fallback 體驗</li></ul><ul><li><strong>持續監控模型表現</strong>：上線不是結束，是開始。模型會隨數據分佈改變而衰退（Model Drift）</li></ul><p>簡單來說，AI PM 的角色更像是一個<strong>翻譯官</strong>——把用戶需求翻譯成 AI 團隊聽得懂的語言，同時把 AI 的能力和限制翻譯成用戶和老闆聽得懂的語言。</p>
 <div style="margin:2.5rem 0;overflow-x:auto;">
 <table style="width:100%;border-collapse:collapse;border-radius:0.75rem;overflow:hidden;font-size:0.9rem;line-height:1.6;">
 <thead><tr>
-<th style="background:#6366f1;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:25%;">維度</th>
-<th style="background:#6366f1;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:37.5%;">傳統 PM</th>
-<th style="background:#3730a3;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:37.5%;">AI PM</th>
+<th style="background:#C5A55A;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:25%;">維度</th>
+<th style="background:#C5A55A;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:37.5%;">傳統 PM</th>
+<th style="background:#e65100;color:#fff;padding:1rem 1.25rem;text-align:left;font-weight:600;width:37.5%;">AI PM</th>
 </tr></thead>
 <tbody>
 <tr><td style="padding:0.85rem 1.25rem;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111;">思維方式</td><td style="padding:0.85rem 1.25rem;border-bottom:1px solid #e5e7eb;color:#6b7280;">確定性邏輯：輸入 → 固定產出</td><td style="padding:0.85rem 1.25rem;border-bottom:1px solid #e5e7eb;color:#6b7280;">機率性思維：管理「夠好」的標準</td></tr>
@@ -112,9 +119,9 @@ export const STATIC_ARTICLES: Article[] = [
 </div>
 <hr /><h2>需要具備的能力</h2>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0 2rem;">
-<div style="background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-radius:0.75rem;padding:1.25rem;">
+<div style="background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:0.75rem;padding:1.25rem;">
 <div style="font-size:1.5rem;margin-bottom:0.5rem;">🧠</div>
-<div style="font-weight:700;color:#3730a3;font-size:0.95rem;margin-bottom:0.35rem;">AI Literacy</div>
+<div style="font-weight:700;color:#e65100;font-size:0.95rem;margin-bottom:0.35rem;">AI Literacy</div>
 <div style="font-size:0.8rem;color:#6b7280;line-height:1.5;">判斷問題是否適合 AI、理解技術 trade-off 與模型限制</div>
 </div>
 <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:0.75rem;padding:1.25rem;">
@@ -137,11 +144,11 @@ export const STATIC_ARTICLES: Article[] = [
 <div style="font-weight:700;color:#111;font-size:0.95rem;margin-bottom:1.25rem;text-align:center;">我的轉型路徑</div>
 <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;min-width:fit-content;">
 <div style="text-align:center;flex-shrink:0;">
-<div style="width:3.5rem;height:3.5rem;border-radius:50%;background:#e0e7ff;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-size:1.2rem;">📱</div>
-<div style="font-size:0.75rem;font-weight:600;color:#3730a3;">行動應用 PM</div>
+<div style="width:3.5rem;height:3.5rem;border-radius:50%;background:#ffe0b2;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-size:1.2rem;">📱</div>
+<div style="font-size:0.75rem;font-weight:600;color:#e65100;">行動應用 PM</div>
 <div style="font-size:0.65rem;color:#9ca3af;margin-top:0.15rem;">B2C 功能迭代</div>
 </div>
-<div style="width:2.5rem;height:2px;background:linear-gradient(90deg,#c7d2fe,#6366f1);flex-shrink:0;margin:0 0.25rem;"></div>
+<div style="width:2.5rem;height:2px;background:linear-gradient(90deg,#E8DFD0,#C5A55A);flex-shrink:0;margin:0 0.25rem;"></div>
 <div style="text-align:center;flex-shrink:0;">
 <div style="width:3.5rem;height:3.5rem;border-radius:50%;background:#fef3c7;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-size:1.2rem;">⚡</div>
 <div style="font-size:0.75rem;font-weight:600;color:#92400e;">被指派 AI 專案</div>
@@ -153,10 +160,10 @@ export const STATIC_ARTICLES: Article[] = [
 <div style="font-size:0.75rem;font-weight:600;color:#dc2626;">踩坑學習</div>
 <div style="font-size:0.65rem;color:#9ca3af;margin-top:0.15rem;">數據、模型、預期管理</div>
 </div>
-<div style="width:2.5rem;height:2px;background:linear-gradient(90deg,#fca5a5,#6366f1);flex-shrink:0;margin:0 0.25rem;"></div>
+<div style="width:2.5rem;height:2px;background:linear-gradient(90deg,#fca5a5,#C5A55A);flex-shrink:0;margin:0 0.25rem;"></div>
 <div style="text-align:center;flex-shrink:0;">
-<div style="width:3.5rem;height:3.5rem;border-radius:50%;background:#6366f1;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-size:1.2rem;">🚀</div>
-<div style="font-size:0.75rem;font-weight:600;color:#6366f1;">AI PM</div>
+<div style="width:3.5rem;height:3.5rem;border-radius:50%;background:#C5A55A;display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-size:1.2rem;">🚀</div>
+<div style="font-size:0.75rem;font-weight:600;color:#C5A55A;">AI PM</div>
 <div style="font-size:0.65rem;color:#9ca3af;margin-top:0.15rem;">擁抱不確定性</div>
 </div>
 </div>
@@ -172,21 +179,22 @@ export const STATIC_ARTICLES: Article[] = [
     date: '2026.03.18',
     image: 'https://images.unsplash.com/photo-1531746790095-e5995fbd4c70?w=500&q=80&auto=format',
     summary: '分享 PM 日常實際在用的 5 個 AI 場景，包含具體工具、Prompt 範例與踩過的坑，不是清單文而是真實工作流。',
+    summaryEn: '5 real AI use cases from a PM\'s daily workflow — specific tools, prompt examples, and lessons learned. Not a listicle, but a real workflow.',
     content: `<blockquote>身為一個每天被會議、文件、數據追著跑的 PM，我一直在思考一個問題：我的時間到底都花在哪裡？</blockquote><hr /><p>去年我做了一個實驗，連續兩週記錄自己每小時在做什麼。結果很殘酷——將近 60% 的時間花在「整理」而非「思考」。整理會議紀錄、整理競品資料、整理數據報告、整理週報⋯⋯我的工作不是產品經理，是整理經理。</p><p>這就是我開始認真把 AI 工具融入日常工作流的起點。不是為了追潮流，而是為了<strong>把時間還給真正需要人類判斷力的事情</strong>。（如果你對 PM 轉型 AI 領域有興趣，可以看看<a href="/articles/traditional-pm-to-ai-pm-career">我的轉型路徑與實戰心得</a>）</p><p>今天這篇文章，我想跟你分享我每天實際在用的 5 個 AI 場景，包含具體工具、怎麼下 Prompt、以及踩過的坑。不是那種「推薦你 50 個 AI 工具」的清單文，而是一個 PM 真實的日常。</p><hr /><h2>PM 的時間都花在哪裡？哪些環節 AI 能介入</h2><p>先拉高一個層次來看。PM 的工作大致可以分成幾個區塊：</p><ul><li><strong>資訊蒐集</strong>（競品分析、市場調研）</li></ul><ul><li><strong>文件產出</strong>（PRD、規格書、提案）</li></ul><ul><li><strong>數據分析</strong>（看報表、找洞察）</li></ul><ul><li><strong>溝通協調</strong>（會議、訪談、跨部門對齊）</li></ul><ul><li><strong>進度管理</strong>（週報、追蹤、更新狀態）</li></ul><p>這裡面有一個關鍵判斷：<strong>不是所有環節都適合讓 AI 介入，但幾乎所有環節都有 AI 能加速的部分。</strong></p><p>我的原則是——AI 處理「從 0 到 0.7」的粗活，我負責「從 0.7 到 1」的精修與判斷。搞清楚這個分工，你才不會掉進「AI 幫我做完了但品質很差」的陷阱。</p>
 <div style="margin:2rem 0;background:#f8fafc;border-radius:0.75rem;padding:1.5rem;">
 <div style="font-weight:700;color:#111;font-size:0.95rem;margin-bottom:1rem;">PM 時間分配 — 哪些環節 AI 能介入？</div>
 <div style="display:flex;flex-direction:column;gap:0.6rem;">
-<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">資訊蒐集（競品/調研）</span><span style="color:#6366f1;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:25%;height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:4px;"></div></div></div>
-<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">文件產出（PRD/提案）</span><span style="color:#6366f1;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:30%;height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:4px;"></div></div></div>
+<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">資訊蒐集（競品/調研）</span><span style="color:#C5A55A;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:25%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);border-radius:4px;"></div></div></div>
+<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">文件產出（PRD/提案）</span><span style="color:#C5A55A;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:30%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);border-radius:4px;"></div></div></div>
 <div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">數據分析</span><span style="color:#f59e0b;font-weight:600;">部分可用 🟡</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:15%;height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:4px;"></div></div></div>
 <div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">溝通協調（會議/訪談）</span><span style="color:#f59e0b;font-weight:600;">整理可用 🟡</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:20%;height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:4px;"></div></div></div>
-<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">進度管理（週報/追蹤）</span><span style="color:#6366f1;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:10%;height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:4px;"></div></div></div>
+<div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">進度管理（週報/追蹤）</span><span style="color:#C5A55A;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:10%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);border-radius:4px;"></div></div></div>
 </div>
 </div>
-<div style="margin:1.5rem 0 2.5rem;background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-radius:0.75rem;padding:1.25rem;">
-<div style="font-weight:700;color:#3730a3;font-size:0.9rem;margin-bottom:0.75rem;text-align:center;">AI 與人類的分工原則</div>
+<div style="margin:1.5rem 0 2.5rem;background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:0.75rem;padding:1.25rem;">
+<div style="font-weight:700;color:#e65100;font-size:0.9rem;margin-bottom:0.75rem;text-align:center;">AI 與人類的分工原則</div>
 <div style="position:relative;height:2.5rem;background:#e5e7eb;border-radius:6px;overflow:hidden;">
-<div style="position:absolute;left:0;top:0;width:70%;height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);display:flex;align-items:center;padding-left:1rem;">
+<div style="position:absolute;left:0;top:0;width:70%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);display:flex;align-items:center;padding-left:1rem;">
 <span style="color:#fff;font-size:0.8rem;font-weight:600;">AI 處理：0 → 0.7</span>
 </div>
 <div style="position:absolute;right:0;top:0;width:30%;height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;">
@@ -203,10 +211,10 @@ export const STATIC_ARTICLES: Article[] = [
 <div style="font-weight:700;color:#111;font-size:0.95rem;margin-bottom:1rem;">5 大場景效率對比</div>
 <table style="width:100%;border-collapse:collapse;border-radius:0.75rem;overflow:hidden;font-size:0.85rem;line-height:1.6;">
 <thead><tr>
-<th style="background:#6366f1;color:#fff;padding:0.85rem 1rem;text-align:left;font-weight:600;">場景</th>
-<th style="background:#6366f1;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">以前耗時</th>
-<th style="background:#6366f1;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">現在耗時</th>
-<th style="background:#3730a3;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">主要工具</th>
+<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:left;font-weight:600;">場景</th>
+<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">以前耗時</th>
+<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">現在耗時</th>
+<th style="background:#e65100;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">主要工具</th>
 </tr></thead>
 <tbody>
 <tr><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111;">競品分析</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#dc2626;">4 小時</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#059669;font-weight:600;">1 小時</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#6b7280;">ChatGPT + Perplexity</td></tr>
@@ -315,6 +323,7 @@ export async function getArticles(): Promise<Article[]> {
         date: props.Date?.date?.start?.replaceAll('-', '.') || '',
         image: props.Image?.url || '',
         summary: props.Summary?.rich_text?.[0]?.plain_text || '',
+        summaryEn: '',
         content: await blocksToHtml(page.id),
         url: props.ExternalURL?.url || '',
       });
@@ -324,8 +333,12 @@ export async function getArticles(): Promise<Article[]> {
     const staticBySlug = new Map(STATIC_ARTICLES.map(a => [a.slug, a]));
     const mergedArticles = articles.map(a => {
       const staticVer = staticBySlug.get(a.slug);
-      if (staticVer && staticVer.content) {
-        return { ...a, content: staticVer.content };
+      if (staticVer) {
+        return {
+          ...a,
+          ...(staticVer.content ? { content: staticVer.content } : {}),
+          ...(staticVer.summaryEn ? { summaryEn: staticVer.summaryEn } : {}),
+        };
       }
       return a;
     });

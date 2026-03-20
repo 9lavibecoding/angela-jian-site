@@ -3,22 +3,22 @@
 @theme {
   --font-heading: 'Inter', 'Noto Sans TC', sans-serif;
   --font-body: 'Inter', 'Noto Sans TC', sans-serif;
-  --color-brand-dark: #09090b;
-  --color-brand-deeper: #121210;
-  --color-brand-surface: #f5f5f4;
-  --color-brand-muted: #d4d4d4;
-  --color-brand-accent: #6366f1;
-  --color-brand-accent-dark: #3730a3;
-  --color-brand-warm: #f59e0b;
-  --color-brand-warm-dark: #d97706;
-  --color-brand-cool: #64748b;
-  --color-brand-text: #111111;
-  --color-brand-subtle: #6b7280;
-  --color-brand-light-bg: #ffffff;
-  --color-brand-light-surface: #f9fafb;
-  --color-brand-light-border: #e5e7eb;
-  --color-brand-light-text: #111111;
-  --color-brand-light-subtle: #6b7280;
+  --color-brand-dark: #1a1814;
+  --color-brand-deeper: #13110e;
+  --color-brand-surface: #F3EDE4;
+  --color-brand-muted: #c8c0b8;
+  --color-brand-accent: #C5A55A;
+  --color-brand-accent-dark: #A8893E;
+  --color-brand-warm: #D4B86A;
+  --color-brand-warm-dark: #A8893E;
+  --color-brand-cool: #7a7268;
+  --color-brand-text: #1a1814;
+  --color-brand-subtle: #78716C;
+  --color-brand-light-bg: #FAF6EF;
+  --color-brand-light-surface: #F3EDE4;
+  --color-brand-light-border: #E0D5C5;
+  --color-brand-light-text: #1a1814;
+  --color-brand-light-subtle: #78716C;
   --radius-4xl: 2rem;
   --radius-5xl: 2.5rem;
 }
@@ -29,7 +29,7 @@
   html { font-size: 16px; scroll-behavior: smooth; }
   .site-container { max-width: 1280px; width: 85%; margin-left: auto; margin-right: auto; }
   body {
-    background: #ffffff;
+    background: #FAF6EF;
     color: var(--color-brand-text);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
@@ -38,8 +38,8 @@
   }
   img, video, svg { max-width: 100%; height: auto; }
   ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: #f5f5f5; }
-  ::-webkit-scrollbar-thumb { background: var(--color-brand-accent); border-radius: 2px; }
+  ::-webkit-scrollbar-track { background: #F3EDE4; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #D4B86A, #C5A55A, #A8893E); border-radius: 2px; }
 }
 
 @layer components {
@@ -52,12 +52,12 @@
   }
   .cursor-trail {
     position: fixed; width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    border: 1px solid rgba(197, 165, 90, 0.3);
     pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
     transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
   .cursor-main.hovering { width: 60px; height: 60px; opacity: 0.6; }
-  .cursor-trail.hovering { width: 80px; height: 80px; border-color: rgba(99, 102, 241, 0.15); }
+  .cursor-trail.hovering { width: 80px; height: 80px; border-color: rgba(197, 165, 90, 0.15); }
 
   .stagger-col { will-change: transform; }
 
@@ -84,18 +84,28 @@
     opacity: 0; transform: translateY(40px);
   }
 
-
-
   /* Card Hover */
   .card-hover {
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
   .card-hover:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08); }
 
+  /* Metallic Gold Gradient */
+  .gold-gradient {
+    background: linear-gradient(135deg, #D4B86A 0%, #C5A55A 25%, #E8D48B 50%, #C5A55A 75%, #A8893E 100%);
+  }
+  .gold-text {
+    background: linear-gradient(135deg, #D4B86A 0%, #C5A55A 25%, #E8D48B 50%, #C5A55A 75%, #A8893E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   /* Magnetic Button */
   .mag-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; overflow: hidden; }
   .mag-btn::before {
-    content: ''; position: absolute; inset: 0; background: var(--color-brand-accent);
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, #D4B86A 0%, #C5A55A 25%, #E8D48B 50%, #C5A55A 75%, #A8893E 100%);
     transform: scaleY(0); transform-origin: bottom;
     transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1); border-radius: inherit;
   }
@@ -114,16 +124,16 @@
 
   /* Loader */
   #loader {
-    position: fixed; inset: 0; background: #ffffff; z-index: 99999;
+    position: fixed; inset: 0; background: #FAF6EF; z-index: 99999;
     display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem;
   }
-  .loader-bar { width: min(200px, 60vw); height: 2px; background: rgba(99, 102, 241, 0.1); border-radius: 2px; overflow: hidden; position: relative; }
+  .loader-bar { width: min(200px, 60vw); height: 2px; background: rgba(197, 165, 90, 0.15); border-radius: 2px; overflow: hidden; position: relative; }
   .loader-bar-inner { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--color-brand-accent); border-radius: 2px; }
 
   /* Nav */
   .nav-glass {
     backdrop-filter: blur(20px) saturate(1.8); -webkit-backdrop-filter: blur(20px) saturate(1.8);
-    background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: rgba(26, 24, 20, 0.95); border-bottom: 1px solid rgba(197, 165, 90, 0.2);
   }
 
   /* Article Reading Page — Light Theme */
@@ -136,11 +146,11 @@
   .article-content-light li { margin-bottom: 0.5rem; }
   .article-content-light blockquote {
     border-left: 3px solid var(--color-brand-accent-dark); padding: 1rem 1.5rem; margin: 1.5rem 0;
-    background: rgba(55, 48, 163, 0.05); border-radius: 0 0.75rem 0.75rem 0;
+    background: rgba(197, 165, 90, 0.06); border-radius: 0 0.75rem 0.75rem 0;
   }
   .article-content-light img { border-radius: 1rem; margin: 2rem 0; width: 100%; min-height: 0; }
   .article-content-light img[src=""], .article-content-light img:not([src]) { display: none; }
-  .article-content-light code { background: rgba(55, 48, 163, 0.08); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.9em; color: var(--color-brand-accent-dark); }
+  .article-content-light code { background: rgba(197, 165, 90, 0.1); padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.9em; color: var(--color-brand-accent-dark); }
   .article-content-light pre { background: #1e1e2e; color: #cdd6f4; padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; }
   .article-content-light pre code { background: none; padding: 0; color: inherit; }
 }

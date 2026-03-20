@@ -1,17 +1,17 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Base from '../../../layouts/Base.astro';
 ---
 
-<Base title="AI PM 能力測驗 — Angela Jian" description="16 道情境題，測試你的 AI 產品經理實戰能力，獲取個人化評分與學習建議">
+<Base title="AI PM Skills Assessment — Angela Jian" description="10 scenario-based questions to test your AI Product Manager skills. Get a personalized score and learning recommendations." lang="en">
 
 <main class="pt-28 pb-20 min-h-screen bg-[#FFFEF7]">
   <div class="site-container px-6">
 
     <!-- Header with back link -->
     <div class="mb-8">
-      <a href="/#portfolio" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors mb-6">
+      <a href="/en/#portfolio" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors mb-6">
         <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
-        返回作品集
+        Back to Portfolio
       </a>
     </div>
 
@@ -22,11 +22,11 @@ import Base from '../../layouts/Base.astro';
       <div id="startScreen" class="text-center py-8">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 text-brand-accent text-sm font-body font-medium mb-6">
           <iconify-icon icon="solar:document-text-bold"></iconify-icon>
-          10 道情境題 / 約 5 分鐘
+          10 scenario questions / ~5 minutes
         </div>
-        <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-text mb-4 leading-tight">AI PM 能力測驗</h1>
+        <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-text mb-4 leading-tight">AI PM Skills Assessment</h1>
         <p class="font-body text-brand-subtle text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed">
-          模擬真實產品場景，測試你在產品管理、AI 素養、Prompt Engineering 和數據思維四大維度的實戰能力。
+          Real-world product scenarios testing your skills across four dimensions: Product Management, AI Literacy, Prompt Engineering, and Data Thinking.
         </p>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 max-w-2xl mx-auto">
@@ -34,34 +34,34 @@ import Base from '../../layouts/Base.astro';
             <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:clipboard-list-bold" class="text-lg text-brand-accent"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle">PM 基礎</p>
-            <p class="font-heading font-bold text-sm text-brand-text">20 分</p>
+            <p class="font-body text-xs text-brand-subtle">PM Fundamentals</p>
+            <p class="font-heading font-bold text-sm text-brand-text">20 pts</p>
           </div>
           <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
             <div class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:cpu-bolt-bold" class="text-lg text-violet-600"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle">AI 素養</p>
-            <p class="font-heading font-bold text-sm text-brand-text">30 分</p>
+            <p class="font-body text-xs text-brand-subtle">AI Literacy</p>
+            <p class="font-heading font-bold text-sm text-brand-text">30 pts</p>
           </div>
           <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
             <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:chat-round-dots-bold" class="text-lg text-amber-600"></iconify-icon>
             </div>
             <p class="font-body text-xs text-brand-subtle">Prompt Eng.</p>
-            <p class="font-heading font-bold text-sm text-brand-text">30 分</p>
+            <p class="font-heading font-bold text-sm text-brand-text">30 pts</p>
           </div>
           <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border">
             <div class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:database-bold" class="text-lg text-emerald-600"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle">數據思維</p>
-            <p class="font-heading font-bold text-sm text-brand-text">20 分</p>
+            <p class="font-body text-xs text-brand-subtle">Data Thinking</p>
+            <p class="font-heading font-bold text-sm text-brand-text">20 pts</p>
           </div>
         </div>
 
         <button id="startBtn" class="mag-btn inline-flex px-10 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-base tracking-wide hover:opacity-90 transition-opacity">
-          <span>開始測驗</span>
+          <span>Start Assessment</span>
         </button>
       </div>
 
@@ -71,11 +71,11 @@ import Base from '../../layouts/Base.astro';
         <!-- Progress Bar -->
         <div class="mb-6">
           <div class="flex items-center justify-between mb-2">
-            <span id="progressLabel" class="font-body text-sm text-brand-subtle">第 1 題 / 共 16 題</span>
+            <span id="progressLabel" class="font-body text-sm text-brand-subtle">Question 1 / 10</span>
             <span id="categoryBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-body font-medium"></span>
           </div>
           <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div id="progressBar" class="h-full bg-brand-accent rounded-full transition-all duration-500 ease-out" style="width: 6.25%"></div>
+            <div id="progressBar" class="h-full bg-brand-accent rounded-full transition-all duration-500 ease-out" style="width: 10%"></div>
           </div>
         </div>
 
@@ -98,10 +98,10 @@ import Base from '../../layouts/Base.astro';
             </div>
           </div>
 
-          <!-- Next Button — inline, always visible after answer -->
+          <!-- Next Button -->
           <div id="nextBtnWrapper" class="hidden mt-5">
             <button id="nextBtn" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-              <span id="nextBtnText">下一題</span>
+              <span id="nextBtnText">Next Question</span>
               <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
             </button>
           </div>
@@ -141,14 +141,14 @@ import Base from '../../layouts/Base.astro';
             <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:clipboard-list-bold" class="text-brand-accent"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle mb-1">PM 基礎</p>
+            <p class="font-body text-xs text-brand-subtle mb-1">PM Fundamentals</p>
             <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal0">0</span><span class="text-sm text-brand-subtle font-normal"> / 20</span></p>
           </div>
           <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore1">
             <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:cpu-bolt-bold" class="text-violet-600"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle mb-1">AI 素養</p>
+            <p class="font-body text-xs text-brand-subtle mb-1">AI Literacy</p>
             <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal1">0</span><span class="text-sm text-brand-subtle font-normal"> / 30</span></p>
           </div>
           <div class="bg-brand-light-surface rounded-xl p-4 border border-brand-light-border text-center" id="catScore2">
@@ -162,7 +162,7 @@ import Base from '../../layouts/Base.astro';
             <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center mx-auto mb-2">
               <iconify-icon icon="solar:database-bold" class="text-emerald-600"></iconify-icon>
             </div>
-            <p class="font-body text-xs text-brand-subtle mb-1">數據思維</p>
+            <p class="font-body text-xs text-brand-subtle mb-1">Data Thinking</p>
             <p class="font-heading font-bold text-lg text-brand-text"><span id="catVal3">0</span><span class="text-sm text-brand-subtle font-normal"> / 20</span></p>
           </div>
         </div>
@@ -170,7 +170,7 @@ import Base from '../../layouts/Base.astro';
         <!-- Per-question Review -->
         <div class="mb-10">
           <button id="toggleReview" class="w-full flex items-center justify-between px-6 py-4 bg-brand-light-surface rounded-2xl border border-brand-light-border hover:border-brand-accent/30 transition-colors">
-            <span class="font-heading font-semibold text-brand-text">逐題回顧</span>
+            <span class="font-heading font-semibold text-brand-text">Question-by-Question Review</span>
             <iconify-icon id="toggleReviewIcon" icon="solar:alt-arrow-down-linear" class="text-xl text-brand-subtle transition-transform duration-300"></iconify-icon>
           </button>
           <div id="reviewContainer" class="hidden mt-4 space-y-3">
@@ -182,28 +182,28 @@ import Base from '../../layouts/Base.astro';
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <button id="resultShareBtn" class="inline-flex items-center gap-2 px-8 py-3.5 gold-gradient text-white font-heading font-semibold rounded-full text-sm hover:opacity-90 transition-opacity">
             <iconify-icon icon="solar:share-bold"></iconify-icon>
-            分享結果
+            Share Results
           </button>
           <button id="retakeBtn" class="inline-flex items-center gap-2 px-8 py-3.5 border border-brand-light-border font-heading font-semibold rounded-full text-sm text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-colors">
             <iconify-icon icon="solar:refresh-linear"></iconify-icon>
-            重新測驗
+            Retake Assessment
           </button>
         </div>
 
         <!-- Newsletter CTA -->
         <div class="rounded-2xl bg-gradient-to-br from-amber-50 to-amber-50 p-8 md:p-12 text-center">
           <iconify-icon icon="solar:letter-bold" class="text-brand-accent text-3xl mb-4"></iconify-icon>
-          <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3">想加速你的 AI PM 轉型？</h3>
-          <p class="font-body text-sm md:text-base text-brand-subtle mb-2 max-w-lg mx-auto">每週一篇 AI 產品實戰觀察，從工具、流程到思維框架，幫你少走彎路。</p>
-          <p class="font-body text-xs text-brand-accent/60 italic mb-6">已有 500+ 產品人訂閱</p>
+          <h3 class="font-heading font-bold text-xl md:text-2xl text-brand-text mb-3">Want to accelerate your AI PM transition?</h3>
+          <p class="font-body text-sm md:text-base text-brand-subtle mb-2 max-w-lg mx-auto">Weekly AI product insights — from tools and workflows to mental models — helping you avoid common pitfalls.</p>
+          <p class="font-body text-xs text-brand-accent/60 italic mb-6">500+ product professionals subscribed</p>
           <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn inline-flex px-8 py-3.5 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide no-underline">
-            <span>免費訂閱電子報</span>
+            <span>Subscribe for Free</span>
           </a>
         </div>
 
         <!-- Bottom Note -->
         <div class="mt-10 text-center">
-          <p class="font-body text-sm text-brand-subtle">這份測驗基於 Angela Jian 的 AI PM 能力框架設計，僅供參考。真正的能力來自實戰。</p>
+          <p class="font-body text-sm text-brand-subtle">This assessment is based on Angela Jian's AI PM competency framework, for reference only. Real competence comes from practice.</p>
         </div>
 
       </div>
@@ -227,7 +227,7 @@ import Base from '../../layouts/Base.astro';
   }
   .quiz-option:hover:not(.quiz-option-disabled) {
     border-color: #C5A55A;
-    background: #F3EDE4;
+    background: #f0f0ff;
   }
   .quiz-option-disabled {
     pointer-events: none;
@@ -348,141 +348,141 @@ import Base from '../../layouts/Base.astro';
     // Category 0: PM Fundamentals (10 pts each, 2 questions = 20 total)
     {
       category: 0,
-      text: 'A/B Test 結果顯示新版按鈕 CTR 提升 15%，但客服回報用戶抱怨「找不到原本的功能」。你會？',
+      text: 'An A/B test shows the new button increased CTR by 15%, but customer support reports users complaining they "can\'t find the original feature." What do you do?',
       options: [
-        '數據說了算，直接全量上線新版',
-        '忽略客服反饋，樣本太小不具代表性',
-        '深入分析：拆分新舊用戶數據，確認是否為習慣差異，並評估長期留存影響',
-        '立即回滾到舊版'
+        'Data speaks — roll out the new version to all users immediately',
+        'Ignore the support feedback, the sample size is too small to be representative',
+        'Dig deeper: segment data by new vs. existing users, check if it\'s a habit issue, and evaluate long-term retention impact',
+        'Roll back to the old version immediately'
       ],
       correct: 2,
-      explanation: '單一指標提升不代表整體體驗改善。CTR 上升可能犧牲了其他重要指標。PM 需要看全局，結合定量（數據）和定性（用戶反饋）做判斷。'
+      explanation: 'A single metric improvement doesn\'t mean the overall experience improved. CTR increases may come at the cost of other important metrics. PMs need to see the big picture, combining quantitative (data) and qualitative (user feedback) signals.'
     },
     {
       category: 0,
-      text: '團隊同時收到 5 個需求：CEO 要的新功能、大客戶的客製化、技術債修復、競品跟進、用戶反饋最多的 Bug。你如何決定優先級？',
+      text: 'Your team receives 5 requests simultaneously: a new feature the CEO wants, a key client\'s customization, tech debt fix, competitor feature catch-up, and the most-reported user bug. How do you prioritize?',
       options: [
-        'CEO 要的最重要，先做',
-        '用 RICE/ICE 框架評估影響力和成本，數據驅動排序',
-        '先修 Bug，用戶體驗最重要',
-        '跟進競品功能，不能落後'
+        'The CEO\'s request is most important — do it first',
+        'Use a RICE/ICE framework to evaluate impact and effort, prioritize data-driven',
+        'Fix the bug first — user experience matters most',
+        'Chase the competitor feature — can\'t fall behind'
       ],
       correct: 1,
-      explanation: '好的 PM 不是按「誰喊最大聲」排序，而是建立可量化的優先級框架。RICE（Reach, Impact, Confidence, Effort）能讓團隊對齊，減少主觀爭論。'
+      explanation: 'Good PMs don\'t prioritize by "who shouts loudest" but build a quantifiable prioritization framework. RICE (Reach, Impact, Confidence, Effort) aligns the team and reduces subjective debate.'
     },
     // Category 1: AI Literacy (10 pts each, 3 questions = 30 total)
     {
       category: 1,
-      text: '老闆希望在客服系統加入 AI 自動回覆。你的第一步是？',
+      text: 'Your boss wants to add AI auto-reply to the customer service system. What\'s your first step?',
       options: [
-        '馬上串接 ChatGPT API',
-        '盤點現有客服數據，評估 AI 能解決的問題範圍和用戶期待',
-        '直接找 AI 工程師開始開發',
-        '先研究市場上所有 AI 客服產品'
+        'Integrate the ChatGPT API right away',
+        'Audit existing customer service data, assess the scope of problems AI can solve and user expectations',
+        'Find an AI engineer and start development immediately',
+        'Research every AI customer service product on the market first'
       ],
       correct: 1,
-      explanation: 'AI 功能的成敗取決於「問題定義」。先搞清楚 AI 要解決什麼問題、現有數據能不能支撐、用戶能接受多少不完美，才不會做出沒人用的功能。'
+      explanation: 'The success of AI features depends on "problem definition." First understand what problem AI needs to solve, whether existing data can support it, and how much imperfection users will accept — otherwise you\'ll build something nobody uses.'
     },
     {
       category: 1,
-      text: '在設計 AI 產品功能時，以下哪個原則最重要？',
+      text: 'When designing AI product features, which principle is most important?',
       options: [
-        'AI 的準確率必須達到 99% 才能上線',
-        '設計 Human-in-the-Loop 機制，讓 AI 出錯時有兜底方案',
-        '盡可能讓 AI 完全自動化，減少人工介入',
-        '用最先進的模型確保效果最好'
+        'AI accuracy must reach 99% before launch',
+        'Design a Human-in-the-Loop mechanism with fallback plans for when AI makes mistakes',
+        'Maximize full automation to minimize human intervention',
+        'Use the most advanced model to ensure best results'
       ],
       correct: 1,
-      explanation: 'AI 產出有不確定性，100% 準確不現實。好的 AI 產品設計是預設 AI 會出錯，並設計優雅的 fallback 機制，確保錯誤不會造成嚴重後果。'
+      explanation: 'AI output has inherent uncertainty — 100% accuracy is unrealistic. Good AI product design assumes AI will make mistakes and designs graceful fallback mechanisms to ensure errors don\'t cause serious consequences.'
     },
     {
       category: 1,
-      text: '以下哪種場景最不適合使用 AI 解決？',
+      text: 'Which scenario is least suitable for an AI solution?',
       options: [
-        '從大量用戶評論中提取共同痛點',
-        '判斷兩份合約的法律條款是否完全等價',
-        '根據用戶歷史行為推薦相關內容',
-        '將會議錄音自動轉為結構化會議記錄'
+        'Extracting common pain points from a large volume of user reviews',
+        'Determining whether the legal clauses in two contracts are exactly equivalent',
+        'Recommending relevant content based on user behavior history',
+        'Automatically converting meeting recordings into structured meeting notes'
       ],
       correct: 1,
-      explanation: '法律合約的精確比對需要 100% 正確率，且錯誤的後果嚴重（法律責任）。AI 的機率性產出不適合需要絕對精確、零容錯的場景。'
+      explanation: 'Precise legal contract comparison requires 100% accuracy, and the cost of errors is severe (legal liability). AI\'s probabilistic output is not suitable for scenarios demanding absolute precision with zero tolerance for error.'
     },
     // Category 2: Prompt Engineering (10 pts each, 3 questions = 30 total)
     {
       category: 2,
-      text: '你要用 LLM 幫 PM 團隊自動生成 PRD 初稿。以下哪個 Prompt 設計最有效？',
+      text: 'You want to use an LLM to auto-generate PRD drafts for the PM team. Which prompt design is most effective?',
       options: [
-        '「幫我寫一份 PRD」',
-        '「你是資深產品經理。根據以下功能需求 [X]，產出包含 User Story、驗收條件、Edge Cases 的 PRD，用 Markdown 格式輸出」',
-        '「寫一份很詳細的 PRD，越長越好」',
-        '「模仿 Google PM 的風格寫 PRD」'
+        '"Help me write a PRD"',
+        '"You are a senior product manager. Based on the following feature requirement [X], produce a PRD including User Stories, Acceptance Criteria, and Edge Cases, output in Markdown format"',
+        '"Write a very detailed PRD, the longer the better"',
+        '"Write a PRD in the style of a Google PM"'
       ],
       correct: 1,
-      explanation: '好的 Prompt = Role（角色）+ Context（輸入）+ Task（任務）+ Format（輸出格式）。結構化的指令讓 AI 的產出更穩定、更符合預期。'
+      explanation: 'A good prompt = Role + Context (input) + Task + Format (output). Structured instructions make AI output more stable and aligned with expectations.'
     },
     {
       category: 2,
-      text: '你設計了一個 System Prompt 讓 AI 客服回答用戶問題，但 AI 偶爾會回答產品不支援的功能。最有效的改善方式？',
+      text: 'You designed a System Prompt for an AI customer service bot, but the AI occasionally answers about features the product doesn\'t support. What\'s the most effective fix?',
       options: [
-        '在 Prompt 加上「不要亂說」',
-        '在 System Prompt 中明確列出產品功能範圍，並加入「超出範圍時回覆：建議聯繫人工客服」的指令',
-        '把 Temperature 調到 0',
-        '換用更大的模型'
+        'Add "don\'t make things up" to the prompt',
+        'Explicitly list the product\'s feature scope in the System Prompt and add an instruction: "For out-of-scope questions, reply: Please contact human support"',
+        'Set Temperature to 0',
+        'Switch to a larger model'
       ],
       correct: 1,
-      explanation: 'Prompt 的「邊界定義」至關重要。明確告訴 AI 什麼能說、什麼不能說、超出範圍怎麼處理，比模糊的「不要亂說」有效得多。'
+      explanation: 'Prompt "boundary definition" is critical. Explicitly telling the AI what it can and cannot say, and how to handle out-of-scope questions, is far more effective than vague instructions like "don\'t make things up."'
     },
     {
       category: 2,
-      text: '你用 GPT-4 做競品分析，發現它回覆中有一段定價資訊跟官網不同。最佳處理方式？',
+      text: 'You\'re using GPT-4 for competitive analysis and notice a pricing detail in the response differs from the official website. Best approach?',
       options: [
-        'AI 說的應該是對的，直接用',
-        '把這段標記為「待驗證」，用即時搜尋工具交叉確認',
-        '整份報告都不能用了，重做',
-        '換一個 AI 模型再問一次'
+        'The AI is probably right — use it as-is',
+        'Flag it as "needs verification" and cross-check with real-time search tools',
+        'The entire report is unreliable now — redo everything',
+        'Ask a different AI model the same question'
       ],
       correct: 1,
-      explanation: 'LLM 會產生 Hallucination（幻覺），尤其是即時性資訊（定價、數據）。正確做法是保留 AI 的框架性產出，但對事實性內容進行人工驗證。'
+      explanation: 'LLMs produce hallucinations, especially with real-time information (pricing, data). The right approach is to keep AI\'s structural output but manually verify factual claims.'
     },
     // Category 3: Data Thinking (10 pts each, 2 questions = 20 total)
     {
       category: 3,
-      text: '你發現訓練數據中，女性用戶的樣本只佔 15%。這會造成什麼問題？',
+      text: 'You discover that female users make up only 15% of your training data. What problem does this cause?',
       options: [
-        '沒有問題，AI 會自動平衡',
-        '模型可能對女性用戶的預測準確度較低，產生 Bias',
-        '只要總數據量夠大就沒關係',
-        '這是工程師的問題，PM 不需要關心'
+        'No problem — the AI will balance itself automatically',
+        'The model may have lower prediction accuracy for female users, producing bias',
+        'As long as the total dataset is large enough, it doesn\'t matter',
+        'This is an engineering problem — PMs don\'t need to worry about it'
       ],
       correct: 1,
-      explanation: '訓練數據的分佈直接影響模型表現。樣本不均衡會導致模型對少數群體的預測較差（Bias）。PM 有責任在需求階段就提出數據公平性的要求。'
+      explanation: 'Training data distribution directly affects model performance. Imbalanced samples lead to worse predictions for underrepresented groups (bias). PMs are responsible for raising data fairness requirements during the requirements phase.'
     },
     {
       category: 3,
-      text: '你的 AI 模型的 Precision 是 95%，Recall 是 60%。在什麼場景下這個 trade-off 是合理的？',
+      text: 'Your AI model has 95% Precision and 60% Recall. In which scenario is this trade-off reasonable?',
       options: [
-        '垃圾郵件過濾 — 寧可漏掉一些垃圾信，也不要誤判正常郵件',
-        '醫療診斷篩檢 — 不能漏掉任何可能的病例',
-        '任何場景都應該追求 Precision 和 Recall 都高',
-        '這個 trade-off 說明模型有問題，需要重新訓練'
+        'Spam filtering — better to miss some spam than to wrongly flag normal emails',
+        'Medical diagnostic screening — can\'t miss any potential cases',
+        'Any scenario should aim for both high Precision and high Recall',
+        'This trade-off indicates the model is flawed and needs retraining'
       ],
       correct: 0,
-      explanation: '高 Precision + 低 Recall 表示「寧可漏判，不可誤判」。適合誤判成本高的場景（如垃圾信誤判正常郵件很惱人）。醫療篩檢則需要高 Recall（不能漏診），可以接受較低 Precision。'
+      explanation: 'High Precision + low Recall means "better to miss than to misclassify." This suits scenarios where false positives are costly (e.g., flagging normal emails as spam is very annoying). Medical screening needs high Recall (can\'t miss diagnoses), and can accept lower Precision.'
     }
   ];
 
   var CATEGORIES = [
-    { name: '產品管理基礎', icon: 'solar:clipboard-list-bold', colorBg: 'background:#F3EDE4;', colorText: 'color:#C5A55A;', maxScore: 20, perQ: 10 },
-    { name: 'AI 素養', icon: 'solar:cpu-bolt-bold', colorBg: 'background:#ede9fe;', colorText: 'color:#7c3aed;', maxScore: 30, perQ: 10 },
+    { name: 'PM Fundamentals', icon: 'solar:clipboard-list-bold', colorBg: 'background:#F3EDE4;', colorText: 'color:#C5A55A;', maxScore: 20, perQ: 10 },
+    { name: 'AI Literacy', icon: 'solar:cpu-bolt-bold', colorBg: 'background:#ede9fe;', colorText: 'color:#7c3aed;', maxScore: 30, perQ: 10 },
     { name: 'Prompt Engineering', icon: 'solar:chat-round-dots-bold', colorBg: 'background:#fef3c7;', colorText: 'color:#d97706;', maxScore: 30, perQ: 10 },
-    { name: '數據思維', icon: 'solar:database-bold', colorBg: 'background:#d1fae5;', colorText: 'color:#059669;', maxScore: 20, perQ: 10 }
+    { name: 'Data Thinking', icon: 'solar:database-bold', colorBg: 'background:#d1fae5;', colorText: 'color:#059669;', maxScore: 20, perQ: 10 }
   ];
 
   var LEVELS = [
-    { min: 0, max: 40, emoji: '\u{1F331}', title: '起步階段', badgeBg: '#dcfce7', badgeColor: '#15803d', strokeColor: '#22c55e', desc: '你有基礎的產品思維，現在是開始深入 AI 領域的好時機。建議從 Prompt Engineering 入手，這是投報率最高的起點，同時多閱讀 AI 產品案例來建立直覺。' },
-    { min: 41, max: 60, emoji: '\u{1F33F}', title: '成長階段', badgeBg: '#d1fae5', badgeColor: '#047857', strokeColor: '#10b981', desc: '你已經具備不錯的 AI PM 認知基礎！接下來需要更多實戰經驗。建議找一個實際專案練手，將理論轉化為可驗證的產品決策。' },
-    { min: 61, max: 80, emoji: '\u{1F333}', title: '進階階段', badgeBg: '#F3EDE4', badgeColor: '#8B7330', strokeColor: '#C5A55A', desc: '你在多個維度都展現了扎實的 AI PM 能力。建議深入 AI Evaluation、Data Pipeline 和 MLOps 的實務操作，向技術團隊靠攏。' },
-    { min: 81, max: 100, emoji: '\u{1F680}', title: '專家階段', badgeBg: '#E8DFD0', badgeColor: '#8B7330', strokeColor: '#A8893E', desc: '你已經是稀缺的 AI PM 人才！建議開始分享經驗、建立個人品牌影響力，同時持續關注前沿的 AI 產品設計 Pattern 和 Agent 架構。' }
+    { min: 0, max: 40, emoji: '\u{1F331}', title: 'Getting Started', badgeBg: '#dcfce7', badgeColor: '#15803d', strokeColor: '#22c55e', desc: 'You have a solid foundation in product thinking, and now is the perfect time to dive into AI. Start with Prompt Engineering \u2014 it offers the highest ROI \u2014 and build intuition by reading AI product case studies.' },
+    { min: 41, max: 60, emoji: '\u{1F33F}', title: 'Growing', badgeBg: '#d1fae5', badgeColor: '#047857', strokeColor: '#10b981', desc: 'You have a solid AI PM knowledge base! The next step is gaining more hands-on experience. Find a real project to practice on and turn theory into verifiable product decisions.' },
+    { min: 61, max: 80, emoji: '\u{1F333}', title: 'Advanced', badgeBg: '#F3EDE4', badgeColor: '#8B7330', strokeColor: '#C5A55A', desc: 'You demonstrate strong AI PM skills across multiple dimensions. Consider going deeper into AI Evaluation, Data Pipelines, and MLOps to bridge closer with technical teams.' },
+    { min: 81, max: 100, emoji: '\u{1F680}', title: 'Expert', badgeBg: '#ede9fe', badgeColor: '#6d28d9', strokeColor: '#8b5cf6', desc: 'You are a rare AI PM talent! Start sharing your experience, building personal brand influence, and staying on top of cutting-edge AI product design patterns and Agent architectures.' }
   ];
 
   var LETTERS = ['A', 'B', 'C', 'D'];
@@ -535,7 +535,7 @@ import Base from '../../layouts/Base.astro';
 
     // Progress
     var pct = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
-    progressLabel.textContent = '\u7B2C ' + (currentQ + 1) + ' \u984C / \u5171 ' + QUESTIONS.length + ' \u984C';
+    progressLabel.textContent = 'Question ' + (currentQ + 1) + ' / ' + QUESTIONS.length;
     progressBar.style.width = pct + '%';
 
     // Category badge
@@ -562,9 +562,9 @@ import Base from '../../layouts/Base.astro';
 
     // Update next button text
     if (currentQ === QUESTIONS.length - 1) {
-      nextBtnText.textContent = '\u67E5\u770B\u7D50\u679C';
+      nextBtnText.textContent = 'View Results';
     } else {
-      nextBtnText.textContent = '\u4E0B\u4E00\u984C';
+      nextBtnText.textContent = 'Next Question';
     }
 
     // Animate in
@@ -616,10 +616,10 @@ import Base from '../../layouts/Base.astro';
     explanationBox.classList.remove('hidden');
     explanationInner.className = 'rounded-xl p-4 md:p-5 ' + (isCorrect ? 'explanation-correct' : 'explanation-wrong');
     if (isCorrect) {
-      explanationResult.innerHTML = '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;vertical-align:-2px;margin-right:4px;"></iconify-icon> \u7B54\u5C0D\u4E86\uFF01';
+      explanationResult.innerHTML = '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;vertical-align:-2px;margin-right:4px;"></iconify-icon> Correct!';
       explanationResult.style.color = '#16a34a';
     } else {
-      explanationResult.innerHTML = '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;vertical-align:-2px;margin-right:4px;"></iconify-icon> \u7B54\u932F\u4E86\uFF01\u6B63\u78BA\u7B54\u6848\u662F ' + LETTERS[q.correct];
+      explanationResult.innerHTML = '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;vertical-align:-2px;margin-right:4px;"></iconify-icon> Incorrect! The correct answer is ' + LETTERS[q.correct];
       explanationResult.style.color = '#dc2626';
     }
     explanationText.textContent = q.explanation;
@@ -703,13 +703,13 @@ import Base from '../../layouts/Base.astro';
       div.innerHTML =
         '<div style="display:flex;align-items:center;gap:0.75rem;">' +
           statusIcon +
-          '<span style="flex:1;" class="font-body text-sm text-brand-text">' + (m + 1) + '. ' + q.text.substring(0, 50) + (q.text.length > 50 ? '...' : '') + '</span>' +
+          '<span style="flex:1;" class="font-body text-sm text-brand-text">' + (m + 1) + '. ' + q.text.substring(0, 60) + (q.text.length > 60 ? '...' : '') + '</span>' +
           '<iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle" style="font-size:1rem;flex-shrink:0;transition:transform 0.2s;"></iconify-icon>' +
         '</div>' +
         '<div class="review-item-detail">' +
           '<p class="font-body text-sm text-brand-text mb-2" style="font-weight:600;">' + q.text + '</p>' +
-          '<p class="font-body text-xs text-brand-subtle mb-1">\u4F60\u7684\u7B54\u6848\uFF1A<span style="color:' + (a.correct ? '#16a34a' : '#dc2626') + ';font-weight:600;">' + LETTERS[a.selected] + '. ' + q.options[a.selected] + '</span></p>' +
-          (!a.correct ? '<p class="font-body text-xs text-brand-subtle mb-1">\u6B63\u78BA\u7B54\u6848\uFF1A<span style="color:#16a34a;font-weight:600;">' + LETTERS[q.correct] + '. ' + q.options[q.correct] + '</span></p>' : '') +
+          '<p class="font-body text-xs text-brand-subtle mb-1">Your answer: <span style="color:' + (a.correct ? '#16a34a' : '#dc2626') + ';font-weight:600;">' + LETTERS[a.selected] + '. ' + q.options[a.selected] + '</span></p>' +
+          (!a.correct ? '<p class="font-body text-xs text-brand-subtle mb-1">Correct answer: <span style="color:#16a34a;font-weight:600;">' + LETTERS[q.correct] + '. ' + q.options[q.correct] + '</span></p>' : '') +
           '<p class="font-body text-xs text-brand-subtle mt-2" style="padding:0.5rem 0.75rem;background:#f9fafb;border-radius:0.5rem;border:1px solid #e5e7eb;">' + q.explanation + '</p>' +
         '</div>';
 
@@ -774,16 +774,16 @@ import Base from '../../layouts/Base.astro';
       }
     }
 
-    var text = '\u6211\u5728\u300CAI PM \u80FD\u529B\u6E2C\u9A57\u300D\u5F97\u5230 ' + totalScore + '/100 \u5206 ' + level.emoji + ' ' + level.title + '\uFF01\u4F60\u4E5F\u4F86\u6E2C\u6E2C\u770B \u{1F449}';
+    var text = 'I scored ' + totalScore + '/100 on the AI PM Skills Assessment ' + level.emoji + ' ' + level.title + '! Try it yourself \u{1F449}';
     var url = window.location.href;
 
     if (navigator.share) {
-      navigator.share({ title: 'AI PM \u80FD\u529B\u6E2C\u9A57', text: text, url: url }).catch(function(){});
+      navigator.share({ title: 'AI PM Skills Assessment', text: text, url: url }).catch(function(){});
     } else {
       navigator.clipboard.writeText(text + ' ' + url).then(function() {
         var btn = document.getElementById('resultShareBtn');
         var orig = btn.innerHTML;
-        btn.innerHTML = '<iconify-icon icon="solar:check-circle-bold"></iconify-icon> \u5DF2\u8907\u88FD\u5206\u4EAB\u6587\u5B57\uFF01';
+        btn.innerHTML = '<iconify-icon icon="solar:check-circle-bold"></iconify-icon> Share text copied!';
         setTimeout(function() { btn.innerHTML = orig; }, 2000);
       });
     }

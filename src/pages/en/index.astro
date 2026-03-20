@@ -1,6 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
-import { getArticles } from '../lib/notion';
+import Base from '../../layouts/Base.astro';
+import { getArticles } from '../../lib/notion';
 
 const articles = await getArticles();
 
@@ -22,7 +22,7 @@ const featuredArticles = articles.slice(0, 2);
 const moreArticles = articles.slice(2, 6);
 ---
 
-<Base title="AI PM INSIDER — 產品人的 AI 轉型指南">
+<Base title="AI PM INSIDER — The AI Transformation Guide for Product Managers" lang="en">
 
 <!-- FAQ Schema for SEO -->
 <script type="application/ld+json" set:html={JSON.stringify({
@@ -31,50 +31,50 @@ const moreArticles = articles.slice(2, 6);
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Angela Jian 簡琬庭是誰？",
+      "name": "Who is Angela Jian?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "資深產品經理與 AI 產品建造者，擁有 8 年以上行動應用成長與變現經驗，曾將產品從 0 推進至 60 萬 MAU。同時經營「AI產品思維實驗室」，並具備經濟部 AI 應用規劃師資格。"
+        "text": "A senior product manager and AI product builder with 8+ years of mobile app growth and monetization experience, having scaled products from 0 to 600K MAU. She also runs the 'AI Product Thinking Lab' and holds the MOEA AI Application Planner certification."
       }
     },
     {
       "@type": "Question",
-      "name": "AI PM INSIDER 是什麼？",
+      "name": "What is AI PM INSIDER?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI PM INSIDER 是 Angela Jian 的個人網站與部落格，分享 AI 產品管理、產品成長策略與變現實戰經驗，幫助產品人建立 AI 時代的產品思維。"
+        "text": "AI PM INSIDER is Angela Jian's personal website and blog, sharing AI product management, product growth strategies, and monetization insights to help product professionals build AI-era product thinking."
       }
     },
     {
       "@type": "Question",
-      "name": "AI 產品經理和傳統產品經理有什麼不同？",
+      "name": "How does an AI Product Manager differ from a traditional PM?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI 產品經理除了具備傳統 PM 的用戶洞察與專案管理能力外，還需要理解 AI 模型的能力邊界、數據品質對產品的影響，以及如何設計人機協作的產品體驗。"
+        "text": "Beyond the user insights and project management skills of a traditional PM, an AI PM needs to understand AI model capabilities and limitations, how data quality impacts products, and how to design human-AI collaborative product experiences."
       }
     },
     {
       "@type": "Question",
-      "name": "產品冷啟動階段如何獲取第一批用戶？",
+      "name": "How do you acquire the first users during a cold start?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "關鍵在於找到最小可行受眾（MVA），透過精準的社群經營、內容行銷或策略合作快速驗證產品價值，再利用數據反饋迭代產品與獲客策略。"
+        "text": "The key is finding your Minimum Viable Audience (MVA), rapidly validating product value through targeted community engagement, content marketing, or strategic partnerships, then iterating on product and acquisition strategies using data feedback."
       }
     },
     {
       "@type": "Question",
-      "name": "如何與 Angela Jian 合作？",
+      "name": "How can I work with Angela Jian?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "歡迎透過網站聯繫表單或 LinkedIn 聯繫，可以討論產品策略諮詢、AI 產品規劃或團隊內訓等合作方式。"
+        "text": "Feel free to reach out via the website contact form or LinkedIn to discuss product strategy consulting, AI product planning, or team training opportunities."
       }
     },
     {
       "@type": "Question",
-      "name": "行動應用如何有效導入 AI 功能？",
+      "name": "How can mobile apps effectively integrate AI features?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "從用戶痛點出發，優先選擇 AI 能明顯提升體驗的場景（如個人化推薦、智慧搜尋），以 MVP 快速上線驗證效果，避免為了 AI 而 AI。"
+        "text": "Start from user pain points, prioritize scenarios where AI clearly enhances the experience (e.g., personalized recommendations, smart search), launch an MVP quickly to validate results, and avoid adding AI for AI's sake."
       }
     }
   ]
@@ -89,26 +89,27 @@ const moreArticles = articles.slice(2, 6);
       <!-- Left: Text Content -->
       <div class="flex-1 text-center md:text-left">
         <h1 class="hero-title text-4xl md:text-[3.5rem] lg:text-[4.2rem] mb-6 text-brand-text leading-tight">
-          <span class="line"><span class="line-inner">產品人的</span></span>
-          <span class="line"><span class="line-inner"><span class="gold-text">AI 轉型</span>指南</span></span>
+          <span class="line"><span class="line-inner">The</span></span>
+          <span class="line"><span class="line-inner"><span class="text-brand-accent">AI Transformation</span> Guide</span></span>
+          <span class="line"><span class="line-inner">for Product Managers</span></span>
         </h1>
 
         <p class="font-body text-brand-subtle text-base md:text-lg leading-relaxed mb-6 opacity-0 max-w-lg mx-auto md:mx-0" id="heroDesc">
-          從 AI 產品策略、工具實戰到職涯轉型！資深 PM 的第一手觀察與實踐。
+          From AI product strategy to hands-on tools and career pivots — firsthand insights from a senior PM.
         </p>
 
         <div class="flex flex-wrap gap-2 mb-8 opacity-0 justify-center md:justify-start" id="heroTags">
-          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-accent-dark">#AI 產品管理</span>
-          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-warm-dark">#PM 工具實戰</span>
-          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-emerald-50 text-emerald-700">#職涯成長</span>
+          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-accent-dark">#AI Product Management</span>
+          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-warm-dark">#PM Tools in Action</span>
+          <span class="px-3 py-1.5 text-xs font-body rounded-full bg-emerald-50 text-emerald-700">#Career Growth</span>
         </div>
 
         <div class="flex flex-wrap gap-4 opacity-0 justify-center md:justify-start" id="heroCTAs">
           <a href="#articles" class="mag-btn px-6 md:px-8 py-3.5 md:py-4 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide">
-            <span>開始閱讀</span>
+            <span>Start Reading</span>
           </a>
           <a href="#about" class="mag-btn px-6 md:px-8 py-3.5 md:py-4 border border-brand-light-border text-brand-text font-heading font-medium rounded-full text-sm tracking-wide hover:border-brand-accent hover:text-brand-accent transition-colors">
-            <span>認識作者</span>
+            <span>About the Author</span>
           </a>
         </div>
       </div>
@@ -147,11 +148,11 @@ const moreArticles = articles.slice(2, 6);
           <span>Latest Articles</span>
         </div>
         <h2 class="font-heading font-black text-3xl md:text-5xl text-brand-text">
-          精選<span class="text-brand-accent">文章</span>
+          Featured <span class="text-brand-accent">Articles</span>
         </h2>
       </div>
       <a href="/articles" class="mag-btn px-4 md:px-6 py-2 md:py-3 border border-brand-light-border text-brand-subtle font-body text-xs md:text-sm rounded-full hover:text-brand-accent hover:border-brand-accent transition-colors no-underline shrink-0">
-        <span>查看全部</span>
+        <span>View All</span>
       </a>
     </div>
 
@@ -212,10 +213,10 @@ const moreArticles = articles.slice(2, 6);
   <div class="site-container px-6 relative z-10 text-center">
     <iconify-icon icon="solar:letter-bold" class="text-brand-accent text-3xl md:text-4xl mb-4"></iconify-icon>
     <h2 class="font-heading font-black text-2xl md:text-3xl text-white mb-3">AI Applied Playbook</h2>
-    <p class="text-sm md:text-base text-gray-400 font-body mb-2">AIPM 思維實驗室電子報 — 每週一篇 AI 產品實戰觀察</p>
-    <p class="text-xs md:text-sm text-[#D4B86A]/70 font-body mb-8 italic">"把 AI 從工具變成工作流程的實戰手冊"</p>
+    <p class="text-sm md:text-base text-gray-400 font-body mb-2">Weekly AI product insights from the trenches</p>
+    <p class="text-xs md:text-sm text-[#D4B86A]/70 font-body mb-8 italic">"Turning AI from a tool into a workflow — the practical playbook"</p>
     <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn px-8 py-3.5 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide inline-flex no-underline">
-      <span>免費訂閱</span>
+      <span>Subscribe Free</span>
     </a>
   </div>
 </section>
@@ -241,18 +242,18 @@ const moreArticles = articles.slice(2, 6);
           <span>About the Author</span>
         </div>
         <h2 class="font-heading font-black text-3xl md:text-4xl leading-tight text-brand-text mb-5">
-          嗨，我是 <span class="text-brand-accent">Angela</span>
+          Hi, I'm <span class="text-brand-accent">Angela</span>
         </h2>
         <p class="text-sm md:text-base font-body text-brand-subtle leading-relaxed mb-4">
-          資深產品經理，8 年以上行動應用成長與變現經驗。曾將產品從 0 推進至 60 萬 MAU，在 TikTok、LiveIn 等高成長產品中負責核心功能規劃。
+          Senior Product Manager with 8+ years of experience in mobile app growth and monetization. I've scaled products from zero to 600K MAU and led core feature planning at high-growth companies including TikTok and LiveIn.
         </p>
         <p class="text-sm md:text-base font-body text-brand-subtle leading-relaxed mb-6">
-          現在專注於 AI 產品策略，同時經營「AI 產品思維實驗室」，分享 AI 時代產品人需要的思維與工具。
+          Now focused on AI product strategy, I also run the "AI Product Thinking Lab," sharing the mindsets and tools product professionals need in the age of AI.
         </p>
         <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">8+ 年 PM 經驗</span>
+          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">8+ Years PM</span>
           <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">MAU 600K</span>
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-purple-600/10 text-purple-600">經濟部 AI 應用規劃師</span>
+          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-purple-600/10 text-purple-600">AI Application Planner Cert.</span>
           <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-warm-dark/10 text-brand-warm-dark">Revenue +120%</span>
         </div>
       </div>
@@ -270,34 +271,34 @@ const moreArticles = articles.slice(2, 6);
       <span>Selected Works</span>
     </div>
     <h2 class="font-heading font-black text-3xl md:text-4xl mb-8 md:mb-10 text-brand-text">
-      AI<span class="text-brand-accent">作品集</span>
+      AI <span class="text-brand-accent">Portfolio</span>
     </h2>
 
     <!-- Single Row Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-      <a href="/portfolio/ai-competitive-dashboard" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+      <a href="/en/portfolio/ai-competitive-dashboard" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">01</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI 競品分析 Dashboard</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">OpenAI + Supabase 即時競品追蹤</p>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Competitive Intelligence Dashboard</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">Real-time competitor tracking with OpenAI + Supabase</p>
       </a>
 
-      <a href="/portfolio/human-in-the-loop-accounting" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+      <a href="/en/portfolio/human-in-the-loop-accounting" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">02</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI 會計系統</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">自動化帳務流程，準確率 97%</p>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI Accounting</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">Automated bookkeeping, 97% accuracy</p>
       </a>
 
-      <a href="/portfolio/prompt-generator" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+      <a href="/en/portfolio/prompt-generator" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">03</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Prompt 模板產生器</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">5 大 PM 場景一鍵生成提示詞</p>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Prompt Template Generator</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">One-click prompt generation for 5 PM scenarios</p>
       </a>
 
-      <a href="/portfolio/ai-pm-assessment" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+      <a href="/en/portfolio/ai-pm-assessment" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">04</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">PM → AI PM 能力自評表</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">互動式自評檢核與學習建議</p>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">PM → AI PM Readiness Quiz</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">Interactive self-assessment with learning paths</p>
       </a>
 
     </div>
@@ -320,12 +321,12 @@ const moreArticles = articles.slice(2, 6);
       </h2>
 
       <p class="text-base md:text-lg text-gray-400 font-body max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
-        如果你正在尋找一位能把問題想清楚、把產品做到位的產品夥伴——歡迎跟我聊聊。
+        Looking for a product partner who thinks clearly and ships effectively? Let's chat.
       </p>
 
       <div class="flex justify-center mb-10 md:mb-16">
         <a href="mailto:an9lajian@gmail.com" class="mag-btn px-8 md:px-10 py-3.5 md:py-5 gold-gradient text-white font-heading font-bold rounded-full text-sm md:text-base tracking-wide text-center no-underline">
-          <span>與我聊聊</span>
+          <span>Get in Touch</span>
         </a>
       </div>
 
