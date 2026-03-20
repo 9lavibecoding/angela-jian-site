@@ -1,0 +1,183 @@
+---
+// Import all question files at build time
+import q1 from '../../data/exam/L11-001-050.json';
+import q2 from '../../data/exam/L11-051-100.json';
+import q3 from '../../data/exam/L11-101-200.json';
+import q4 from '../../data/exam/L11-201-300.json';
+import q5 from '../../data/exam/L11-251-300.json';
+import q6 from '../../data/exam/L12-301-450.json';
+import q7 from '../../data/exam/L12-451-600.json';
+import q8 from '../../data/exam/MIX-601-750.json';
+import q9 from '../../data/exam/MIX-751-870.json';
+
+const seen = new Set<number>();
+const allQuestions: any[] = [];
+for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9]) {
+  for (const q of arr) {
+    if (!seen.has(q.id)) {
+      seen.add(q.id);
+      allQuestions.push(q);
+    }
+  }
+}
+allQuestions.sort((a, b) => a.id - b.id);
+
+const chapters = {
+  L11: { name: '基礎 AI 概念', questions: allQuestions.filter(q => q.chapter === 'L11') },
+  L12: { name: '生成式 AI 應用', questions: allQuestions.filter(q => q.chapter === 'L12') },
+  MIX: { name: '綜合模擬', questions: allQuestions.filter(q => q.chapter === 'MIX') },
+};
+---
+
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iPAS AI 題庫 — 870 題完整版（列印版）</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', 'Noto Sans TC', sans-serif; color: #1a1814; background: #FAF6EF; line-height: 1.6; }
+
+  /* 列印按鈕區 */
+  .print-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: #1a1814; color: #fff; padding: 0.75rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .print-bar-title { font-weight: 700; font-size: 0.875rem; }
+  .print-bar-actions { display: flex; gap: 0.75rem; align-items: center; }
+  .print-btn {
+    padding: 0.5rem 1.5rem; border-radius: 999px; font-weight: 700; font-size: 0.8rem;
+    border: none; cursor: pointer; transition: opacity 0.2s;
+    background: linear-gradient(135deg, #D4B86A, #C5A55A, #E8D48B, #C5A55A, #A8893E);
+    color: #fff;
+  }
+  .print-btn:hover { opacity: 0.9; }
+  .back-link { color: #9ca3af; text-decoration: none; font-size: 0.8rem; }
+  .back-link:hover { color: #C5A55A; }
+  .toggle-answers {
+    padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+    border: 1px solid #555; background: transparent; color: #ccc; cursor: pointer;
+  }
+  .toggle-answers:hover { border-color: #C5A55A; color: #C5A55A; }
+
+  /* 內容 */
+  .content { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .page-title { font-size: 1.75rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
+  .page-sub { font-size: 0.875rem; color: #78716C; text-align: center; margin-bottom: 2.5rem; }
+
+  .chapter-title {
+    font-size: 1.25rem; font-weight: 700; padding: 0.75rem 1rem;
+    background: #1a1814; color: #E8D48B; border-radius: 0.5rem;
+    margin: 2rem 0 1rem; page-break-before: always;
+  }
+  .chapter-title:first-of-type { page-break-before: auto; }
+
+  .question { padding: 0.875rem 0; border-bottom: 1px solid #E0D5C5; }
+  .q-header { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.375rem; }
+  .q-num { font-weight: 700; font-size: 0.8rem; color: #C5A55A; white-space: nowrap; }
+  .q-diff { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; font-weight: 600; }
+  .q-diff.easy { background: #d1fae5; color: #047857; }
+  .q-diff.medium { background: #fef3c7; color: #b45309; }
+  .q-diff.hard { background: #fee2e2; color: #dc2626; }
+  .q-text { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
+  .q-options { list-style: none; padding: 0; }
+  .q-options li { font-size: 0.8rem; padding: 0.2rem 0; color: #444; }
+
+  .q-answer { margin-top: 0.375rem; font-size: 0.75rem; padding: 0.5rem 0.75rem; background: #f0fdf4; border-left: 3px solid #22c55e; border-radius: 0 0.375rem 0.375rem 0; }
+  .q-answer strong { color: #16a34a; }
+  .q-answer p { color: #555; margin-top: 0.25rem; }
+
+  .answers-hidden .q-answer { display: none; }
+
+  /* Gate */
+  .gate { display: flex; align-items: center; justify-content: center; min-height: 60vh; text-align: center; }
+  .gate p { color: #78716C; }
+  .gate a { color: #C5A55A; }
+
+  /* 列印樣式 */
+  @media print {
+    .print-bar { display: none !important; }
+    .gate { display: none !important; }
+    body { background: #fff; }
+    .content { padding: 0; }
+    .chapter-title { break-before: page; }
+    .chapter-title:first-of-type { break-before: auto; }
+    .question { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Gate -->
+<div class="gate" id="gate">
+  <p>驗證購買狀態中...</p>
+</div>
+
+<!-- Print content (hidden until verified) -->
+<div id="printContent" style="display:none">
+  <div class="print-bar">
+    <span class="print-bar-title">iPAS AI 題庫 — 870 題</span>
+    <div class="print-bar-actions">
+      <button class="toggle-answers" id="toggleAnswers">隱藏答案</button>
+      <button class="print-btn" onclick="window.print()">列印 / 存為 PDF</button>
+      <a href="/exam/app" class="back-link">返回題庫</a>
+    </div>
+  </div>
+
+  <div class="content" id="questionsBody">
+    <h1 class="page-title">iPAS 初級人工智慧應用師 題庫</h1>
+    <p class="page-sub">共 {allQuestions.length} 題 — L11 基礎 AI 概念 / L12 生成式 AI 應用 / 綜合模擬</p>
+
+    {Object.entries(chapters).map(([code, ch]) => (
+      <div>
+        <div class="chapter-title">{code} — {ch.name}（{ch.questions.length} 題）</div>
+        {ch.questions.map((q: any) => (
+          <div class="question">
+            <div class="q-header">
+              <span class="q-num">#{q.id}</span>
+              <span class={`q-diff ${q.difficulty}`}>
+                {q.difficulty === 'easy' ? '簡單' : q.difficulty === 'medium' ? '中等' : '困難'}
+              </span>
+            </div>
+            <p class="q-text">{q.question}</p>
+            <ul class="q-options">
+              {q.options.map((opt: string) => <li>{opt}</li>)}
+            </ul>
+            <div class="q-answer">
+              <strong>答案：{q.answer}</strong>
+              <p>{q.explanation}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  var gate = document.getElementById('gate');
+  var content = document.getElementById('printContent');
+
+  var purchased = localStorage.getItem('ipas_exam_purchased');
+  if (purchased) {
+    gate.style.display = 'none';
+    content.style.display = 'block';
+  } else {
+    gate.innerHTML = '<p>尚未購買題庫。<a href="/exam/">前往購買</a></p>';
+  }
+
+  // Toggle answers
+  var body = document.getElementById('questionsBody');
+  var btn = document.getElementById('toggleAnswers');
+  btn.addEventListener('click', function() {
+    body.classList.toggle('answers-hidden');
+    btn.textContent = body.classList.contains('answers-hidden') ? '顯示答案' : '隱藏答案';
+  });
+})();
+</script>
+
+</body>
+</html>

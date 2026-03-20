@@ -1,0 +1,942 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Import all question files at build time
+import q1 from '../../data/exam/L11-001-050.json';
+import q2 from '../../data/exam/L11-051-100.json';
+import q3 from '../../data/exam/L11-101-200.json';
+import q4 from '../../data/exam/L11-201-300.json';
+import q5 from '../../data/exam/L11-251-300.json';
+import q6 from '../../data/exam/L12-301-450.json';
+import q7 from '../../data/exam/L12-451-600.json';
+import q8 from '../../data/exam/MIX-601-750.json';
+import q9 from '../../data/exam/MIX-751-870.json';
+
+// Deduplicate by id
+const seen = new Set<number>();
+const allQuestions: any[] = [];
+for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9]) {
+  for (const q of arr) {
+    if (!seen.has(q.id)) {
+      seen.add(q.id);
+      allQuestions.push(q);
+    }
+  }
+}
+allQuestions.sort((a, b) => a.id - b.id);
+---
+
+<Base title="iPAS AI 題庫練習 — Angela Jian" description="870 道 iPAS 考題互動練習">
+
+<main class="pt-24 pb-20 min-h-screen bg-[#FFFEF7]">
+  <div class="site-container px-6">
+
+    <!-- Gate Screen -->
+    <div id="gateScreen" class="max-w-lg mx-auto text-center py-20">
+      <iconify-icon icon="solar:lock-keyhole-bold" class="text-4xl text-brand-subtle mb-4"></iconify-icon>
+      <p id="gateMsg" class="font-body text-brand-subtle mb-6">驗證購買狀態中...</p>
+
+      <!-- 手動輸入訂單編號 -->
+      <div id="manualUnlock" class="hidden">
+        <div class="bg-white rounded-xl border border-brand-light-border p-6 text-left max-w-sm mx-auto">
+          <p class="font-heading font-semibold text-sm text-brand-text mb-3">已購買？輸入訂單編號解鎖</p>
+          <input id="tradeNoInput" type="text" placeholder="例如：IPASMMZ1NT4LABCD"
+            class="w-full px-4 py-2.5 border border-brand-light-border rounded-lg font-body text-sm text-brand-text focus:outline-none focus:border-brand-accent mb-3" />
+          <button id="manualVerifyBtn" class="w-full py-2.5 gold-gradient text-white font-heading font-semibold rounded-lg text-sm hover:opacity-90 transition-opacity">
+            驗證並解鎖
+          </button>
+          <p id="manualError" class="hidden font-body text-xs text-red-500 mt-2"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- App (hidden until verified) -->
+    <div id="examApp" class="hidden max-w-4xl mx-auto">
+
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="font-heading font-bold text-2xl md:text-3xl text-brand-text">iPAS AI 題庫</h1>
+          <p class="font-body text-sm text-brand-subtle mt-1">870 題完整版</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="/exam/print" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-brand-light-border rounded-full text-sm font-heading font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent transition-colors">
+            <iconify-icon icon="solar:document-add-bold" class="text-base"></iconify-icon>
+            下載 PDF
+          </a>
+          <a href="/exam/" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors">
+            <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+            返回
+          </a>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="flex gap-1 bg-brand-light-surface rounded-xl p-1 mb-8 overflow-x-auto">
+        <button class="exam-tab active font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="practice">
+          <iconify-icon icon="solar:book-2-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
+          章節練習
+        </button>
+        <button class="exam-tab font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="mock">
+          <iconify-icon icon="solar:clock-circle-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
+          模擬考試
+        </button>
+        <button class="exam-tab font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="stats">
+          <iconify-icon icon="solar:chart-2-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
+          統計分析
+        </button>
+      </div>
+
+      <!-- ==================== PRACTICE TAB ==================== -->
+      <div id="tab-practice" class="tab-content">
+
+        <!-- Chapter Selection -->
+        <div id="chapterSelect" class="grid md:grid-cols-3 gap-4 mb-6">
+          <button class="chapter-btn bg-white rounded-xl p-5 border-2 border-brand-light-border hover:border-brand-accent transition-colors text-left" data-chapter="L11">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                <span class="font-heading font-bold text-sm text-brand-accent">L11</span>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-brand-text text-sm">基礎 AI 概念</p>
+                <p class="font-body text-xs text-brand-subtle">300 題</p>
+              </div>
+            </div>
+            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div class="chapter-progress h-full bg-brand-accent rounded-full transition-all" data-chapter="L11" style="width:0%"></div>
+            </div>
+          </button>
+          <button class="chapter-btn bg-white rounded-xl p-5 border-2 border-brand-light-border hover:border-violet-400 transition-colors text-left" data-chapter="L12">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
+                <span class="font-heading font-bold text-sm text-violet-600">L12</span>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-brand-text text-sm">生成式 AI 應用</p>
+                <p class="font-body text-xs text-brand-subtle">300 題</p>
+              </div>
+            </div>
+            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div class="chapter-progress h-full bg-violet-500 rounded-full transition-all" data-chapter="L12" style="width:0%"></div>
+            </div>
+          </button>
+          <button class="chapter-btn bg-white rounded-xl p-5 border-2 border-brand-light-border hover:border-emerald-400 transition-colors text-left" data-chapter="MIX">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                <span class="font-heading font-bold text-sm text-emerald-600">MIX</span>
+              </div>
+              <div>
+                <p class="font-heading font-bold text-brand-text text-sm">綜合模擬</p>
+                <p class="font-body text-xs text-brand-subtle">270 題</p>
+              </div>
+            </div>
+            <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div class="chapter-progress h-full bg-emerald-500 rounded-full transition-all" data-chapter="MIX" style="width:0%"></div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Practice Quiz Area -->
+        <div id="practiceQuiz" class="hidden">
+          <div class="flex items-center justify-between mb-4">
+            <button id="backToChapters" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors">
+              <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+              選擇章節
+            </button>
+            <span id="practiceProgress" class="font-body text-sm text-brand-subtle"></span>
+          </div>
+          <div class="mb-4">
+            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div id="practiceBar" class="h-full bg-brand-accent rounded-full transition-all duration-500" style="width:0%"></div>
+            </div>
+          </div>
+          <div id="practiceCard">
+            <div class="flex items-center gap-2 mb-3">
+              <span id="practiceDifficulty" class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-body font-medium"></span>
+              <span id="practiceId" class="font-body text-xs text-brand-subtle"></span>
+            </div>
+            <h2 id="practiceQuestion" class="font-heading font-bold text-lg md:text-xl text-brand-text leading-relaxed mb-5"></h2>
+            <div id="practiceOptions" class="space-y-2.5"></div>
+            <div id="practiceExplanation" class="hidden mt-5">
+              <div id="practiceExplanationInner" class="rounded-xl p-4 md:p-5">
+                <p id="practiceResult" class="font-heading font-bold text-sm mb-1.5"></p>
+                <p id="practiceExplanationText" class="font-body text-sm text-brand-subtle leading-relaxed"></p>
+              </div>
+            </div>
+            <div id="practiceNextWrap" class="hidden mt-5">
+              <button id="practiceNext" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                <span id="practiceNextText">下一題</span>
+                <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== MOCK EXAM TAB ==================== -->
+      <div id="tab-mock" class="tab-content hidden">
+
+        <!-- Mock Exam Selection -->
+        <div id="mockSelect">
+          <p class="font-body text-sm text-brand-subtle mb-6">每卷 50 題，限時 60 分鐘，模擬真實 iPAS 考試情境。</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <button class="mock-start-btn bg-white rounded-xl p-6 border-2 border-brand-light-border hover:border-brand-accent transition-colors text-center" data-mock="1">
+              <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
+                <span class="font-heading font-bold text-xl text-brand-accent">1</span>
+              </div>
+              <h3 class="font-heading font-bold text-brand-text mb-1">模擬考卷 A</h3>
+              <p class="font-body text-xs text-brand-subtle mb-3">50 題 / 60 分鐘</p>
+              <span id="mockStatus1" class="font-body text-xs text-brand-subtle"></span>
+            </button>
+            <button class="mock-start-btn bg-white rounded-xl p-6 border-2 border-brand-light-border hover:border-violet-400 transition-colors text-center" data-mock="2">
+              <div class="w-14 h-14 rounded-full bg-violet-100 flex items-center justify-center mx-auto mb-3">
+                <span class="font-heading font-bold text-xl text-violet-600">2</span>
+              </div>
+              <h3 class="font-heading font-bold text-brand-text mb-1">模擬考卷 B</h3>
+              <p class="font-body text-xs text-brand-subtle mb-3">50 題 / 60 分鐘</p>
+              <span id="mockStatus2" class="font-body text-xs text-brand-subtle"></span>
+            </button>
+            <button class="mock-start-btn bg-white rounded-xl p-6 border-2 border-brand-light-border hover:border-emerald-400 transition-colors text-center" data-mock="3">
+              <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+                <span class="font-heading font-bold text-xl text-emerald-600">3</span>
+              </div>
+              <h3 class="font-heading font-bold text-brand-text mb-1">模擬考卷 C</h3>
+              <p class="font-body text-xs text-brand-subtle mb-3">50 題 / 60 分鐘</p>
+              <span id="mockStatus3" class="font-body text-xs text-brand-subtle"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mock Exam In Progress -->
+        <div id="mockExam" class="hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span id="mockTitle" class="font-heading font-bold text-lg text-brand-text"></span>
+            <div class="flex items-center gap-4">
+              <div id="mockTimer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 text-red-600 font-heading font-bold text-sm">
+                <iconify-icon icon="solar:clock-circle-bold" class="text-base"></iconify-icon>
+                <span id="mockTimerText">60:00</span>
+              </div>
+              <span id="mockProgress" class="font-body text-sm text-brand-subtle"></span>
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div id="mockBar" class="h-full bg-brand-accent rounded-full transition-all duration-500" style="width:0%"></div>
+            </div>
+          </div>
+          <div id="mockCard">
+            <h2 id="mockQuestion" class="font-heading font-bold text-lg md:text-xl text-brand-text leading-relaxed mb-5"></h2>
+            <div id="mockOptions" class="space-y-2.5"></div>
+            <div id="mockNextWrap" class="hidden mt-5">
+              <button id="mockNext" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                <span id="mockNextText">下一題</span>
+                <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mock Exam Results -->
+        <div id="mockResults" class="hidden">
+          <div class="text-center mb-8">
+            <div class="relative w-40 h-40 mx-auto mb-4">
+              <svg class="w-40 h-40 -rotate-90" viewBox="0 0 160 160">
+                <circle cx="80" cy="80" r="70" fill="none" stroke="#e5e7eb" stroke-width="10" />
+                <circle id="mockRing" cx="80" cy="80" r="70" fill="none" stroke="#C5A55A" stroke-width="10"
+                  stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82"
+                  style="transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);" />
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="mockScoreNum" class="font-heading font-bold text-4xl text-brand-text">0</span>
+                <span class="font-body text-sm text-brand-subtle">/ 50</span>
+              </div>
+            </div>
+            <p id="mockResultLabel" class="font-heading font-bold text-xl text-brand-text mb-1"></p>
+            <p id="mockResultTime" class="font-body text-sm text-brand-subtle"></p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center mb-8">
+            <button id="mockReviewBtn" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-brand-light-border font-heading font-semibold rounded-full text-sm text-brand-subtle hover:text-brand-accent hover:border-brand-accent transition-colors">
+              <iconify-icon icon="solar:document-text-bold"></iconify-icon>
+              查看逐題解析
+            </button>
+            <button id="mockBackBtn" class="inline-flex items-center justify-center gap-2 px-6 py-3 gold-gradient text-white font-heading font-semibold rounded-full text-sm hover:opacity-90 transition-opacity">
+              返回考卷列表
+            </button>
+          </div>
+          <div id="mockReviewList" class="hidden space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- ==================== STATS TAB ==================== -->
+      <div id="tab-stats" class="tab-content hidden">
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">總答題數</p>
+            <p id="statTotal" class="font-heading font-bold text-3xl text-brand-text">0</p>
+          </div>
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">整體正確率</p>
+            <p id="statAccuracy" class="font-heading font-bold text-3xl text-brand-accent">0%</p>
+          </div>
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">模擬考最高分</p>
+            <p id="statBestMock" class="font-heading font-bold text-3xl text-emerald-600">--</p>
+          </div>
+        </div>
+
+        <!-- Per Chapter Stats -->
+        <h3 class="font-heading font-bold text-lg text-brand-text mb-4">各章節正確率</h3>
+        <div class="space-y-4 mb-8">
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-heading font-semibold text-sm text-brand-text">L11 — 基礎 AI 概念</span>
+              <span id="statL11" class="font-heading font-bold text-sm text-brand-accent">0/0</span>
+            </div>
+            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div id="statL11Bar" class="h-full bg-brand-accent rounded-full transition-all" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-heading font-semibold text-sm text-brand-text">L12 — 生成式 AI 應用</span>
+              <span id="statL12" class="font-heading font-bold text-sm text-violet-600">0/0</span>
+            </div>
+            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div id="statL12Bar" class="h-full bg-violet-500 rounded-full transition-all" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border border-brand-light-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-heading font-semibold text-sm text-brand-text">MIX — 綜合模擬</span>
+              <span id="statMIX" class="font-heading font-bold text-sm text-emerald-600">0/0</span>
+            </div>
+            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div id="statMIXBar" class="h-full bg-emerald-500 rounded-full transition-all" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Difficulty Breakdown -->
+        <h3 class="font-heading font-bold text-lg text-brand-text mb-4">難度分佈正確率</h3>
+        <div class="grid grid-cols-3 gap-4 mb-8">
+          <div class="bg-white rounded-xl p-4 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">簡單</p>
+            <p id="statEasy" class="font-heading font-bold text-xl text-emerald-600">--</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">中等</p>
+            <p id="statMedium" class="font-heading font-bold text-xl text-amber-600">--</p>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-brand-light-border text-center">
+            <p class="font-body text-xs text-brand-subtle mb-1">困難</p>
+            <p id="statHard" class="font-heading font-bold text-xl text-red-500">--</p>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <div class="text-center">
+          <button id="resetStats" class="inline-flex items-center gap-2 px-6 py-2.5 border border-red-200 text-red-400 font-body text-sm rounded-full hover:bg-red-50 transition-colors">
+            <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
+            重置所有紀錄
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<style is:global>
+  .exam-tab { color: var(--color-brand-subtle); background: transparent; }
+  .exam-tab.active { color: var(--color-brand-text); background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .quiz-option { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1rem; border-radius:0.75rem; border:2px solid #e5e7eb; background:#fafafa; cursor:pointer; transition:all 0.2s; user-select:none; }
+  .quiz-option:hover:not(.quiz-option-disabled) { border-color:#C5A55A; background:#F3EDE4; }
+  .quiz-option-disabled { pointer-events:none; }
+  .quiz-option.selected-correct { border-color:#22c55e; background:#f0fdf4; animation:popCorrect 0.4s ease; }
+  .quiz-option.selected-wrong { border-color:#ef4444; background:#fef2f2; animation:shakeWrong 0.4s ease; }
+  .quiz-option.reveal-correct { border-color:#22c55e; background:#f0fdf4; }
+  .quiz-option.dimmed { opacity:0.45; }
+  .option-letter { flex-shrink:0; width:1.75rem; height:1.75rem; border-radius:0.5rem; display:flex; align-items:center; justify-content:center; font-family:var(--font-heading); font-weight:700; font-size:0.8rem; background:#e5e7eb; color:#6b7280; transition:all 0.2s; }
+  .quiz-option:hover:not(.quiz-option-disabled) .option-letter { background:#C5A55A; color:white; }
+  .selected-correct .option-letter { background:#22c55e; color:white; }
+  .selected-wrong .option-letter { background:#ef4444; color:white; }
+  .reveal-correct .option-letter { background:#22c55e; color:white; }
+  .explanation-correct { background:#f0fdf4; border-left:3px solid #22c55e; }
+  .explanation-wrong { background:#fef2f2; border-left:3px solid #ef4444; }
+  @keyframes popCorrect { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
+  @keyframes shakeWrong { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+  .mock-timer-warning { animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  .review-item { padding:1rem 1.25rem; border-radius:0.875rem; border:1px solid #e5e7eb; background:#f9fafb; cursor:pointer; transition:all 0.2s; }
+  .review-item:hover { border-color:rgba(197,165,90,0.3); }
+  .review-item-detail { display:none; margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid #e5e7eb; }
+  .review-item.open .review-item-detail { display:block; }
+</style>
+
+<script is:inline define:vars={{ questions: allQuestions }}>
+(function() {
+  var QUESTIONS = questions;
+  var LETTERS = ['A','B','C','D'];
+  var STORAGE_KEY = 'ipas_exam_data';
+  var PURCHASE_KEY = 'ipas_exam_purchased';
+
+  // ==================== ACCESS GATE ====================
+  var gateScreen = document.getElementById('gateScreen');
+  var gateMsg = document.getElementById('gateMsg');
+  var examApp = document.getElementById('examApp');
+  var manualUnlock = document.getElementById('manualUnlock');
+
+  function showApp() {
+    gateScreen.classList.add('hidden');
+    examApp.classList.remove('hidden');
+    initApp();
+  }
+
+  function showManualInput(msg) {
+    gateMsg.innerHTML = msg || '';
+    manualUnlock.classList.remove('hidden');
+  }
+
+  function unlockWithTradeNo(tradeNo, token) {
+    gateMsg.textContent = '驗證付款狀態中...';
+    manualUnlock.classList.add('hidden');
+
+    fetch('/api/verify-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trade_no: tradeNo, token: token || '' }),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.valid) {
+        localStorage.setItem(PURCHASE_KEY, JSON.stringify({ trade_no: tradeNo, ts: Date.now() }));
+        window.history.replaceState({}, '', '/exam/app');
+        showApp();
+      } else {
+        showManualInput('驗證失敗（' + (data.msg || '請確認訂單編號') + '）');
+      }
+    })
+    .catch(function() {
+      showManualInput('驗證失敗，請稍後再試。');
+    });
+  }
+
+  // 手動輸入訂單編號
+  document.getElementById('manualVerifyBtn').addEventListener('click', function() {
+    var input = document.getElementById('tradeNoInput').value.trim();
+    if (!input) {
+      document.getElementById('manualError').textContent = '請輸入訂單編號';
+      document.getElementById('manualError').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('manualError').classList.add('hidden');
+    unlockWithTradeNo(input);
+  });
+
+  document.getElementById('tradeNoInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('manualVerifyBtn').click();
+  });
+
+  function checkAccess() {
+    var stored = localStorage.getItem(PURCHASE_KEY);
+    if (stored) { showApp(); return; }
+
+    var params = new URLSearchParams(window.location.search);
+    var tradeNo = params.get('trade_no');
+    var token = params.get('token') || '';
+
+    if (tradeNo && token) {
+      // 從綠界付款回來，帶有 token → 直接驗證
+      unlockWithTradeNo(tradeNo, token);
+    } else if (tradeNo) {
+      // 有訂單編號但無 token → 嘗試 QueryTradeInfo
+      unlockWithTradeNo(tradeNo);
+    } else {
+      // 未購買 → 顯示手動輸入
+      showManualInput('尚未購買題庫？<a href="/exam/" class="text-brand-accent underline">前往購買</a><br><br>或輸入訂單編號解鎖：');
+    }
+  }
+
+  checkAccess();
+
+  // ==================== DATA LAYER ====================
+  function loadData() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+  }
+  function saveData(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+
+  function getStats() {
+    var d = loadData();
+    return d.stats || { answered: {}, mockScores: {} };
+  }
+  function saveAnswer(qId, correct, chapter, difficulty) {
+    var d = loadData();
+    if (!d.stats) d.stats = { answered: {}, mockScores: {} };
+    d.stats.answered[qId] = { correct: correct, chapter: chapter, difficulty: difficulty, ts: Date.now() };
+    saveData(d);
+  }
+  function saveMockScore(mockNum, score, total, timeUsed) {
+    var d = loadData();
+    if (!d.stats) d.stats = { answered: {}, mockScores: {} };
+    if (!d.stats.mockScores[mockNum]) d.stats.mockScores[mockNum] = [];
+    d.stats.mockScores[mockNum].push({ score: score, total: total, timeUsed: timeUsed, ts: Date.now() });
+    saveData(d);
+  }
+  function resetAllData() {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  // ==================== MOCK EXAM QUESTIONS (seeded shuffle) ====================
+  function seededShuffle(arr, seed) {
+    var a = arr.slice();
+    var s = seed;
+    for (var i = a.length - 1; i > 0; i--) {
+      s = (s * 16807 + 0) % 2147483647;
+      var j = s % (i + 1);
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  var shuffled = seededShuffle(QUESTIONS, 42);
+  var MOCK_EXAMS = {
+    1: shuffled.slice(0, 50),
+    2: shuffled.slice(50, 100),
+    3: shuffled.slice(100, 150),
+  };
+
+  // ==================== INIT APP ====================
+  function initApp() {
+    setupTabs();
+    setupPractice();
+    setupMock();
+    setupStats();
+    updateChapterProgress();
+    updateMockStatus();
+  }
+
+  // ==================== TAB NAVIGATION ====================
+  function setupTabs() {
+    document.querySelectorAll('.exam-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.exam-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.add('hidden'); });
+        this.classList.add('active');
+        document.getElementById('tab-' + this.getAttribute('data-tab')).classList.remove('hidden');
+        if (this.getAttribute('data-tab') === 'stats') refreshStats();
+      });
+    });
+  }
+
+  // ==================== CHAPTER PRACTICE ====================
+  var practiceQuestions = [];
+  var practiceIdx = 0;
+  var practiceAnswered = false;
+  var practiceChapter = '';
+
+  function setupPractice() {
+    document.querySelectorAll('.chapter-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        startPractice(this.getAttribute('data-chapter'));
+      });
+    });
+    document.getElementById('backToChapters').addEventListener('click', function() {
+      document.getElementById('chapterSelect').classList.remove('hidden');
+      document.getElementById('practiceQuiz').classList.add('hidden');
+      updateChapterProgress();
+    });
+    document.getElementById('practiceNext').addEventListener('click', function() {
+      if (practiceIdx < practiceQuestions.length - 1) {
+        practiceIdx++;
+        renderPracticeQ();
+        document.getElementById('practiceQuiz').scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        document.getElementById('chapterSelect').classList.remove('hidden');
+        document.getElementById('practiceQuiz').classList.add('hidden');
+        updateChapterProgress();
+      }
+    });
+  }
+
+  function startPractice(ch) {
+    practiceChapter = ch;
+    practiceQuestions = QUESTIONS.filter(function(q) { return q.chapter === ch; });
+    practiceIdx = 0;
+    practiceAnswered = false;
+    document.getElementById('chapterSelect').classList.add('hidden');
+    document.getElementById('practiceQuiz').classList.remove('hidden');
+    renderPracticeQ();
+  }
+
+  function renderPracticeQ() {
+    var q = practiceQuestions[practiceIdx];
+    practiceAnswered = false;
+    var total = practiceQuestions.length;
+    var pct = Math.round(((practiceIdx + 1) / total) * 100);
+    document.getElementById('practiceProgress').textContent = '第 ' + (practiceIdx + 1) + ' 題 / 共 ' + total + ' 題';
+    document.getElementById('practiceBar').style.width = pct + '%';
+
+    // Difficulty badge
+    var diffEl = document.getElementById('practiceDifficulty');
+    var diffMap = { easy: { text:'簡單', bg:'bg-emerald-100 text-emerald-700' }, medium: { text:'中等', bg:'bg-amber-100 text-amber-700' }, hard: { text:'困難', bg:'bg-red-100 text-red-600' } };
+    var diff = diffMap[q.difficulty] || diffMap.medium;
+    diffEl.className = 'inline-flex px-2.5 py-0.5 rounded-full text-xs font-body font-medium ' + diff.bg;
+    diffEl.textContent = diff.text;
+    document.getElementById('practiceId').textContent = '#' + q.id;
+
+    document.getElementById('practiceQuestion').textContent = q.question;
+
+    var container = document.getElementById('practiceOptions');
+    container.innerHTML = '';
+    for (var i = 0; i < q.options.length; i++) {
+      var div = document.createElement('div');
+      div.className = 'quiz-option';
+      div.setAttribute('data-idx', i);
+      var optText = q.options[i].replace(/^[A-D]\.\s*/, '');
+      div.innerHTML = '<div class="option-letter">' + LETTERS[i] + '</div><span class="font-body text-sm text-brand-text leading-relaxed">' + optText + '</span>';
+      div.addEventListener('click', handlePracticeClick);
+      container.appendChild(div);
+    }
+
+    document.getElementById('practiceExplanation').classList.add('hidden');
+    document.getElementById('practiceNextWrap').classList.add('hidden');
+    document.getElementById('practiceNextText').textContent = practiceIdx === total - 1 ? '完成章節' : '下一題';
+
+    // Animate
+    var card = document.getElementById('practiceCard');
+    card.style.opacity = '0'; card.style.transform = 'translateY(12px)';
+    requestAnimationFrame(function() {
+      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      card.style.opacity = '1'; card.style.transform = 'translateY(0)';
+    });
+  }
+
+  function handlePracticeClick(e) {
+    if (practiceAnswered) return;
+    practiceAnswered = true;
+    var q = practiceQuestions[practiceIdx];
+    var selected = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
+    var correctIdx = LETTERS.indexOf(q.answer);
+    var isCorrect = selected === correctIdx;
+
+    saveAnswer(q.id, isCorrect, q.chapter, q.difficulty);
+
+    var allOpts = document.getElementById('practiceOptions').querySelectorAll('.quiz-option');
+    for (var i = 0; i < allOpts.length; i++) {
+      allOpts[i].classList.add('quiz-option-disabled');
+      if (i === correctIdx) allOpts[i].classList.add('reveal-correct');
+      else if (i !== selected) allOpts[i].classList.add('dimmed');
+    }
+    if (isCorrect) { e.currentTarget.classList.remove('reveal-correct'); e.currentTarget.classList.add('selected-correct'); }
+    else { e.currentTarget.classList.add('selected-wrong'); }
+
+    var expBox = document.getElementById('practiceExplanation');
+    var expInner = document.getElementById('practiceExplanationInner');
+    expBox.classList.remove('hidden');
+    expInner.className = 'rounded-xl p-4 md:p-5 ' + (isCorrect ? 'explanation-correct' : 'explanation-wrong');
+    var resEl = document.getElementById('practiceResult');
+    if (isCorrect) {
+      resEl.innerHTML = '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;vertical-align:-2px;margin-right:4px;"></iconify-icon> 答對了！';
+      resEl.style.color = '#16a34a';
+    } else {
+      resEl.innerHTML = '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;vertical-align:-2px;margin-right:4px;"></iconify-icon> 答錯了！正確答案是 ' + q.answer;
+      resEl.style.color = '#dc2626';
+    }
+    document.getElementById('practiceExplanationText').textContent = q.explanation;
+    document.getElementById('practiceNextWrap').classList.remove('hidden');
+  }
+
+  function updateChapterProgress() {
+    var stats = getStats();
+    var ans = stats.answered || {};
+    ['L11','L12','MIX'].forEach(function(ch) {
+      var chQuestions = QUESTIONS.filter(function(q) { return q.chapter === ch; });
+      var done = 0;
+      chQuestions.forEach(function(q) { if (ans[q.id]) done++; });
+      var pct = chQuestions.length > 0 ? Math.round((done / chQuestions.length) * 100) : 0;
+      var bars = document.querySelectorAll('.chapter-progress[data-chapter="' + ch + '"]');
+      bars.forEach(function(bar) { bar.style.width = pct + '%'; });
+    });
+  }
+
+  // ==================== MOCK EXAM ====================
+  var mockQuestions = [];
+  var mockIdx = 0;
+  var mockAnswered = false;
+  var mockAnswers = [];
+  var mockNum = 0;
+  var mockTimerId = null;
+  var mockTimeLeft = 3600;
+  var mockStartTime = 0;
+
+  function setupMock() {
+    document.querySelectorAll('.mock-start-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        startMock(parseInt(this.getAttribute('data-mock'), 10));
+      });
+    });
+    document.getElementById('mockNext').addEventListener('click', function() {
+      if (mockIdx < mockQuestions.length - 1) {
+        mockIdx++;
+        renderMockQ();
+      } else {
+        endMock();
+      }
+    });
+    document.getElementById('mockBackBtn').addEventListener('click', function() {
+      document.getElementById('mockResults').classList.add('hidden');
+      document.getElementById('mockSelect').classList.remove('hidden');
+      updateMockStatus();
+    });
+    document.getElementById('mockReviewBtn').addEventListener('click', function() {
+      var list = document.getElementById('mockReviewList');
+      list.classList.toggle('hidden');
+    });
+  }
+
+  function startMock(num) {
+    mockNum = num;
+    mockQuestions = MOCK_EXAMS[num];
+    mockIdx = 0;
+    mockAnswered = false;
+    mockAnswers = [];
+    mockTimeLeft = 3600;
+    mockStartTime = Date.now();
+
+    document.getElementById('mockSelect').classList.add('hidden');
+    document.getElementById('mockExam').classList.remove('hidden');
+    document.getElementById('mockResults').classList.add('hidden');
+    document.getElementById('mockTitle').textContent = '模擬考卷 ' + ['','A','B','C'][num];
+
+    startTimer();
+    renderMockQ();
+  }
+
+  function startTimer() {
+    clearInterval(mockTimerId);
+    updateTimerDisplay();
+    mockTimerId = setInterval(function() {
+      mockTimeLeft--;
+      updateTimerDisplay();
+      if (mockTimeLeft <= 0) {
+        clearInterval(mockTimerId);
+        endMock();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    var m = Math.floor(mockTimeLeft / 60);
+    var s = mockTimeLeft % 60;
+    var txt = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+    document.getElementById('mockTimerText').textContent = txt;
+    var timer = document.getElementById('mockTimer');
+    if (mockTimeLeft <= 300) {
+      timer.classList.add('mock-timer-warning');
+      timer.className = timer.className.replace('bg-red-50 text-red-600', 'bg-red-100 text-red-700');
+    }
+  }
+
+  function renderMockQ() {
+    var q = mockQuestions[mockIdx];
+    mockAnswered = false;
+    var total = mockQuestions.length;
+    var pct = Math.round(((mockIdx + 1) / total) * 100);
+    document.getElementById('mockProgress').textContent = (mockIdx + 1) + ' / ' + total;
+    document.getElementById('mockBar').style.width = pct + '%';
+    document.getElementById('mockQuestion').textContent = q.question;
+
+    var container = document.getElementById('mockOptions');
+    container.innerHTML = '';
+    for (var i = 0; i < q.options.length; i++) {
+      var div = document.createElement('div');
+      div.className = 'quiz-option';
+      div.setAttribute('data-idx', i);
+      var optText = q.options[i].replace(/^[A-D]\.\s*/, '');
+      div.innerHTML = '<div class="option-letter">' + LETTERS[i] + '</div><span class="font-body text-sm text-brand-text leading-relaxed">' + optText + '</span>';
+      div.addEventListener('click', handleMockClick);
+      container.appendChild(div);
+    }
+
+    document.getElementById('mockNextWrap').classList.add('hidden');
+    document.getElementById('mockNextText').textContent = mockIdx === total - 1 ? '交卷' : '下一題';
+
+    var card = document.getElementById('mockCard');
+    card.style.opacity = '0'; card.style.transform = 'translateY(12px)';
+    requestAnimationFrame(function() {
+      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      card.style.opacity = '1'; card.style.transform = 'translateY(0)';
+    });
+  }
+
+  function handleMockClick(e) {
+    if (mockAnswered) return;
+    mockAnswered = true;
+    var q = mockQuestions[mockIdx];
+    var selected = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
+    var correctIdx = LETTERS.indexOf(q.answer);
+    var isCorrect = selected === correctIdx;
+
+    mockAnswers.push({ qIdx: mockIdx, selected: selected, correct: isCorrect });
+    saveAnswer(q.id, isCorrect, q.chapter, q.difficulty);
+
+    // In mock mode, just highlight selection and move on (no explanation)
+    var allOpts = document.getElementById('mockOptions').querySelectorAll('.quiz-option');
+    for (var i = 0; i < allOpts.length; i++) {
+      allOpts[i].classList.add('quiz-option-disabled');
+    }
+    e.currentTarget.style.borderColor = '#C5A55A';
+    e.currentTarget.style.background = '#F3EDE4';
+
+    document.getElementById('mockNextWrap').classList.remove('hidden');
+  }
+
+  function endMock() {
+    clearInterval(mockTimerId);
+    var score = 0;
+    mockAnswers.forEach(function(a) { if (a.correct) score++; });
+    var timeUsed = 3600 - mockTimeLeft;
+    saveMockScore(mockNum, score, mockQuestions.length, timeUsed);
+
+    document.getElementById('mockExam').classList.add('hidden');
+    document.getElementById('mockResults').classList.remove('hidden');
+    document.getElementById('mockReviewList').classList.add('hidden');
+
+    // Animate score
+    var scoreEl = document.getElementById('mockScoreNum');
+    var ring = document.getElementById('mockRing');
+    var circumference = 2 * Math.PI * 70;
+    var startTime = null;
+
+    function animateScore(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / 1000, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      scoreEl.textContent = Math.round(eased * score);
+      ring.setAttribute('stroke-dashoffset', circumference - (eased * score / 50) * circumference);
+      if (p < 1) requestAnimationFrame(animateScore);
+    }
+    setTimeout(function() { requestAnimationFrame(animateScore); }, 200);
+
+    var pct = Math.round((score / 50) * 100);
+    ring.setAttribute('stroke', pct >= 70 ? '#22c55e' : pct >= 50 ? '#C5A55A' : '#ef4444');
+
+    document.getElementById('mockResultLabel').textContent = pct >= 70 ? '恭喜通過！' : pct >= 50 ? '再加把勁！' : '需要多練習';
+    document.getElementById('mockResultLabel').style.color = pct >= 70 ? '#16a34a' : pct >= 50 ? '#C5A55A' : '#dc2626';
+
+    var mm = Math.floor(timeUsed / 60);
+    var ss = timeUsed % 60;
+    document.getElementById('mockResultTime').textContent = '用時 ' + mm + ' 分 ' + ss + ' 秒 / 正確率 ' + pct + '%';
+
+    // Build review
+    var reviewList = document.getElementById('mockReviewList');
+    reviewList.innerHTML = '';
+    for (var i = 0; i < mockQuestions.length; i++) {
+      var q = mockQuestions[i];
+      var a = mockAnswers[i] || { selected: -1, correct: false };
+      var correctIdx = LETTERS.indexOf(q.answer);
+      var icon = a.correct
+        ? '<iconify-icon icon="solar:check-circle-bold" style="color:#22c55e;font-size:1.25rem;"></iconify-icon>'
+        : '<iconify-icon icon="solar:close-circle-bold" style="color:#ef4444;font-size:1.25rem;"></iconify-icon>';
+
+      var div = document.createElement('div');
+      div.className = 'review-item';
+      div.innerHTML =
+        '<div style="display:flex;align-items:center;gap:0.75rem;">' +
+          icon +
+          '<span style="flex:1;" class="font-body text-sm text-brand-text">' + (i+1) + '. ' + q.question.substring(0,50) + (q.question.length > 50 ? '...' : '') + '</span>' +
+          '<iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle" style="font-size:1rem;flex-shrink:0;transition:transform 0.2s;"></iconify-icon>' +
+        '</div>' +
+        '<div class="review-item-detail">' +
+          '<p class="font-body text-sm text-brand-text mb-2" style="font-weight:600;">' + q.question + '</p>' +
+          (a.selected >= 0 ? '<p class="font-body text-xs text-brand-subtle mb-1">你的答案：<span style="color:' + (a.correct ? '#16a34a' : '#dc2626') + ';font-weight:600;">' + LETTERS[a.selected] + '. ' + q.options[a.selected].replace(/^[A-D]\.\s*/, '') + '</span></p>' : '<p class="font-body text-xs text-red-400 mb-1">未作答</p>') +
+          (!a.correct ? '<p class="font-body text-xs text-brand-subtle mb-1">正確答案：<span style="color:#16a34a;font-weight:600;">' + q.answer + '. ' + q.options[correctIdx].replace(/^[A-D]\.\s*/, '') + '</span></p>' : '') +
+          '<p class="font-body text-xs text-brand-subtle mt-2" style="padding:0.5rem 0.75rem;background:#f9fafb;border-radius:0.5rem;border:1px solid #e5e7eb;">' + q.explanation + '</p>' +
+        '</div>';
+
+      div.addEventListener('click', function() {
+        this.classList.toggle('open');
+        var arrow = this.querySelector('iconify-icon[icon="solar:alt-arrow-down-linear"]');
+        if (arrow) arrow.style.transform = this.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+      reviewList.appendChild(div);
+    }
+  }
+
+  function updateMockStatus() {
+    var stats = getStats();
+    for (var n = 1; n <= 3; n++) {
+      var el = document.getElementById('mockStatus' + n);
+      var scores = (stats.mockScores || {})[n];
+      if (scores && scores.length > 0) {
+        var best = Math.max.apply(null, scores.map(function(s) { return s.score; }));
+        el.textContent = '最高：' + best + '/50 (' + Math.round(best/50*100) + '%)';
+        el.style.color = best >= 35 ? '#16a34a' : '#C5A55A';
+      } else {
+        el.textContent = '尚未作答';
+      }
+    }
+  }
+
+  // ==================== STATS ====================
+  function setupStats() {
+    document.getElementById('resetStats').addEventListener('click', function() {
+      if (confirm('確定要重置所有練習紀錄嗎？此操作無法復原。')) {
+        resetAllData();
+        refreshStats();
+        updateChapterProgress();
+        updateMockStatus();
+      }
+    });
+  }
+
+  function refreshStats() {
+    var stats = getStats();
+    var ans = stats.answered || {};
+    var ids = Object.keys(ans);
+    var total = ids.length;
+    var correct = 0;
+    var chapters = { L11: { total: 0, correct: 0 }, L12: { total: 0, correct: 0 }, MIX: { total: 0, correct: 0 } };
+    var diffs = { easy: { total: 0, correct: 0 }, medium: { total: 0, correct: 0 }, hard: { total: 0, correct: 0 } };
+
+    ids.forEach(function(id) {
+      var a = ans[id];
+      if (a.correct) correct++;
+      if (chapters[a.chapter]) { chapters[a.chapter].total++; if (a.correct) chapters[a.chapter].correct++; }
+      if (diffs[a.difficulty]) { diffs[a.difficulty].total++; if (a.correct) diffs[a.difficulty].correct++; }
+    });
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statAccuracy').textContent = total > 0 ? Math.round((correct / total) * 100) + '%' : '0%';
+
+    // Best mock
+    var bestMock = '--';
+    var ms = stats.mockScores || {};
+    for (var n = 1; n <= 3; n++) {
+      if (ms[n]) {
+        ms[n].forEach(function(s) {
+          var pct = Math.round((s.score / s.total) * 100);
+          if (bestMock === '--' || pct > parseInt(bestMock)) bestMock = pct + '%';
+        });
+      }
+    }
+    document.getElementById('statBestMock').textContent = bestMock;
+
+    ['L11','L12','MIX'].forEach(function(ch) {
+      var c = chapters[ch];
+      document.getElementById('stat' + ch).textContent = c.correct + '/' + c.total;
+      var pct = c.total > 0 ? Math.round((c.correct / c.total) * 100) : 0;
+      document.getElementById('stat' + ch + 'Bar').style.width = pct + '%';
+    });
+
+    ['easy','medium','hard'].forEach(function(d) {
+      var dd = diffs[d];
+      var elId = 'stat' + d.charAt(0).toUpperCase() + d.slice(1);
+      document.getElementById(elId).textContent = dd.total > 0 ? Math.round((dd.correct / dd.total) * 100) + '%' : '--';
+    });
+  }
+
+})();
+</script>
+
+</Base>

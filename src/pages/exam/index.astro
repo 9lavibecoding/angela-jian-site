@@ -1,0 +1,246 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="iPAS AI 題庫 — 870 題完整練習 | Angela Jian" description="870 道 iPAS 初級人工智慧應用師考題，互動答題、章節練習、答對率統計、3 套模擬考卷（計時 60 分鐘），一次買斷 NT$899">
+
+<main class="pt-28 pb-20 min-h-screen bg-[#FFFEF7]">
+  <div class="site-container px-6">
+
+    <!-- Back -->
+    <div class="mb-8">
+      <a href="/ipas" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors mb-6">
+        <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+        返回 iPAS 課程
+      </a>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Hero -->
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 text-brand-accent text-sm font-body font-medium mb-6">
+          <iconify-icon icon="solar:verified-check-bold"></iconify-icon>
+          一次買斷 / 永久使用
+        </div>
+        <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-text mb-5 leading-tight">
+          iPAS AI 證照題庫<br class="hidden md:block">
+          <span class="gold-text">870 題完整版</span>
+        </h1>
+        <p class="font-body text-brand-subtle text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+          涵蓋 L11 基礎 AI 概念、L12 生成式 AI 應用、綜合模擬考，<br class="hidden md:block">
+          每題附詳細解析，用最有效率的方式備考 iPAS 初級 AI 證照。
+        </p>
+
+        <!-- Price -->
+        <div class="inline-flex flex-col items-center bg-white rounded-2xl border border-brand-light-border p-8 mb-8 shadow-sm">
+          <p class="font-body text-sm text-brand-subtle mb-2">一次付費，永久使用</p>
+          <div class="flex items-baseline gap-1 mb-3">
+            <span class="font-heading font-bold text-5xl text-brand-text">NT$899</span>
+          </div>
+          <p class="font-body text-xs text-brand-subtle mb-6">綠界安全付款（信用卡 / ATM / 超商）</p>
+          <button id="buyBtn" class="mag-btn px-12 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-base tracking-wide hover:opacity-90 transition-opacity">
+            <span>立即購買題庫</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Features Grid -->
+      <div class="grid md:grid-cols-2 gap-6 mb-16">
+        <div class="bg-white rounded-2xl p-6 border border-brand-light-border">
+          <div class="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center mb-4">
+            <iconify-icon icon="solar:book-2-bold" class="text-xl text-brand-accent"></iconify-icon>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-brand-text mb-2">章節練習</h3>
+          <p class="font-body text-sm text-brand-subtle leading-relaxed">依 L11（300 題）、L12（300 題）、綜合（270 題）分章練習，逐題作答並查看詳細解析。</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-brand-light-border">
+          <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-4">
+            <iconify-icon icon="solar:chart-2-bold" class="text-xl text-violet-600"></iconify-icon>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-brand-text mb-2">答對率統計</h3>
+          <p class="font-body text-sm text-brand-subtle leading-relaxed">即時追蹤各章節正確率、已做題數、難度分佈，精準掌握弱項。</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-brand-light-border">
+          <div class="w-11 h-11 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
+            <iconify-icon icon="solar:clock-circle-bold" class="text-xl text-emerald-600"></iconify-icon>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-brand-text mb-2">3 套模擬考卷</h3>
+          <p class="font-body text-sm text-brand-subtle leading-relaxed">每卷 50 題，計時 60 分鐘，完全模擬 iPAS 考試情境，考完即時批改。</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-brand-light-border">
+          <div class="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center mb-4">
+            <iconify-icon icon="solar:lightbulb-bolt-bold" class="text-xl text-amber-600"></iconify-icon>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-brand-text mb-2">詳細解析</h3>
+          <p class="font-body text-sm text-brand-subtle leading-relaxed">每題附專業白話解析，不只告訴你答案，更幫你理解背後原理。</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-brand-light-border md:col-span-2">
+          <div class="w-11 h-11 rounded-xl bg-violet-100 flex items-center justify-center mb-4">
+            <iconify-icon icon="solar:document-add-bold" class="text-xl text-violet-600"></iconify-icon>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-brand-text mb-2">PDF 離線下載</h3>
+          <p class="font-body text-sm text-brand-subtle leading-relaxed">全部 870 題含解析，可列印或存為 PDF，通勤、咖啡廳隨時翻閱複習。支援隱藏答案，先練再對。</p>
+        </div>
+      </div>
+
+      <!-- Chapter Breakdown -->
+      <div class="mb-16">
+        <h2 class="font-heading font-bold text-2xl text-brand-text text-center mb-8">題庫涵蓋範圍</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl p-6 border border-brand-light-border text-center">
+            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-3">
+              <span class="font-heading font-bold text-brand-accent">L11</span>
+            </div>
+            <h3 class="font-heading font-bold text-brand-text mb-1">基礎 AI 概念</h3>
+            <p class="font-body text-2xl font-bold text-brand-accent mb-1">300 題</p>
+            <p class="font-body text-xs text-brand-subtle">機器學習、深度學習、資料預處理、模型評估</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-brand-light-border text-center">
+            <div class="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center mx-auto mb-3">
+              <span class="font-heading font-bold text-violet-600">L12</span>
+            </div>
+            <h3 class="font-heading font-bold text-brand-text mb-1">生成式 AI 應用</h3>
+            <p class="font-body text-2xl font-bold text-violet-600 mb-1">300 題</p>
+            <p class="font-body text-xs text-brand-subtle">LLM、Prompt Engineering、RAG、AI 倫理</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-brand-light-border text-center">
+            <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
+              <span class="font-heading font-bold text-emerald-600">MIX</span>
+            </div>
+            <h3 class="font-heading font-bold text-brand-text mb-1">綜合模擬</h3>
+            <p class="font-body text-2xl font-bold text-emerald-600 mb-1">270 題</p>
+            <p class="font-body text-xs text-brand-subtle">跨章節整合、實務情境應用</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="mb-16">
+        <h2 class="font-heading font-bold text-2xl text-brand-text text-center mb-8">常見問題</h2>
+        <div class="space-y-3 max-w-2xl mx-auto">
+          <div class="faq-item bg-white rounded-xl border border-brand-light-border overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-heading font-semibold text-sm text-brand-text">購買後可以使用多久？</span>
+              <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-lg faq-arrow transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-4">
+              <p class="font-body text-sm text-brand-subtle">一次購買、永久使用。題庫資料儲存在你的瀏覽器中，隨時都可以練習。</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-xl border border-brand-light-border overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-heading font-semibold text-sm text-brand-text">付款方式是什麼？</span>
+              <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-lg faq-arrow transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-4">
+              <p class="font-body text-sm text-brand-subtle">透過綠界 ECPay 安全付款，支援信用卡（Visa / Mastercard / JCB）、ATM 轉帳、超商代碼繳費。</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-xl border border-brand-light-border overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-heading font-semibold text-sm text-brand-text">可以在手機上使用嗎？</span>
+              <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-lg faq-arrow transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-4">
+              <p class="font-body text-sm text-brand-subtle">完全支援！題庫介面為響應式設計，手機、平板、電腦都能流暢使用。</p>
+            </div>
+          </div>
+          <div class="faq-item bg-white rounded-xl border border-brand-light-border overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between px-6 py-4 text-left">
+              <span class="font-heading font-semibold text-sm text-brand-text">題目有更新嗎？</span>
+              <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-lg faq-arrow transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-4">
+              <p class="font-body text-sm text-brand-subtle">題庫會隨 iPAS 考試範圍調整持續更新，購買後自動獲得所有更新。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="text-center rounded-2xl bg-gradient-to-br from-amber-50 to-amber-50/50 p-10 md:p-14 border border-brand-light-border">
+        <iconify-icon icon="solar:medal-ribbons-star-bold" class="text-brand-accent text-4xl mb-4"></iconify-icon>
+        <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-text mb-3">準備好拿下 iPAS AI 證照了嗎？</h2>
+        <p class="font-body text-brand-subtle mb-6 max-w-lg mx-auto">870 題 + 詳細解析 + 模擬考卷，用最有效率的方式通過考試。</p>
+        <button id="buyBtn2" class="mag-btn px-12 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-base tracking-wide hover:opacity-90 transition-opacity">
+          <span>NT$899 — 立即購買</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script is:inline>
+(function() {
+  // 檢查是否已購買
+  var purchased = localStorage.getItem('ipas_exam_purchased');
+  if (purchased) {
+    var btns = document.querySelectorAll('#buyBtn, #buyBtn2');
+    btns.forEach(function(btn) {
+      btn.innerHTML = '<span>進入題庫</span>';
+      btn.addEventListener('click', function() {
+        window.location.href = '/exam/app';
+      });
+    });
+    return;
+  }
+
+  // 購買按鈕：呼叫 API 取得綠界表單參數，建立 form 自動送出
+  function handleBuy() {
+    var btn = this;
+    btn.disabled = true;
+    btn.innerHTML = '<span>導向付款頁面...</span>';
+
+    fetch('/api/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.params && data.actionUrl) {
+        // 建立隱藏 form 並自動送出到綠界
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.actionUrl;
+        form.style.display = 'none';
+        Object.keys(data.params).forEach(function(key) {
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = data.params[key];
+          form.appendChild(input);
+        });
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        alert(data.error || '發生錯誤，請稍後再試');
+        btn.disabled = false;
+        btn.innerHTML = '<span>立即購買題庫</span>';
+      }
+    })
+    .catch(function() {
+      alert('網路錯誤，請稍後再試');
+      btn.disabled = false;
+      btn.innerHTML = '<span>立即購買題庫</span>';
+    });
+  }
+
+  document.getElementById('buyBtn').addEventListener('click', handleBuy);
+  document.getElementById('buyBtn2').addEventListener('click', handleBuy);
+
+  // FAQ 摺疊
+  document.querySelectorAll('.faq-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var content = this.nextElementSibling;
+      var arrow = this.querySelector('.faq-arrow');
+      var isHidden = content.classList.contains('hidden');
+      content.classList.toggle('hidden');
+      arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+  });
+})();
+</script>
+
+</Base>
