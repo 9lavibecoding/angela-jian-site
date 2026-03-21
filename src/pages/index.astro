@@ -5,17 +5,17 @@ import { getArticles } from '../lib/notion';
 const articles = await getArticles();
 
 const tagStyles: Record<string, string> = {
-  accent: 'bg-brand-accent/10 text-brand-accent-dark',
-  warm:   'bg-brand-warm-dark/10 text-brand-warm-dark',
-  cool:   'bg-brand-cool/10 text-brand-cool',
-  purple: 'bg-purple-600/10 text-purple-600',
+  accent: 'bg-amber-100 text-amber-800 font-medium',
+  warm:   'bg-orange-100 text-orange-800 font-medium',
+  cool:   'bg-slate-200 text-slate-700 font-medium',
+  purple: 'bg-purple-100 text-purple-700 font-medium',
 };
 
 const cardHeaderStyles: Record<string, { bg: string; icon: string }> = {
-  accent: { bg: 'bg-amber-100/60',  icon: 'solar:document-text-bold' },
-  warm:   { bg: 'bg-amber-100/60',   icon: 'solar:lightbulb-bolt-bold' },
-  cool:   { bg: 'bg-slate-100/60',   icon: 'solar:chart-2-bold' },
-  purple: { bg: 'bg-purple-100/60',  icon: 'solar:settings-bold' },
+  accent: { bg: 'bg-amber-50',   icon: 'solar:document-text-bold' },
+  warm:   { bg: 'bg-orange-50',  icon: 'solar:lightbulb-bolt-bold' },
+  cool:   { bg: 'bg-slate-100',  icon: 'solar:chart-2-bold' },
+  purple: { bg: 'bg-purple-50',  icon: 'solar:settings-bold' },
 };
 
 const featuredArticles = articles.slice(0, 2);
