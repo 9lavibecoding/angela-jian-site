@@ -212,28 +212,56 @@ allQuestions.sort((a, b) => a.id - b.id);
 
         <!-- Mock Exam In Progress -->
         <div id="mockExam" class="hidden">
+          <!-- Top bar: title + timer -->
           <div class="flex items-center justify-between mb-4">
             <span id="mockTitle" class="font-heading font-bold text-lg text-brand-text"></span>
-            <div class="flex items-center gap-4">
-              <div id="mockTimer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 text-red-600 font-heading font-bold text-sm">
-                <iconify-icon icon="solar:clock-circle-bold" class="text-base"></iconify-icon>
-                <span id="mockTimerText">60:00</span>
+            <div id="mockTimer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 text-red-600 font-heading font-bold text-sm">
+              <iconify-icon icon="solar:clock-circle-bold" class="text-base"></iconify-icon>
+              <span id="mockTimerText">60:00</span>
+            </div>
+          </div>
+
+          <div class="flex gap-6">
+            <!-- Left: Question area -->
+            <div class="flex-1 min-w-0">
+              <div class="mb-3">
+                <span id="mockProgress" class="font-body text-sm text-brand-subtle"></span>
               </div>
-              <span id="mockProgress" class="font-body text-sm text-brand-subtle"></span>
+              <div id="mockCard">
+                <h2 id="mockQuestion" class="font-heading font-bold text-lg md:text-xl text-brand-text leading-relaxed mb-5"></h2>
+                <div id="mockOptions" class="space-y-2.5"></div>
+              </div>
+            </div>
+
+            <!-- Right: Question navigator -->
+            <div class="hidden md:block w-48 shrink-0">
+              <p class="font-heading font-bold text-xs text-brand-subtle mb-3">題目導覽</p>
+              <div id="mockNav" class="grid grid-cols-5 gap-1.5 mb-4"></div>
+              <div class="space-y-1.5 text-[10px] font-body text-brand-subtle">
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-emerald-500"></span>已作答</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-amber-400"></span>已標記</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-gray-100 border border-gray-200"></span>未作答</div>
+              </div>
             </div>
           </div>
-          <div class="mb-4">
-            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div id="mockBar" class="h-full bg-brand-accent rounded-full transition-all duration-500" style="width:0%"></div>
-            </div>
-          </div>
-          <div id="mockCard">
-            <h2 id="mockQuestion" class="font-heading font-bold text-lg md:text-xl text-brand-text leading-relaxed mb-5"></h2>
-            <div id="mockOptions" class="space-y-2.5"></div>
-            <div id="mockNextWrap" class="hidden mt-5">
-              <button id="mockNext" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+
+          <!-- Bottom fixed toolbar -->
+          <div id="mockToolbar" class="fixed bottom-0 left-0 right-0 z-50 p-3 bg-white/95 backdrop-blur-sm border-t border-gray-100">
+            <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
+              <button id="mockPrev" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
+                <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
+                上一題
+              </button>
+              <button id="mockMark" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-amber-400 hover:text-amber-600 transition-colors">
+                <iconify-icon icon="solar:flag-bold" id="mockMarkIcon"></iconify-icon>
+                <span id="mockMarkText">標記</span>
+              </button>
+              <button id="mockNext" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
                 <span id="mockNextText">下一題</span>
-                <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+                <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+              </button>
+              <button id="mockSubmit" class="px-5 py-2.5 gold-gradient text-white font-heading font-semibold rounded-lg text-sm hover:opacity-90 transition-opacity">
+                交卷
               </button>
             </div>
           </div>
@@ -548,7 +576,8 @@ allQuestions.sort((a, b) => a.id - b.id);
       document.getElementById('practiceQuiz').classList.add('hidden');
       updateChapterProgress();
     });
-    document.getElementById('practiceNext').addEventListener('click', function() {
+    function goNextPractice() {
+      if (document.getElementById('practiceNextWrap').classList.contains('hidden')) return;
       if (practiceIdx < practiceQuestions.length - 1) {
         practiceIdx++;
         renderPracticeQ();
@@ -556,7 +585,25 @@ allQuestions.sort((a, b) => a.id - b.id);
       } else {
         document.getElementById('chapterSelect').classList.remove('hidden');
         document.getElementById('practiceQuiz').classList.add('hidden');
+        document.getElementById('practiceNextWrap').classList.add('hidden');
         updateChapterProgress();
+      }
+    }
+    document.getElementById('practiceNext').addEventListener('click', goNextPractice);
+
+    // 鍵盤快捷鍵
+    document.addEventListener('keydown', function(e) {
+      // Enter / Space = 下一題（練習模式）
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (!document.getElementById('practiceNextWrap').classList.contains('hidden')) {
+          e.preventDefault();
+          goNextPractice();
+        }
+      }
+      // 模擬考：左右鍵切題
+      if (!document.getElementById('mockExam').classList.contains('hidden')) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); document.getElementById('mockNext').click(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('mockPrev').click(); }
       }
     });
   }
@@ -647,6 +694,10 @@ allQuestions.sort((a, b) => a.id - b.id);
     }
     document.getElementById('practiceExplanationText').textContent = q.explanation;
     document.getElementById('practiceNextWrap').classList.remove('hidden');
+    // 自動滾動到解析區
+    setTimeout(function() {
+      document.getElementById('practiceExplanation').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
   }
 
   function updateChapterProgress() {
@@ -665,8 +716,8 @@ allQuestions.sort((a, b) => a.id - b.id);
   // ==================== MOCK EXAM ====================
   var mockQuestions = [];
   var mockIdx = 0;
-  var mockAnswered = false;
-  var mockAnswers = [];
+  var mockAnswers = []; // { selected: idx or -1 }
+  var mockMarked = []; // boolean array
   var mockNum = 0;
   var mockTimerId = null;
   var mockTimeLeft = 3600;
@@ -679,21 +730,31 @@ allQuestions.sort((a, b) => a.id - b.id);
       });
     });
     document.getElementById('mockNext').addEventListener('click', function() {
-      if (mockIdx < mockQuestions.length - 1) {
-        mockIdx++;
-        renderMockQ();
-      } else {
-        endMock();
-      }
+      if (mockIdx < mockQuestions.length - 1) { mockIdx++; renderMockQ(); }
+    });
+    document.getElementById('mockPrev').addEventListener('click', function() {
+      if (mockIdx > 0) { mockIdx--; renderMockQ(); }
+    });
+    document.getElementById('mockMark').addEventListener('click', function() {
+      mockMarked[mockIdx] = !mockMarked[mockIdx];
+      updateMockMark();
+      updateMockNav();
+    });
+    document.getElementById('mockSubmit').addEventListener('click', function() {
+      var unanswered = mockAnswers.filter(function(a) { return a.selected === -1; }).length;
+      var msg = unanswered > 0
+        ? '還有 ' + unanswered + ' 題未作答，確定要交卷嗎？'
+        : '確定要交卷嗎？';
+      if (confirm(msg)) endMock();
     });
     document.getElementById('mockBackBtn').addEventListener('click', function() {
       document.getElementById('mockResults').classList.add('hidden');
       document.getElementById('mockSelect').classList.remove('hidden');
+      document.getElementById('mockToolbar')?.classList.add('hidden');
       updateMockStatus();
     });
     document.getElementById('mockReviewBtn').addEventListener('click', function() {
-      var list = document.getElementById('mockReviewList');
-      list.classList.toggle('hidden');
+      document.getElementById('mockReviewList').classList.toggle('hidden');
     });
   }
 
@@ -701,18 +762,72 @@ allQuestions.sort((a, b) => a.id - b.id);
     mockNum = num;
     mockQuestions = MOCK_EXAMS[num];
     mockIdx = 0;
-    mockAnswered = false;
-    mockAnswers = [];
+    mockAnswers = mockQuestions.map(function() { return { selected: -1 }; });
+    mockMarked = mockQuestions.map(function() { return false; });
     mockTimeLeft = 3600;
     mockStartTime = Date.now();
 
     document.getElementById('mockSelect').classList.add('hidden');
     document.getElementById('mockExam').classList.remove('hidden');
     document.getElementById('mockResults').classList.add('hidden');
+    document.getElementById('mockToolbar').classList.remove('hidden');
     document.getElementById('mockTitle').textContent = '模擬考卷 ' + ['','A','B','C'][num];
 
+    buildMockNav();
     startTimer();
     renderMockQ();
+  }
+
+  function buildMockNav() {
+    var nav = document.getElementById('mockNav');
+    nav.innerHTML = '';
+    for (var i = 0; i < mockQuestions.length; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'mock-nav-btn w-8 h-8 rounded text-xs font-heading font-bold border transition-all';
+      btn.textContent = i + 1;
+      btn.setAttribute('data-qi', i);
+      btn.addEventListener('click', function() {
+        mockIdx = parseInt(this.getAttribute('data-qi'), 10);
+        renderMockQ();
+      });
+      nav.appendChild(btn);
+    }
+    updateMockNav();
+  }
+
+  function updateMockNav() {
+    var btns = document.querySelectorAll('.mock-nav-btn');
+    btns.forEach(function(btn, i) {
+      var answered = mockAnswers[i] && mockAnswers[i].selected !== -1;
+      var marked = mockMarked[i];
+      var current = i === mockIdx;
+      // Reset
+      btn.className = 'mock-nav-btn w-8 h-8 rounded text-xs font-heading font-bold border transition-all ';
+      if (current) {
+        btn.className += 'bg-brand-accent text-white border-brand-accent shadow-sm';
+      } else if (marked) {
+        btn.className += 'bg-amber-400 text-white border-amber-500';
+      } else if (answered) {
+        btn.className += 'bg-emerald-500 text-white border-emerald-600';
+      } else {
+        btn.className += 'bg-gray-100 text-gray-500 border-gray-200 hover:border-gray-400';
+      }
+    });
+  }
+
+  function updateMockMark() {
+    var marked = mockMarked[mockIdx];
+    var icon = document.getElementById('mockMarkIcon');
+    var text = document.getElementById('mockMarkText');
+    if (marked) {
+      icon.setAttribute('icon', 'solar:flag-bold');
+      icon.style.color = '#d97706';
+      text.textContent = '取消標記';
+    } else {
+      icon.setAttribute('icon', 'solar:flag-linear');
+      icon.style.color = '';
+      text.textContent = '標記';
+    }
   }
 
   function startTimer() {
@@ -721,18 +836,14 @@ allQuestions.sort((a, b) => a.id - b.id);
     mockTimerId = setInterval(function() {
       mockTimeLeft--;
       updateTimerDisplay();
-      if (mockTimeLeft <= 0) {
-        clearInterval(mockTimerId);
-        endMock();
-      }
+      if (mockTimeLeft <= 0) { clearInterval(mockTimerId); endMock(); }
     }, 1000);
   }
 
   function updateTimerDisplay() {
     var m = Math.floor(mockTimeLeft / 60);
     var s = mockTimeLeft % 60;
-    var txt = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-    document.getElementById('mockTimerText').textContent = txt;
+    document.getElementById('mockTimerText').textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
     var timer = document.getElementById('mockTimer');
     if (mockTimeLeft <= 300) {
       timer.classList.add('mock-timer-warning');
@@ -742,18 +853,25 @@ allQuestions.sort((a, b) => a.id - b.id);
 
   function renderMockQ() {
     var q = mockQuestions[mockIdx];
-    mockAnswered = false;
     var total = mockQuestions.length;
-    var pct = Math.round(((mockIdx + 1) / total) * 100);
-    document.getElementById('mockProgress').textContent = (mockIdx + 1) + ' / ' + total;
-    document.getElementById('mockBar').style.width = pct + '%';
+    document.getElementById('mockProgress').textContent = '第 ' + (mockIdx + 1) + ' 題 / 共 ' + total + ' 題';
     document.getElementById('mockQuestion').textContent = q.question;
+
+    // Prev/Next button states
+    document.getElementById('mockPrev').disabled = mockIdx === 0;
+    document.getElementById('mockPrev').style.opacity = mockIdx === 0 ? '0.3' : '1';
 
     var container = document.getElementById('mockOptions');
     container.innerHTML = '';
+    var savedAnswer = mockAnswers[mockIdx] ? mockAnswers[mockIdx].selected : -1;
+
     for (var i = 0; i < q.options.length; i++) {
       var div = document.createElement('div');
       div.className = 'quiz-option';
+      if (i === savedAnswer) {
+        div.style.borderColor = '#C5A55A';
+        div.style.background = '#F3EDE4';
+      }
       div.setAttribute('data-idx', i);
       var optText = q.options[i].replace(/^[A-D]\.\s*/, '');
       div.innerHTML = '<div class="option-letter">' + LETTERS[i] + '</div><span class="font-body text-sm text-brand-text leading-relaxed">' + optText + '</span>';
@@ -761,43 +879,49 @@ allQuestions.sort((a, b) => a.id - b.id);
       container.appendChild(div);
     }
 
-    document.getElementById('mockNextWrap').classList.add('hidden');
-    document.getElementById('mockNextText').textContent = mockIdx === total - 1 ? '交卷' : '下一題';
+    updateMockMark();
+    updateMockNav();
 
     var card = document.getElementById('mockCard');
-    card.style.opacity = '0'; card.style.transform = 'translateY(12px)';
+    card.style.opacity = '0'; card.style.transform = 'translateY(8px)';
     requestAnimationFrame(function() {
-      card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
       card.style.opacity = '1'; card.style.transform = 'translateY(0)';
     });
   }
 
   function handleMockClick(e) {
-    if (mockAnswered) return;
-    mockAnswered = true;
-    var q = mockQuestions[mockIdx];
     var selected = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
-    var correctIdx = LETTERS.indexOf(q.answer);
-    var isCorrect = selected === correctIdx;
+    // Allow changing answer
+    mockAnswers[mockIdx] = { selected: selected };
 
-    mockAnswers.push({ qIdx: mockIdx, selected: selected, correct: isCorrect });
-    saveAnswer(q.id, isCorrect, q.chapter, q.difficulty);
-
-    // In mock mode, just highlight selection and move on (no explanation)
+    // Update option styles
     var allOpts = document.getElementById('mockOptions').querySelectorAll('.quiz-option');
     for (var i = 0; i < allOpts.length; i++) {
-      allOpts[i].classList.add('quiz-option-disabled');
+      if (i === selected) {
+        allOpts[i].style.borderColor = '#C5A55A';
+        allOpts[i].style.background = '#F3EDE4';
+      } else {
+        allOpts[i].style.borderColor = '#e5e7eb';
+        allOpts[i].style.background = '#fafafa';
+      }
     }
-    e.currentTarget.style.borderColor = '#C5A55A';
-    e.currentTarget.style.background = '#F3EDE4';
-
-    document.getElementById('mockNextWrap').classList.remove('hidden');
+    updateMockNav();
   }
 
   function endMock() {
     clearInterval(mockTimerId);
+    document.getElementById('mockToolbar').classList.add('hidden');
+    // Calculate scores from saved answers
     var score = 0;
-    mockAnswers.forEach(function(a) { if (a.correct) score++; });
+    for (var i = 0; i < mockQuestions.length; i++) {
+      var sel = mockAnswers[i] ? mockAnswers[i].selected : -1;
+      var correctIdx = LETTERS.indexOf(mockQuestions[i].answer);
+      var isCorrect = sel === correctIdx;
+      mockAnswers[i].correct = isCorrect;
+      if (isCorrect) score++;
+      if (sel !== -1) saveAnswer(mockQuestions[i].id, isCorrect, mockQuestions[i].chapter, mockQuestions[i].difficulty);
+    }
     var timeUsed = 3600 - mockTimeLeft;
     saveMockScore(mockNum, score, mockQuestions.length, timeUsed);
 
