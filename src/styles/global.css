@@ -155,21 +155,21 @@
   .article-content-light li { margin-bottom: 0.6rem; }
   .article-content-light blockquote {
     border-left: 4px solid #C5A55A; padding: 1rem 1.25rem; margin: 1.5rem 0;
-    background: linear-gradient(135deg, #FDF8EC, #FFF8E1); border-radius: 0 0.75rem 0.75rem 0;
-    box-shadow: 0 2px 8px rgba(197, 165, 90, 0.12);
+    background: #f8f8f8; border-radius: 0 0.75rem 0.75rem 0;
+    box-shadow: none;
   }
-  .article-content-light blockquote p { color: #5D4E37; font-weight: 500; margin-bottom: 0; }
+  .article-content-light blockquote p { color: #3d3832; font-weight: 500; margin-bottom: 0; }
   .article-content-light blockquote strong { color: #A8893E; }
   .article-content-light img { border-radius: 1rem; margin: 2rem 0; width: 100%; min-height: 0; }
   .article-content-light img[src=""], .article-content-light img:not([src]) { display: none; }
-  .article-content-light table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.6; border-radius: 0.75rem; border: 1px solid #E0D5C5; overflow: hidden; display: table; }
+  .article-content-light table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.6; border-radius: 0.75rem; border: 1px solid #e5e7eb; overflow: hidden; display: table; }
   .article-content-light thead th { background: linear-gradient(135deg, #1a1814, #2a2520); color: #E8D48B; padding: 0.85rem 1.1rem; text-align: left; font-weight: 700; font-size: 0.85rem; white-space: nowrap; letter-spacing: 0.02em; border-bottom: 2px solid #C5A55A; }
-  .article-content-light tbody td { padding: 0.75rem 1.1rem; border-bottom: 1px solid #EDE6D8; color: #3d3832; vertical-align: top; }
-  .article-content-light tbody tr:nth-child(even) { background: #FAF6EF; }
-  .article-content-light tbody tr:nth-child(odd) { background: #FFFEF7; }
-  .article-content-light tbody tr:hover { background: #F5EDD8; }
+  .article-content-light tbody td { padding: 0.75rem 1.1rem; border-bottom: 1px solid #f0f0f0; color: #3d3832; vertical-align: top; }
+  .article-content-light tbody tr:nth-child(even) { background: #fafafa; }
+  .article-content-light tbody tr:nth-child(odd) { background: #ffffff; }
+  .article-content-light tbody tr:hover { background: #f5f5f5; }
   .article-content-light tbody td strong { color: #1a1814; font-weight: 600; }
-  .article-content-light tbody td:first-child { font-weight: 600; color: #5D4E37; }
+  .article-content-light tbody td:first-child { font-weight: 600; color: #3d3832; }
   .article-content-light .quiz-divider {
     margin: 3rem 0 2rem; padding: 1.25rem 0; text-align: center; position: relative;
     border-top: 2px solid var(--color-brand-accent-dark); border-bottom: 2px solid var(--color-brand-accent-dark);

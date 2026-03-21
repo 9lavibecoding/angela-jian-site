@@ -191,13 +191,13 @@ export const STATIC_ARTICLES: Article[] = [
 <div><div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.25rem;"><span style="color:#111;font-weight:600;">進度管理（週報/追蹤）</span><span style="color:#C5A55A;font-weight:600;">AI 可加速 🟢</span></div><div style="background:#e5e7eb;border-radius:4px;height:8px;overflow:hidden;"><div style="width:10%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);border-radius:4px;"></div></div></div>
 </div>
 </div>
-<div style="margin:1.5rem 0 2.5rem;background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:0.75rem;padding:1.25rem;">
-<div style="font-weight:700;color:#e65100;font-size:0.9rem;margin-bottom:0.75rem;text-align:center;">AI 與人類的分工原則</div>
+<div style="margin:1.5rem 0 2.5rem;background:#f8f9fa;border:1px solid #e5e7eb;border-radius:0.75rem;padding:1.25rem;">
+<div style="font-weight:700;color:#1a1814;font-size:0.9rem;margin-bottom:0.75rem;text-align:center;">AI 與人類的分工原則</div>
 <div style="position:relative;height:2.5rem;background:#e5e7eb;border-radius:6px;overflow:hidden;">
-<div style="position:absolute;left:0;top:0;width:70%;height:100%;background:linear-gradient(90deg,#C5A55A,#D4B86A);display:flex;align-items:center;padding-left:1rem;">
-<span style="color:#fff;font-size:0.8rem;font-weight:600;">AI 處理：0 → 0.7</span>
+<div style="position:absolute;left:0;top:0;width:70%;height:100%;background:linear-gradient(90deg,#1a1814,#2a2520);display:flex;align-items:center;padding-left:1rem;">
+<span style="color:#E8D48B;font-size:0.8rem;font-weight:600;">AI 處理：0 → 0.7</span>
 </div>
-<div style="position:absolute;right:0;top:0;width:30%;height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);display:flex;align-items:center;justify-content:center;">
+<div style="position:absolute;right:0;top:0;width:30%;height:100%;background:linear-gradient(90deg,#C5A55A,#A8893E);display:flex;align-items:center;justify-content:center;">
 <span style="color:#fff;font-size:0.8rem;font-weight:600;">人類：0.7 → 1.0</span>
 </div>
 </div>
@@ -211,10 +211,10 @@ export const STATIC_ARTICLES: Article[] = [
 <div style="font-weight:700;color:#111;font-size:0.95rem;margin-bottom:1rem;">5 大場景效率對比</div>
 <table style="width:100%;border-collapse:collapse;border-radius:0.75rem;overflow:hidden;font-size:0.85rem;line-height:1.6;">
 <thead><tr>
-<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:left;font-weight:600;">場景</th>
-<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">以前耗時</th>
-<th style="background:#C5A55A;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">現在耗時</th>
-<th style="background:#e65100;color:#fff;padding:0.85rem 1rem;text-align:center;font-weight:600;">主要工具</th>
+<th style="background:#1a1814;color:#E8D48B;padding:0.85rem 1rem;text-align:left;font-weight:600;">場景</th>
+<th style="background:#1a1814;color:#E8D48B;padding:0.85rem 1rem;text-align:center;font-weight:600;">以前耗時</th>
+<th style="background:#1a1814;color:#E8D48B;padding:0.85rem 1rem;text-align:center;font-weight:600;">現在耗時</th>
+<th style="background:#1a1814;color:#E8D48B;padding:0.85rem 1rem;text-align:center;font-weight:600;">主要工具</th>
 </tr></thead>
 <tbody>
 <tr><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;font-weight:600;color:#111;">競品分析</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#dc2626;">4 小時</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#059669;font-weight:600;">1 小時</td><td style="padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;text-align:center;color:#6b7280;">ChatGPT + Perplexity</td></tr>
