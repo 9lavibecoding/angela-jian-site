@@ -43,13 +43,13 @@ const langSwitchLabel = isEn ? '中' : 'EN';
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={ogImage || new URL('/angela.jpeg', Astro.site).toString()} />
+<meta property="og:image" content={ogImage || new URL('/og-cover.png', Astro.site).toString()} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImage || new URL('/angela.jpeg', Astro.site).toString()} />
+<meta name="twitter:image" content={ogImage || new URL('/og-cover.png', Astro.site).toString()} />
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify({
