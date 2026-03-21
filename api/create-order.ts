@@ -51,7 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     PaymentType: 'aio',
     TotalAmount: '899',
     TradeDesc: 'iPAS AI Exam Bank',
-    ItemName: 'iPAS AI 題庫 870題完整版',
+    ItemName: 'iPAS AI 題庫 1000題完整版',
     ReturnURL: `${origin}/api/ecpay-notify`,
     OrderResultURL: `${origin}/api/ecpay-return?trade_no=${tradeNo}`,
     ChoosePayment: 'ALL',

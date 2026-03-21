@@ -9,10 +9,13 @@ import q6 from '../../data/exam/L12-301-450.json';
 import q7 from '../../data/exam/L12-451-600.json';
 import q8 from '../../data/exam/MIX-601-750.json';
 import q9 from '../../data/exam/MIX-751-870.json';
+import q10 from '../../data/exam/L11-871-971.json';
+import q11 from '../../data/exam/MIX-972-1101.json';
+import q12 from '../../data/exam/EXTRA-1102-1113.json';
 
 const seen = new Set<number>();
 const allQuestions: any[] = [];
-for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9]) {
+for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12]) {
   for (const q of arr) {
     if (!seen.has(q.id)) {
       seen.add(q.id);
@@ -34,7 +37,7 @@ const chapters = {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>iPAS AI 題庫 — 870 題完整版（列印版）</title>
+<title>iPAS AI 題庫 — 1000 題完整版（列印版）</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -119,7 +122,7 @@ const chapters = {
 <!-- Print content (hidden until verified) -->
 <div id="printContent" style="display:none">
   <div class="print-bar">
-    <span class="print-bar-title">iPAS AI 題庫 — 870 題</span>
+    <span class="print-bar-title">iPAS AI 題庫 — 1000 題</span>
     <div class="print-bar-actions">
       <button class="toggle-answers" id="toggleAnswers">隱藏答案</button>
       <button class="print-btn" onclick="window.print()">列印 / 存為 PDF</button>

@@ -11,11 +11,14 @@ import q6 from '../../data/exam/L12-301-450.json';
 import q7 from '../../data/exam/L12-451-600.json';
 import q8 from '../../data/exam/MIX-601-750.json';
 import q9 from '../../data/exam/MIX-751-870.json';
+import q10 from '../../data/exam/L11-871-971.json';
+import q11 from '../../data/exam/MIX-972-1101.json';
+import q12 from '../../data/exam/EXTRA-1102-1113.json';
 
 // Deduplicate by id
 const seen = new Set<number>();
 const allQuestions: any[] = [];
-for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9]) {
+for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12]) {
   for (const q of arr) {
     if (!seen.has(q.id)) {
       seen.add(q.id);
@@ -26,7 +29,7 @@ for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9]) {
 allQuestions.sort((a, b) => a.id - b.id);
 ---
 
-<Base title="iPAS AI 題庫練習 — Angela Jian" description="870 道 iPAS 考題互動練習" noindex={true}>
+<Base title="iPAS AI 題庫練習 — Angela Jian" description="1000 道 iPAS 考題互動練習" noindex={true}>
 
 <main class="pt-24 pb-20 min-h-screen bg-white">
   <div class="site-container px-6">
@@ -57,7 +60,7 @@ allQuestions.sort((a, b) => a.id - b.id);
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 class="font-heading font-bold text-2xl md:text-3xl text-brand-text">iPAS AI 題庫</h1>
-          <p class="font-body text-sm text-brand-subtle mt-1">870 題完整版</p>
+          <p class="font-body text-sm text-brand-subtle mt-1">1000 題完整版</p>
         </div>
         <div class="flex items-center gap-3">
           <a href="/exam/print" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-brand-light-border rounded-full text-sm font-heading font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent transition-colors">
@@ -127,7 +130,7 @@ allQuestions.sort((a, b) => a.id - b.id);
               </div>
               <div>
                 <p class="font-heading font-bold text-brand-text text-sm">綜合模擬</p>
-                <p class="font-body text-xs text-brand-subtle">270 題</p>
+                <p class="font-body text-xs text-brand-subtle">400 題</p>
               </div>
             </div>
             <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden">
