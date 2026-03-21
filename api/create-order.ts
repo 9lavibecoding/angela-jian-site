@@ -49,7 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     MerchantTradeNo: tradeNo,
     MerchantTradeDate: tradeDate,
     PaymentType: 'aio',
-    TotalAmount: '899',
+    TotalAmount: '699',
     TradeDesc: 'iPAS AI Exam Bank',
     ItemName: 'iPAS AI 題庫 1000題完整版',
     ReturnURL: `${origin}/api/ecpay-notify`,
