@@ -140,10 +140,10 @@
   .article-content-light { font-family: var(--font-body); line-height: 1.8; }
   .article-content-light h2 { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--color-brand-light-text); }
   .article-content-light h3 { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600; margin: 2rem 0 0.75rem; color: var(--color-brand-light-text); }
-  .article-content-light p { margin-bottom: 1.25rem; color: var(--color-brand-light-subtle); }
+  .article-content-light p { margin-bottom: 1.25rem; color: #3d3832; }
   .article-content-light a { color: var(--color-brand-accent-dark); text-decoration: underline; text-underline-offset: 3px; }
-  .article-content-light ul { margin: 1rem 0; padding-left: 1.5rem; color: var(--color-brand-light-subtle); list-style: disc; }
-  .article-content-light ol { margin: 1rem 0; padding-left: 0; color: var(--color-brand-light-subtle); list-style: none; counter-reset: ol-counter; }
+  .article-content-light ul { margin: 1rem 0; padding-left: 1.5rem; color: #3d3832; list-style: disc; }
+  .article-content-light ol { margin: 1rem 0; padding-left: 0; color: #3d3832; list-style: none; counter-reset: ol-counter; }
   .article-content-light ol > li { counter-increment: ol-counter; padding-left: 2.25rem; position: relative; }
   .article-content-light ol > li::before {
     content: counter(ol-counter); position: absolute; left: 0; top: 0.1em;
@@ -164,7 +164,7 @@
   .article-content-light img[src=""], .article-content-light img:not([src]) { display: none; }
   .article-content-light table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.6; border-radius: 0.75rem; border: 1px solid #E0D5C5; overflow: hidden; display: table; }
   .article-content-light thead th { background: linear-gradient(135deg, #1a1814, #2a2520); color: #E8D48B; padding: 0.85rem 1.1rem; text-align: left; font-weight: 700; font-size: 0.85rem; white-space: nowrap; letter-spacing: 0.02em; border-bottom: 2px solid #C5A55A; }
-  .article-content-light tbody td { padding: 0.75rem 1.1rem; border-bottom: 1px solid #EDE6D8; color: var(--color-brand-light-subtle); vertical-align: top; }
+  .article-content-light tbody td { padding: 0.75rem 1.1rem; border-bottom: 1px solid #EDE6D8; color: #3d3832; vertical-align: top; }
   .article-content-light tbody tr:nth-child(even) { background: #FAF6EF; }
   .article-content-light tbody tr:nth-child(odd) { background: #FFFEF7; }
   .article-content-light tbody tr:hover { background: #F5EDD8; }
