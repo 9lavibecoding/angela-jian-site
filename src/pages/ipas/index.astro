@@ -18,14 +18,14 @@ const sortedStages = [...stages.entries()].sort(
 const totalLessons = lessons.length;
 ---
 
-<Base title="iPAS AI 應用規劃師｜51 篇免費證照備考教學 — Angela Jian" description="51 篇白話教學文章，用生活化比喻與圖解，帶你從零基礎考取經濟部 iPAS AI 應用規劃師初級證照。涵蓋 AI 基礎、機器學習、生成式 AI、法規治理與模擬考題。">
+<Base title="iPAS AI 應用規劃師｜50 篇免費證照備考教學 — Angela Jian" description="50 篇白話教學文章，用生活化比喻與圖解，帶你從零基礎考取經濟部 iPAS AI 應用規劃師初級證照。涵蓋 AI 基礎、機器學習、生成式 AI、法規治理與模擬考題。">
 
   <!-- JSON-LD: Course structured data -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Course",
     "name": "iPAS AI 應用規劃師初級證照備考教學",
-    "description": "51 篇白話教學文章，用生活化比喻與圖解，帶你從零基礎考取經濟部 iPAS AI 應用規劃師初級證照",
+    "description": "50 篇白話教學文章，用生活化比喻與圖解，帶你從零基礎考取經濟部 iPAS AI 應用規劃師初級證照",
     "provider": { "@type": "Person", "name": "Angela Jian 簡琬庭", "url": Astro.site?.toString() },
     "educationalLevel": "Beginner",
     "numberOfLessons": totalLessons,
@@ -63,12 +63,12 @@ const totalLessons = lessons.length;
       {
         "@type": "Question",
         "name": "iPAS AI 應用規劃師好考嗎？需要技術背景嗎？",
-        "acceptedAnswer": { "@type": "Answer", "text": "初級不需要程式背景，考的是 AI 概念理解與應用規劃能力。本課程用生活化比喻與圖解，讓完全零基礎的人也能理解複雜的技術概念。認真學完 51 篇教學並做完模擬考題，通過率很高。" }
+        "acceptedAnswer": { "@type": "Answer", "text": "初級不需要程式背景，考的是 AI 概念理解與應用規劃能力。本課程用生活化比喻與圖解，讓完全零基礎的人也能理解複雜的技術概念。認真學完 50 篇教學並做完模擬考題，通過率很高。" }
       },
       {
         "@type": "Question",
         "name": "這個課程是免費的嗎？",
-        "acceptedAnswer": { "@type": "Answer", "text": "是的，51 篇教學文章全部免費閱讀，包含 3 套模擬考題（共 80 題）和考前速查表。" }
+        "acceptedAnswer": { "@type": "Answer", "text": "是的，50 篇教學文章全部免費閱讀，包含 3 套模擬考題（共 80 題）和考前速查表。" }
       },
       {
         "@type": "Question",
@@ -112,7 +112,7 @@ const totalLessons = lessons.length;
           iPAS <span class="text-brand-accent-dark">AI 應用規劃師</span>
         </h1>
         <p class="text-base md:text-lg text-brand-light-subtle font-body leading-relaxed max-w-2xl">
-          51 篇白話教學文章，用生活化比喻 + 圖解，帶你從零基礎到考取經濟部 iPAS AI 應用規劃師初級證照。
+          50 篇白話教學文章，用生活化比喻 + 圖解，帶你從零基礎到考取經濟部 iPAS AI 應用規劃師初級證照。
         </p>
         <div class="flex items-center gap-4 mt-4 md:mt-6">
           <span class="px-3 py-1.5 text-xs bg-brand-accent-dark/10 text-brand-accent-dark rounded-full font-body">
@@ -155,9 +155,6 @@ const totalLessons = lessons.length;
                 <div class="flex items-center gap-3 mb-3">
                   <span class="w-7 h-7 rounded-lg bg-brand-accent-dark/10 flex items-center justify-center text-xs font-heading font-bold text-brand-accent-dark shrink-0">
                     {String(lesson.order).padStart(2, '0')}
-                  </span>
-                  <span class="px-2 py-0.5 text-[10px] rounded-full bg-purple-600/10 text-purple-600 font-body">
-                    {lesson.courseId}
                   </span>
                 </div>
                 <h3 class="font-heading font-semibold text-sm md:text-base leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors mb-2">
