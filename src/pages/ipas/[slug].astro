@@ -1,69 +1,40 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection, render } from 'astro:content';
+import { getIPASLessons, getIPASLessonBySlug } from '../../lib/notion';
 
 export async function getStaticPaths() {
-  const lessons = await getCollection('ipas');
+  const lessons = await getIPASLessons();
   return lessons.map(lesson => ({
-    params: { slug: lesson.id },
-    props: { lesson },
+    params: { slug: lesson.slug },
+    props: { slug: lesson.slug },
   }));
 }
 
-const { lesson } = Astro.props;
-const { Content } = await render(lesson);
+const { slug } = Astro.props;
+const lesson = await getIPASLessonBySlug(slug);
+if (!lesson) throw new Error(`Lesson not found: ${slug}`);
 
-// Get all lessons for prev/next navigation
-const allLessons = (await getCollection('ipas')).sort((a, b) => a.data.order - b.data.order);
-const currentIdx = allLessons.findIndex(l => l.id === lesson.id);
+const allLessons = await getIPASLessons();
+const currentIdx = allLessons.findIndex(l => l.slug === lesson.slug);
 const prevLesson = currentIdx > 0 ? allLessons[currentIdx - 1] : null;
 const nextLesson = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1] : null;
-const canonicalURL = new URL(`/ipas/${lesson.id}`, Astro.site);
+const canonicalURL = new URL(`/ipas/${lesson.slug}`, Astro.site);
 
-// Extract FAQ from markdown: find lines starting with **Q or **第 and their answer from the answer table
-const rawBody = lesson.body || '';
-const faqItems: { question: string; answer: string }[] = [];
-
-// Parse answer table: | Q1 | **(B)** | 解析文字 |
-const answerTableMatch = rawBody.match(/### 解答與解析[\s\S]*?\|[\s\S]*?\|/g);
-if (answerTableMatch) {
-  const tableRows = rawBody
-    .split('### 解答與解析')[1]
-    ?.match(/\|\s*(?:Q?\d+|第\s*\d+\s*題?)\s*\|\s*\*?\*?\(?[A-D]\)?\*?\*?\s*\|\s*(.+?)\s*\|/g);
-
-  // Also extract questions
-  const questions = rawBody.match(/\*\*(?:Q\d+\.?|第\s*\d+\s*題)\*?\*?\s*(.+?)(?:\n|$)/g);
-
-  if (questions && tableRows) {
-    const limit = Math.min(questions.length, tableRows.length, 3); // max 3 FAQs per page
-    for (let i = 0; i < limit; i++) {
-      const q = questions[i]?.replace(/\*\*/g, '').replace(/^Q\d+\.?\s*|^第\s*\d+\s*題\s*/,'').trim();
-      const aMatch = tableRows[i]?.match(/\|\s*(?:Q?\d+|第\s*\d+\s*題?)\s*\|\s*\*?\*?\(?([A-D])\)?\*?\*?\s*\|\s*(.+?)\s*\|/);
-      const a = aMatch?.[2]?.replace(/\*\*/g, '').trim();
-      if (q && a) {
-        faqItems.push({ question: q, answer: a });
-      }
-    }
-  }
-}
-
-// Fallback: always include a FAQ about the topic itself
-if (faqItems.length === 0) {
-  faqItems.push({
-    question: lesson.data.title.replace(/[：:]/g, '？').replace(/？$/, '') + '？',
-    answer: lesson.data.summary
-  });
-}
+// FAQ fallback
+const faqItems = [{
+  question: lesson.title.replace(/[：:]/g, '？').replace(/？$/, '') + '？',
+  answer: lesson.summary,
+}];
 ---
 
-<Base title={`${lesson.data.title} — iPAS AI 應用規劃師證照教學`} description={lesson.data.summary}>
+<Base title={`${lesson.title} — iPAS AI 應用規劃師證照教學`} description={lesson.summary}>
 
   <!-- JSON-LD: Article + Course structured data -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": lesson.data.title,
-    "description": lesson.data.summary,
+    "headline": lesson.title,
+    "description": lesson.summary,
     "author": { "@type": "Person", "name": "Angela Jian 簡琬庭", "url": Astro.site?.toString() },
     "publisher": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
     "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalURL.toString() },
@@ -75,8 +46,8 @@ if (faqItems.length === 0) {
       "educationalLevel": "Beginner",
       "inLanguage": "zh-TW"
     },
-    "position": lesson.data.order,
-    "keywords": ["iPAS", "AI應用規劃師", "證照", lesson.data.stage, lesson.data.courseId, "人工智慧"]
+    "position": lesson.order,
+    "keywords": ["iPAS", "AI應用規劃師", "證照", lesson.stage, lesson.courseId, "人工智慧"]
   })} />
 
   <!-- JSON-LD: BreadcrumbList -->
@@ -86,53 +57,47 @@ if (faqItems.length === 0) {
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "首頁", "item": Astro.site?.toString() },
       { "@type": "ListItem", "position": 2, "name": "iPAS AI 課程", "item": new URL("/ipas", Astro.site).toString() },
-      { "@type": "ListItem", "position": 3, "name": lesson.data.title, "item": canonicalURL.toString() }
+      { "@type": "ListItem", "position": 3, "name": lesson.title, "item": canonicalURL.toString() }
     ]
   })} />
 
-  <!-- JSON-LD: FAQ for Answer Engine Optimization -->
-  {faqItems.length > 0 && (
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqItems.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-      }))
-    })} />
-  )}
+  <!-- JSON-LD: FAQ -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+    }))
+  })} />
 
   <!-- Article Header -->
   <section class="relative pt-28 md:pt-32 pb-4 md:pb-6 overflow-hidden bg-[#FFFEF7]">
     <div class="site-container px-6 md:px-12 relative z-10">
       <div class="max-w-3xl mx-auto">
 
-        <!-- Back Link -->
         <a href="/ipas" class="inline-flex items-center gap-2 text-brand-light-subtle text-sm font-body mb-8 md:mb-10 hover:text-brand-accent-dark transition-colors">
           <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
           <span>回到課程總覽</span>
         </a>
 
-        <!-- Tags -->
         <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-6 flex-wrap">
           <span class="px-3 py-1.5 text-xs bg-brand-accent-dark/10 text-brand-accent-dark rounded-full font-body">
-            第 {lesson.data.order} 篇
+            第 {lesson.order} 篇
           </span>
           <span class="px-3 py-1.5 text-xs bg-purple-600/10 text-purple-600 rounded-full font-body">
-            {lesson.data.courseId}
+            {lesson.courseId}
           </span>
           <span class="px-3 py-1.5 text-xs bg-emerald-600/10 text-emerald-600 rounded-full font-body">
-            {lesson.data.stage}
+            {lesson.stage}
           </span>
         </div>
 
-        <!-- Title -->
         <h1 class="font-heading font-bold text-2xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-5 text-brand-light-text">
-          {lesson.data.title}
+          {lesson.title}
         </h1>
 
-        <!-- Author -->
         <div class="flex items-center gap-4 mb-4 md:mb-6 pb-4 md:pb-6 border-b border-brand-light-border">
           <div class="w-12 h-12 rounded-full overflow-hidden border border-brand-accent-dark/30">
             <img src="/angela.jpeg" alt="Angela Jian" class="w-full h-full object-cover">
@@ -142,36 +107,32 @@ if (faqItems.length === 0) {
             <div class="text-xs text-brand-light-subtle font-body">iPAS AI 應用規劃師 / AI Product Builder</div>
           </div>
         </div>
-        <!-- Article Content -->
-        <div class="article-content-light text-base">
-          <Content />
-        </div>
 
-        <!-- Prev / Next Navigation -->
+        <div class="article-content-light text-base" set:html={lesson.content} />
+
         <div class="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-brand-light-border">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {prevLesson ? (
-              <a href={`/ipas/${prevLesson.id}`}
+              <a href={`/ipas/${prevLesson.slug}`}
                  class="group block p-4 md:p-5 rounded-xl border border-brand-light-border hover:border-brand-accent-dark/30 hover:shadow-sm transition-all no-underline">
                 <div class="text-xs text-brand-light-subtle font-body mb-1">上一篇</div>
                 <div class="font-heading font-semibold text-sm leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">
-                  {prevLesson.data.title}
+                  {prevLesson.title}
                 </div>
               </a>
             ) : <div />}
             {nextLesson && (
-              <a href={`/ipas/${nextLesson.id}`}
+              <a href={`/ipas/${nextLesson.slug}`}
                  class="group block p-4 md:p-5 rounded-xl border border-brand-light-border hover:border-brand-accent-dark/30 hover:shadow-sm transition-all no-underline text-right">
                 <div class="text-xs text-brand-light-subtle font-body mb-1">下一篇</div>
                 <div class="font-heading font-semibold text-sm leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">
-                  {nextLesson.data.title}
+                  {nextLesson.title}
                 </div>
               </a>
             )}
           </div>
         </div>
 
-        <!-- Back to Course -->
         <div class="mt-6 md:mt-8 pb-20 md:pb-32">
           <a href="/ipas" class="mag-btn px-6 md:px-8 py-3 md:py-4 border border-brand-light-border text-brand-light-text font-heading font-medium rounded-full text-sm tracking-wide hover:border-brand-accent-dark hover:text-brand-accent-dark transition-colors">
             <span>← 回到課程總覽</span>

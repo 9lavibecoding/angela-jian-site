@@ -6,9 +6,10 @@ export interface Props {
   description?: string;
   ogImage?: string;
   lang?: 'zh' | 'en';
+  noindex?: boolean;
 }
 
-const { title, description = 'Sr. Product Manager / AI Product Builder — 8+ years driving global growth and monetization for high-scale mobile apps.', ogImage = '', lang = 'zh' } = Astro.props;
+const { title, description = 'Sr. Product Manager / AI Product Builder — 8+ years driving global growth and monetization for high-scale mobile apps.', ogImage = '', lang = 'zh', noindex = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const isEn = lang === 'en';
 const homeHref = isEn ? '/en' : '/';
@@ -24,6 +25,7 @@ const langSwitchLabel = isEn ? '中' : 'EN';
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
 <meta name="google-site-verification" content="Y1o5i5ud5dxL04i4mfOsfviUwUZbtEbLmVLjFBdV5H0" />
 <meta name="msvalidate.01" content="4DBEE2E3BFD6DE1C7177AB8C0CEBE864" />
 

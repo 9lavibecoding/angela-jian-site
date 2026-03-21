@@ -4,6 +4,63 @@ import Base from '../../layouts/Base.astro';
 
 <Base title="iPAS AI 題庫 — 870 題完整練習 | Angela Jian" description="870 道 iPAS 初級人工智慧應用師考題，互動答題、章節練習、答對率統計、3 套模擬考卷（計時 60 分鐘），一次買斷 NT$899">
 
+<!-- JSON-LD: Product -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "iPAS AI 題庫 — 870 題完整版",
+  "description": "涵蓋 L11 基礎 AI 概念、L12 生成式 AI 應用、綜合模擬考，每題附詳細解析。互動答題、章節練習、答對率統計、3 套模擬考卷（計時 60 分鐘）、PDF 離線下載。",
+  "brand": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+  "offers": {
+    "@type": "Offer",
+    "price": "899",
+    "priceCurrency": "TWD",
+    "availability": "https://schema.org/InStock",
+    "url": Astro.site ? new URL("/exam/", Astro.site).toString() : "/exam/"
+  },
+  "category": "Digital Product",
+  "audience": { "@type": "Audience", "audienceType": "iPAS AI 應用規劃師考生" }
+})} />
+
+<!-- JSON-LD: FAQ -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "iPAS AI 題庫包含哪些內容？",
+      "acceptedAnswer": { "@type": "Answer", "text": "共 870 道考題，分為 L11 基礎 AI 概念（300 題）、L12 生成式 AI 應用（300 題）、綜合模擬（270 題），每題附詳細白話解析。包含互動答題、章節練習、答對率統計、3 套模擬考卷（計時 60 分鐘）及 PDF 離線下載。" }
+    },
+    {
+      "@type": "Question",
+      "name": "購買後可以使用多久？",
+      "acceptedAnswer": { "@type": "Answer", "text": "一次購買、永久使用。題庫會隨 iPAS 考試範圍調整持續更新，購買後自動獲得所有更新。" }
+    },
+    {
+      "@type": "Question",
+      "name": "題庫支援哪些付款方式？",
+      "acceptedAnswer": { "@type": "Answer", "text": "透過綠界 ECPay 安全付款，支援信用卡（Visa / Mastercard / JCB）、ATM 轉帳、超商代碼繳費。" }
+    },
+    {
+      "@type": "Question",
+      "name": "可以在手機上使用嗎？",
+      "acceptedAnswer": { "@type": "Answer", "text": "完全支援！題庫介面為響應式設計，手機、平板、電腦都能流暢使用，也可下載 PDF 離線閱讀。" }
+    }
+  ]
+})} />
+
+<!-- JSON-LD: BreadcrumbList -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "首頁", "item": Astro.site?.toString() },
+    { "@type": "ListItem", "position": 2, "name": "iPAS AI 課程", "item": Astro.site ? new URL("/ipas", Astro.site).toString() : "/ipas" },
+    { "@type": "ListItem", "position": 3, "name": "iPAS AI 題庫", "item": Astro.site ? new URL("/exam/", Astro.site).toString() : "/exam/" }
+  ]
+})} />
+
 <main class="pt-28 pb-20 min-h-screen bg-[#FFFEF7]">
   <div class="site-container px-6">
 

@@ -243,13 +243,40 @@ function richTextToHtml(richText: any[]): string {
   }).join('');
 }
 
+// ---- 取得所有 blocks（含分頁）----
+async function getAllBlocks(blockId: string): Promise<any[]> {
+  const allBlocks: any[] = [];
+  let cursor: string | undefined;
+  do {
+    const response = await notion.blocks.children.list({
+      block_id: blockId,
+      page_size: 100,
+      start_cursor: cursor,
+    });
+    allBlocks.push(...response.results);
+    cursor = response.has_more ? response.next_cursor ?? undefined : undefined;
+  } while (cursor);
+  return allBlocks;
+}
+
 // ---- 從 Notion Blocks 轉 HTML ----
 async function blocksToHtml(blockId: string): Promise<string> {
   try {
-    const blocks = await notion.blocks.children.list({ block_id: blockId, page_size: 100 });
+    const blocks = await getAllBlocks(blockId);
     let html = '';
+    let inBulletList = false;
+    let inNumberedList = false;
 
-    for (const block of blocks.results as any[]) {
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i] as any;
+      const nextBlock = blocks[i + 1] as any;
+
+      // 處理列表的開閉標籤
+      if (block.type === 'bulleted_list_item' && !inBulletList) { html += '<ul>'; inBulletList = true; }
+      if (block.type === 'numbered_list_item' && !inNumberedList) { html += '<ol>'; inNumberedList = true; }
+      if (block.type !== 'bulleted_list_item' && inBulletList) { html += '</ul>'; inBulletList = false; }
+      if (block.type !== 'numbered_list_item' && inNumberedList) { html += '</ol>'; inNumberedList = false; }
+
       switch (block.type) {
         case 'paragraph':
           html += `<p>${richTextToHtml(block.paragraph.rich_text)}</p>`;
@@ -264,10 +291,10 @@ async function blocksToHtml(blockId: string): Promise<string> {
           html += `<h3>${richTextToHtml(block.heading_3.rich_text)}</h3>`;
           break;
         case 'bulleted_list_item':
-          html += `<ul><li>${richTextToHtml(block.bulleted_list_item.rich_text)}</li></ul>`;
+          html += `<li>${richTextToHtml(block.bulleted_list_item.rich_text)}</li>`;
           break;
         case 'numbered_list_item':
-          html += `<ol><li>${richTextToHtml(block.numbered_list_item.rich_text)}</li></ol>`;
+          html += `<li>${richTextToHtml(block.numbered_list_item.rich_text)}</li>`;
           break;
         case 'quote':
           html += `<blockquote>${richTextToHtml(block.quote.rich_text)}</blockquote>`;
@@ -275,15 +302,54 @@ async function blocksToHtml(blockId: string): Promise<string> {
         case 'code':
           html += `<pre><code>${richTextToHtml(block.code.rich_text)}</code></pre>`;
           break;
-        case 'image':
+        case 'image': {
           const imgUrl = block.image.type === 'external' ? block.image.external.url : block.image.file.url;
           html += `<img src="${imgUrl}" alt="" />`;
           break;
+        }
         case 'divider':
           html += '<hr />';
           break;
+        case 'table': {
+          // 取得 table rows
+          const rows = await getAllBlocks(block.id);
+          const hasHeader = block.table.has_column_header;
+          html += '<table>';
+          rows.forEach((row: any, idx: number) => {
+            if (row.type !== 'table_row') return;
+            const cells = row.table_row.cells;
+            const tag = (hasHeader && idx === 0) ? 'th' : 'td';
+            if (hasHeader && idx === 0) html += '<thead>';
+            html += '<tr>';
+            cells.forEach((cell: any) => {
+              html += `<${tag}>${richTextToHtml(cell)}</${tag}>`;
+            });
+            html += '</tr>';
+            if (hasHeader && idx === 0) html += '</thead><tbody>';
+          });
+          if (hasHeader && rows.length > 1) html += '</tbody>';
+          html += '</table>';
+          break;
+        }
+        case 'callout': {
+          const icon = block.callout.icon?.emoji || '';
+          html += `<blockquote><strong>${icon}</strong> ${richTextToHtml(block.callout.rich_text)}</blockquote>`;
+          break;
+        }
+        case 'toggle': {
+          const summary = richTextToHtml(block.toggle.rich_text);
+          const childHtml = block.has_children ? await blocksToHtml(block.id) : '';
+          html += `<details><summary><strong>${summary}</strong></summary>${childHtml}</details>`;
+          break;
+        }
         default:
           break;
+      }
+
+      // 關閉列表（最後一個元素時）
+      if (i === blocks.length - 1) {
+        if (inBulletList) html += '</ul>';
+        if (inNumberedList) html += '</ol>';
       }
     }
     return html;
@@ -358,4 +424,68 @@ export async function getArticles(): Promise<Article[]> {
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const articles = await getArticles();
   return articles.find(a => a.slug === slug) || null;
+}
+
+// ==================== iPAS 課程 ====================
+
+export interface IPASLesson {
+  id: string;
+  title: string;
+  slug: string;
+  order: number;
+  stage: string;
+  stageOrder: number;
+  courseId: string;
+  summary: string;
+  content: string;
+}
+
+const ipasDbId = import.meta.env.NOTION_IPAS_DATABASE_ID;
+
+export async function getIPASLessons(): Promise<IPASLesson[]> {
+  if (!import.meta.env.NOTION_SECRET || !ipasDbId) return [];
+
+  try {
+    const allPages: any[] = [];
+    let cursor: string | undefined;
+    do {
+      const response = await notion.databases.query({
+        database_id: ipasDbId,
+        sorts: [{ property: 'Order', direction: 'ascending' }],
+        start_cursor: cursor,
+        page_size: 100,
+      });
+      allPages.push(...response.results);
+      cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined;
+    } while (cursor);
+
+    const lessons: IPASLesson[] = [];
+    for (const page of allPages as any[]) {
+      const props = page.properties;
+      lessons.push({
+        id: page.id,
+        title: props.Title?.title?.[0]?.plain_text || '',
+        slug: props.Slug?.rich_text?.[0]?.plain_text || '',
+        order: props.Order?.number ?? 0,
+        stage: props.Stage?.select?.name || '',
+        stageOrder: props.StageOrder?.number ?? 0,
+        courseId: props.CourseId?.rich_text?.[0]?.plain_text || '',
+        summary: props.Summary?.rich_text?.[0]?.plain_text || '',
+        content: '',
+      });
+    }
+    return lessons.sort((a, b) => a.order - b.order);
+  } catch (e) {
+    console.warn('iPAS Notion fetch failed:', e);
+    return [];
+  }
+}
+
+export async function getIPASLessonBySlug(slug: string): Promise<IPASLesson | null> {
+  const lessons = await getIPASLessons();
+  const lesson = lessons.find(l => l.slug === slug);
+  if (!lesson) return null;
+  // 取得內容（只在需要時才取）
+  lesson.content = await blocksToHtml(lesson.id);
+  return lesson;
 }
