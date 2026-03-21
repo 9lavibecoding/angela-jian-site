@@ -80,29 +80,23 @@ const moreArticles = articles.slice(2, 6);
   ]
 })} />
 
-<!-- HERO SECTION — Content Brand First -->
-<section class="relative overflow-hidden" id="hero" style="background: #FFFFFF;">
+<!-- ==================== 1. HERO ==================== -->
+<section class="relative overflow-hidden bg-white" id="hero">
   <div class="site-container px-6 pt-28 md:pt-36 pb-16 md:pb-20 relative z-10">
-
     <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-16">
-
-      <!-- Left: Text Content -->
       <div class="flex-1 text-center md:text-left">
         <h1 class="hero-title text-4xl md:text-[3.5rem] lg:text-[4.2rem] mb-6 text-brand-text leading-tight">
           <span class="line"><span class="line-inner">產品人的</span></span>
           <span class="line"><span class="line-inner"><span class="gold-text">AI 轉型</span>指南</span></span>
         </h1>
-
         <p class="font-body text-brand-subtle text-base md:text-lg leading-relaxed mb-6 opacity-0 max-w-lg mx-auto md:mx-0" id="heroDesc">
           從 AI 產品策略、工具實戰到職涯轉型！資深 PM 的第一手觀察與實踐。
         </p>
-
         <div class="flex flex-wrap gap-2 mb-8 opacity-0 justify-center md:justify-start" id="heroTags">
           <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-accent-dark">#AI 產品管理</span>
           <span class="px-3 py-1.5 text-xs font-body rounded-full bg-amber-50 text-brand-warm-dark">#PM 工具實戰</span>
           <span class="px-3 py-1.5 text-xs font-body rounded-full bg-emerald-50 text-emerald-700">#職涯成長</span>
         </div>
-
         <div class="flex flex-wrap gap-4 opacity-0 justify-center md:justify-start" id="heroCTAs">
           <a href="#articles" class="mag-btn px-6 md:px-8 py-3.5 md:py-4 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide">
             <span>開始閱讀</span>
@@ -112,21 +106,17 @@ const moreArticles = articles.slice(2, 6);
           </a>
         </div>
       </div>
-
-      <!-- Right: Hero Illustration -->
       <div class="hero-photo shrink-0 w-72 md:w-80 lg:w-[26rem]">
         <img src="/hero-illustration.png" alt="AI PM INSIDER — AI 產品管理"
              class="w-full h-auto" loading="eager">
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- FEATURED ARTICLES — Main Content Area -->
-<section class="relative py-16 md:py-24 overflow-hidden bg-white" id="articles">
+<!-- ==================== 2. ARTICLES ==================== -->
+<section class="relative py-16 md:py-24 overflow-hidden bg-[#F9FAFB] border-t border-gray-100" id="articles">
   <div class="site-container px-6 relative z-10">
-
     <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
       <div>
         <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4">
@@ -142,7 +132,6 @@ const moreArticles = articles.slice(2, 6);
       </a>
     </div>
 
-    <!-- 2 Featured Large Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
       {featuredArticles.map((article, i) => {
         const header = cardHeaderStyles[article.tagColors[0]] || cardHeaderStyles.accent;
@@ -170,7 +159,6 @@ const moreArticles = articles.slice(2, 6);
       })}
     </div>
 
-    <!-- More Articles — Smaller Cards -->
     {moreArticles.length > 0 && (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {moreArticles.map((article, i) => {
@@ -190,26 +178,111 @@ const moreArticles = articles.slice(2, 6);
         })}
       </div>
     )}
+  </div>
+</section>
+
+<!-- ==================== 3. iPAS + EXAM ==================== -->
+<section class="relative py-20 md:py-28 overflow-hidden bg-white border-t border-gray-100" id="ipas">
+  <div class="site-container px-6 relative z-10">
+
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>iPAS Certificate</span>
+    </div>
+    <h2 class="font-heading font-black text-3xl md:text-5xl text-brand-text mb-2">iPAS AI <span class="text-brand-accent">備考專區</span></h2>
+    <p class="font-body text-brand-subtle text-base md:text-lg leading-relaxed mb-10">免費 51 篇白話教學 + 付費 870 題題庫，用最有效率的方式拿下 iPAS AI 應用規劃師證照。</p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- 免費課程 -->
+      <a href="/ipas" class="group block bg-white rounded-2xl border border-brand-light-border p-8 hover:shadow-lg hover:border-brand-accent/30 transition-all no-underline">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+            <iconify-icon icon="solar:book-2-bold" class="text-2xl text-emerald-600"></iconify-icon>
+          </div>
+          <span class="px-3 py-1 text-xs font-body font-medium rounded-full bg-emerald-100 text-emerald-700">免費</span>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-brand-text mb-2 group-hover:text-brand-accent transition-colors">51 篇白話教學課程</h3>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed mb-4">
+          涵蓋 AI 基礎、機器學習、生成式 AI、法規治理，用生活化比喻 + 圖解帶你從零基礎到考前衝刺。
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">AI 基礎概念</span>
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">生成式 AI</span>
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">3 套模擬考</span>
+        </div>
+      </a>
+
+      <!-- 付費題庫 -->
+      <a href="/exam" class="group block bg-white rounded-2xl border border-brand-light-border p-8 hover:shadow-lg hover:border-brand-accent/30 transition-all no-underline">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
+            <iconify-icon icon="solar:document-add-bold" class="text-2xl text-brand-accent"></iconify-icon>
+          </div>
+          <span class="px-3 py-1 text-xs font-body font-medium rounded-full bg-amber-100 text-amber-800">NT$899</span>
+        </div>
+        <h3 class="font-heading font-bold text-xl text-brand-text mb-2 group-hover:text-brand-accent transition-colors">870 題互動題庫</h3>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed mb-4">
+          章節練習、答對率統計、3 套模擬考卷（計時 60 分鐘）、PDF 離線下載，一次買斷永久使用。
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">L11 基礎 300 題</span>
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">L12 生成式 300 題</span>
+          <span class="px-2 py-0.5 text-[10px] font-body rounded-full bg-slate-100 text-slate-600">綜合 270 題</span>
+        </div>
+      </a>
+    </div>
 
   </div>
 </section>
 
-
-<!-- ABOUT SECTION — Simplified -->
-<section class="relative py-20 md:py-28 overflow-hidden bg-white" id="about">
+<!-- ==================== 4. PORTFOLIO ==================== -->
+<section class="relative py-20 md:py-28 overflow-hidden bg-[#F9FAFB] border-t border-gray-100" id="portfolio">
   <div class="site-container px-6 relative z-10">
 
-    <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
+      <div class="w-8 h-px bg-brand-accent"></div>
+      <span>Selected Works</span>
+    </div>
+    <h2 class="font-heading font-black text-3xl md:text-4xl mb-8 md:mb-10 text-brand-text">
+      AI<span class="text-brand-accent">作品集</span>
+    </h2>
 
-      <!-- Left: Photo -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a href="/portfolio/ai-competitive-dashboard" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">01</span>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI 競品分析 Dashboard</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">OpenAI + Supabase 即時競品追蹤</p>
+      </a>
+      <a href="/portfolio/human-in-the-loop-accounting" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">02</span>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI 會計系統</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">自動化帳務流程，準確率 97%</p>
+      </a>
+      <a href="/portfolio/prompt-generator" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">03</span>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Prompt 模板產生器</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">5 大 PM 場景一鍵生成提示詞</p>
+      </a>
+      <a href="/portfolio/ai-pm-assessment" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">04</span>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">PM → AI PM 能力自評表</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">互動式自評檢核與學習建議</p>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== 5. ABOUT ==================== -->
+<section class="relative py-20 md:py-28 overflow-hidden bg-white border-t border-gray-100" id="about">
+  <div class="site-container px-6 relative z-10">
+    <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
       <div class="shrink-0">
         <div class="w-52 md:w-72 rounded-2xl overflow-hidden shadow-lg">
           <img src="/avatar-vector.png" alt="Angela Jian"
                class="w-full aspect-[3/4] object-cover" loading="lazy">
         </div>
       </div>
-
-      <!-- Right: Content -->
       <div class="flex-1 text-center md:text-left">
         <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 justify-center md:justify-start">
           <div class="w-8 h-px bg-brand-accent"></div>
@@ -225,62 +298,17 @@ const moreArticles = articles.slice(2, 6);
           現在專注於 AI 產品策略，同時經營「AI 產品思維實驗室」，分享 AI 時代產品人需要的思維與工具。
         </p>
         <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">8+ 年 PM 經驗</span>
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-accent/10 text-brand-accent-dark">MAU 600K</span>
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-purple-600/10 text-purple-600">經濟部 AI 應用規劃師</span>
-          <span class="px-3 py-1.5 text-[11px] font-body rounded-full bg-brand-warm-dark/10 text-brand-warm-dark">Revenue +120%</span>
+          <span class="px-3 py-1.5 text-[11px] font-body font-medium rounded-full bg-amber-100 text-amber-800">8+ 年 PM 經驗</span>
+          <span class="px-3 py-1.5 text-[11px] font-body font-medium rounded-full bg-amber-100 text-amber-800">MAU 600K</span>
+          <span class="px-3 py-1.5 text-[11px] font-body font-medium rounded-full bg-purple-100 text-purple-700">經濟部 AI 應用規劃師</span>
+          <span class="px-3 py-1.5 text-[11px] font-body font-medium rounded-full bg-emerald-100 text-emerald-700">Revenue +120%</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- PORTFOLIO SECTION — Compact -->
-<section class="relative py-20 md:py-28 overflow-hidden" id="portfolio" style="background: #FAF6EF;">
-  <div class="site-container px-6 relative z-10">
-
-    <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
-      <div class="w-8 h-px bg-brand-accent"></div>
-      <span>Selected Works</span>
-    </div>
-    <h2 class="font-heading font-black text-3xl md:text-4xl mb-8 md:mb-10 text-brand-text">
-      AI<span class="text-brand-accent">作品集</span>
-    </h2>
-
-    <!-- Single Row Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-      <a href="/portfolio/ai-competitive-dashboard" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
-        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">01</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI 競品分析 Dashboard</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">OpenAI + Supabase 即時競品追蹤</p>
-      </a>
-
-      <a href="/portfolio/human-in-the-loop-accounting" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
-        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">02</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI 會計系統</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">自動化帳務流程，準確率 97%</p>
-      </a>
-
-      <a href="/portfolio/prompt-generator" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
-        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">03</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Prompt 模板產生器</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">5 大 PM 場景一鍵生成提示詞</p>
-      </a>
-
-      <a href="/portfolio/ai-pm-assessment" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
-        <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">04</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">PM → AI PM 能力自評表</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">互動式自評檢核與學習建議</p>
-      </a>
-
-    </div>
-
-  </div>
-</section>
-
-<!-- CONTACT SECTION -->
+<!-- ==================== 6. CONTACT ==================== -->
 <section class="relative py-20 md:py-28 overflow-hidden" id="contact" style="background: linear-gradient(135deg, #1a1814 0%, #2a2520 50%, #1a1814 100%);">
   <div class="site-container px-6 relative z-10">
     <div class="max-w-4xl mx-auto text-center">
