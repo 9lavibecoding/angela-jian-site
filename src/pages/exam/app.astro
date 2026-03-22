@@ -1,32 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 
-// Import all question files at build time
-import q1 from '../../data/exam/L11-001-050.json';
-import q2 from '../../data/exam/L11-051-100.json';
-import q3 from '../../data/exam/L11-101-200.json';
-import q4 from '../../data/exam/L11-201-300.json';
-import q5 from '../../data/exam/L11-251-300.json';
-import q6 from '../../data/exam/L12-301-450.json';
-import q7 from '../../data/exam/L12-451-600.json';
-import q8 from '../../data/exam/MIX-601-750.json';
-import q9 from '../../data/exam/MIX-751-870.json';
-import q10 from '../../data/exam/L11-871-971.json';
-import q11 from '../../data/exam/MIX-972-1101.json';
-import q12 from '../../data/exam/EXTRA-1102-1113.json';
-
-// Deduplicate by id
-const seen = new Set<number>();
-const allQuestions: any[] = [];
-for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12]) {
-  for (const q of arr) {
-    if (!seen.has(q.id)) {
-      seen.add(q.id);
-      allQuestions.push(q);
-    }
-  }
-}
-allQuestions.sort((a, b) => a.id - b.id);
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <Base title="iPAS AI 題庫練習 — Angela Jian" description="1000 道 iPAS 考題互動練習" noindex={true}>
@@ -37,19 +13,33 @@ allQuestions.sort((a, b) => a.id - b.id);
     <!-- Gate Screen -->
     <div id="gateScreen" class="max-w-lg mx-auto text-center py-20">
       <iconify-icon icon="solar:lock-keyhole-bold" class="text-4xl text-brand-subtle mb-4"></iconify-icon>
-      <p id="gateMsg" class="font-body text-brand-subtle mb-6">驗證購買狀態中...</p>
+      <p id="gateMsg" class="font-body text-brand-subtle mb-6">請登入以使用題庫</p>
 
-      <!-- 手動輸入訂單編號 -->
-      <div id="manualUnlock" class="hidden">
-        <div class="bg-white rounded-xl border border-brand-light-border p-6 text-left max-w-sm mx-auto">
-          <p class="font-heading font-semibold text-sm text-brand-text mb-3">已購買？輸入訂單編號解鎖</p>
-          <input id="tradeNoInput" type="text" placeholder="例如：IPASMMZ1NT4LABCD"
-            class="w-full px-4 py-2.5 border border-brand-light-border rounded-lg font-body text-sm text-brand-text focus:outline-none focus:border-brand-accent mb-3" />
-          <button id="manualVerifyBtn" class="w-full py-2.5 gold-gradient text-white font-heading font-semibold rounded-lg text-sm hover:opacity-90 transition-opacity">
-            驗證並解鎖
+      <!-- Google 登入 -->
+      <div id="loginSection">
+        <button id="googleLoginBtn" class="inline-flex items-center gap-3 px-8 py-3.5 bg-white border-2 border-gray-200 rounded-full font-heading font-semibold text-sm text-brand-text hover:border-brand-accent hover:shadow-md transition-all">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          使用 Google 帳號登入
+        </button>
+        <p class="font-body text-xs text-brand-subtle mt-4">登入後可使用題庫，購買紀錄會綁定你的帳號</p>
+      </div>
+
+      <!-- 未購買：直接顯示購買方案 -->
+      <div id="noPurchaseSection" class="hidden max-w-md mx-auto">
+        <div class="bg-white rounded-2xl border-2 border-brand-accent/30 p-8 shadow-lg text-center mb-4">
+          <p class="font-heading font-bold text-xl text-brand-text mb-2">iPAS AI 題庫 1000 題</p>
+          <div class="flex items-center justify-center gap-3 mb-1">
+            <span class="font-body text-base text-brand-subtle line-through">NT$1,199</span>
+            <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-600 text-xs font-heading font-bold">-42%</span>
+          </div>
+          <p class="font-heading font-black text-4xl text-brand-text mb-1">NT$699</p>
+          <p class="font-body text-xs text-brand-subtle mb-5">一次付費，永久使用</p>
+          <button id="buyInAppBtn" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-base hover:opacity-90 transition-opacity mb-3">
+            立即購買
           </button>
-          <p id="manualError" class="hidden font-body text-xs text-red-500 mt-2"></p>
+          <p class="font-body text-[11px] text-brand-subtle">綠界安全付款（信用卡 / ATM / 超商）</p>
         </div>
+        <button id="logoutBtn" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">登出帳號</button>
       </div>
     </div>
 
@@ -404,18 +394,30 @@ allQuestions.sort((a, b) => a.id - b.id);
   .review-item.open .review-item-detail { display:block; }
 </style>
 
-<script is:inline define:vars={{ questions: allQuestions }}>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" is:inline></script>
+<script is:inline define:vars={{ supabaseUrl, supabaseAnonKey }}>
 (function() {
-  var QUESTIONS = questions;
+  var QUESTIONS = [];
   var LETTERS = ['A','B','C','D'];
   var STORAGE_KEY = 'ipas_exam_data';
   var PURCHASE_KEY = 'ipas_exam_purchased';
 
-  // ==================== ACCESS GATE ====================
+  // ==================== SUPABASE AUTH ====================
   var gateScreen = document.getElementById('gateScreen');
   var gateMsg = document.getElementById('gateMsg');
   var examApp = document.getElementById('examApp');
-  var manualUnlock = document.getElementById('manualUnlock');
+  var loginSection = document.getElementById('loginSection');
+  var noPurchaseSection = document.getElementById('noPurchaseSection');
+  var currentSession = null;
+
+  // 初始化 Supabase client（瀏覽器端）
+  var _sb = null;
+  function getSB() {
+    if (!_sb) {
+      _sb = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    }
+    return _sb;
+  }
 
   function showApp() {
     gateScreen.classList.add('hidden');
@@ -423,68 +425,145 @@ allQuestions.sort((a, b) => a.id - b.id);
     initApp();
   }
 
-  function showManualInput(msg) {
-    gateMsg.innerHTML = msg || '';
-    manualUnlock.classList.remove('hidden');
+  function showNoPurchase() {
+    loginSection.classList.add('hidden');
+    noPurchaseSection.classList.remove('hidden');
+    gateMsg.textContent = '';
   }
 
-  function unlockWithTradeNo(tradeNo, token) {
-    gateMsg.textContent = '驗證付款狀態中...';
-    manualUnlock.classList.add('hidden');
+  // Google 登入
+  document.getElementById('googleLoginBtn').addEventListener('click', async function() {
+    gateMsg.textContent = '正在跳轉到 Google 登入...';
+    var sb = getSB();
+    var redirectUrl = window.location.origin + '/exam/app';
+    var { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: redirectUrl }
+    });
+    if (error) {
+      gateMsg.textContent = '登入失敗：' + error.message;
+    }
+  });
 
-    fetch('/api/verify-order', {
+  // App 內購買
+  document.getElementById('buyInAppBtn').addEventListener('click', function() {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = '導向付款頁面...';
+    fetch('/api/create-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ trade_no: tradeNo, token: token || '' }),
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      if (data.valid) {
-        localStorage.setItem(PURCHASE_KEY, JSON.stringify({ trade_no: tradeNo, ts: Date.now() }));
-        window.history.replaceState({}, '', '/exam/app');
-        showApp();
+      if (data.params && data.actionUrl) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.actionUrl;
+        form.style.display = 'none';
+        Object.keys(data.params).forEach(function(key) {
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = data.params[key];
+          form.appendChild(input);
+        });
+        document.body.appendChild(form);
+        form.submit();
       } else {
-        showManualInput('驗證失敗（' + (data.msg || '請確認訂單編號') + '）');
+        alert(data.error || '發生錯誤，請稍後再試');
+        btn.disabled = false;
+        btn.textContent = '立即購買';
       }
     })
     .catch(function() {
-      showManualInput('驗證失敗，請稍後再試。');
+      alert('網路錯誤，請稍後再試');
+      btn.disabled = false;
+      btn.textContent = '立即購買';
     });
+  });
+
+  // 登出
+  document.getElementById('logoutBtn').addEventListener('click', async function() {
+    var sb = getSB();
+    await sb.auth.signOut();
+    localStorage.removeItem(PURCHASE_KEY);
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  });
+
+  // 載入題目從 API
+  async function loadQuestions() {
+    if (!currentSession) return false;
+    gateMsg.textContent = '載入題目中...';
+    try {
+      var res = await fetch('/api/get-questions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token
+        },
+        body: JSON.stringify({})
+      });
+      var data = await res.json();
+      if (data.questions && data.questions.length > 0) {
+        QUESTIONS = data.questions;
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error('Load questions error:', e);
+      return false;
+    }
   }
 
-  // 手動輸入訂單編號
-  document.getElementById('manualVerifyBtn').addEventListener('click', function() {
-    var input = document.getElementById('tradeNoInput').value.trim();
-    if (!input) {
-      document.getElementById('manualError').textContent = '請輸入訂單編號';
-      document.getElementById('manualError').classList.remove('hidden');
-      return;
-    }
-    document.getElementById('manualError').classList.add('hidden');
-    unlockWithTradeNo(input);
-  });
-
-  document.getElementById('tradeNoInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('manualVerifyBtn').click();
-  });
-
-  function checkAccess() {
-    var stored = localStorage.getItem(PURCHASE_KEY);
-    if (stored) { showApp(); return; }
-
+  // 付款回來後儲存購買紀錄
+  async function savePurchaseIfNeeded() {
     var params = new URLSearchParams(window.location.search);
     var tradeNo = params.get('trade_no');
-    var token = params.get('token') || '';
+    var token = params.get('token');
+    if (!tradeNo || !token || !currentSession) return;
 
-    if (tradeNo && token) {
-      // 從綠界付款回來，帶有 token → 直接驗證
-      unlockWithTradeNo(tradeNo, token);
-    } else if (tradeNo) {
-      // 有訂單編號但無 token → 嘗試 QueryTradeInfo
-      unlockWithTradeNo(tradeNo);
+    try {
+      await fetch('/api/save-purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token
+        },
+        body: JSON.stringify({ trade_no: tradeNo })
+      });
+      window.history.replaceState({}, '', '/exam/app');
+    } catch (e) {
+      console.error('Save purchase error:', e);
+    }
+  }
+
+  // 主流程
+  async function checkAccess() {
+    var sb = getSB();
+    var { data: { session } } = await sb.auth.getSession();
+
+    if (!session) {
+      // 未登入 → 顯示 Google 登入
+      gateMsg.textContent = '請登入以使用題庫';
+      loginSection.classList.remove('hidden');
+      return;
+    }
+
+    currentSession = session;
+    loginSection.classList.add('hidden');
+    gateMsg.textContent = '驗證購買狀態中...';
+
+    // 如果是從付款回來，先存購買紀錄
+    await savePurchaseIfNeeded();
+
+    // 嘗試載入題目（API 會檢查購買紀錄）
+    var loaded = await loadQuestions();
+    if (loaded) {
+      showApp();
     } else {
-      // 未購買 → 顯示手動輸入
-      showManualInput('尚未購買題庫？<a href="/exam/" class="text-brand-accent underline">前往購買</a><br><br>或輸入訂單編號解鎖：');
+      showNoPurchase();
     }
   }
 
@@ -529,15 +608,20 @@ allQuestions.sort((a, b) => a.id - b.id);
     return a;
   }
 
-  var shuffled = seededShuffle(QUESTIONS, 42);
-  var MOCK_EXAMS = {
-    1: shuffled.slice(0, 50),
-    2: shuffled.slice(50, 100),
-    3: shuffled.slice(100, 150),
-  };
+  var MOCK_EXAMS = {};
+
+  function buildMockExams() {
+    var shuffled = seededShuffle(QUESTIONS, 42);
+    MOCK_EXAMS = {
+      1: shuffled.slice(0, 50),
+      2: shuffled.slice(50, 100),
+      3: shuffled.slice(100, 150),
+    };
+  }
 
   // ==================== INIT APP ====================
   function initApp() {
+    buildMockExams();
     setupTabs();
     setupPractice();
     setupMock();

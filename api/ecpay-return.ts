@@ -80,18 +80,13 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem}
 <div class="card">
   <div class="icon">&#x2705;</div>
   <h1>付款成功！</h1>
-  <p class="sub">你的 iPAS AI 題庫已解鎖。請保存以下訂單編號，換裝置時可用來重新解鎖。</p>
-  <div class="order-box">
-    <p class="order-label">訂單編號</p>
-    <p class="order-no" id="orderNo">${tradeNo}</p>
-  </div>
-  <button class="copy-btn" onclick="navigator.clipboard.writeText('${tradeNo}');this.textContent='已複製！';setTimeout(()=>this.textContent='點此複製訂單編號',1500)">點此複製訂單編號</button>
-  <p class="warn">請截圖或記下此編號，這是你在其他裝置解鎖題庫的唯一憑證。</p>
+  <p class="sub">你的 iPAS AI 題庫已解鎖。購買紀錄已綁定你的 Google 帳號，在任何裝置登入即可使用。</p>
+  <p style="font-size:0.75rem;color:#78716C;margin-bottom:1.5rem;">訂單編號：${tradeNo}</p>
   <a class="btn" href="${appUrl}">進入題庫開始練習</a>
-  <p class="countdown" id="cd">5 秒後自動跳轉...</p>
+  <p class="countdown" id="cd">15 秒後自動跳轉...</p>
 </div>
 <script>
-var s=5,el=document.getElementById('cd');
+var s=15,el=document.getElementById('cd');
 var t=setInterval(function(){s--;if(s<=0){clearInterval(t);window.location.href="${appUrl}"}else{el.textContent=s+' 秒後自動跳轉...'}},1000);
 </script>
 </body></html>`);
