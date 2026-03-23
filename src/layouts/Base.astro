@@ -9,7 +9,7 @@ export interface Props {
   noindex?: boolean;
 }
 
-const { title, description = 'Sr. Product Manager / AI Product Builder — 8+ years driving global growth and monetization for high-scale mobile apps.', ogImage = '', lang = 'zh', noindex = false } = Astro.props;
+const { title, description = '產品人的 AI 轉型指南 — 從 AI 產品策略、工具實戰到職涯轉型，資深 PM 的第一手觀察與實踐。', ogImage = '', lang = 'zh', noindex = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const isEn = lang === 'en';
 const homeHref = isEn ? '/en' : '/';
@@ -22,6 +22,8 @@ const langSwitchLabel = isEn ? '中' : 'EN';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />

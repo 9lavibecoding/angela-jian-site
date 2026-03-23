@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://aipm-insider.vercel.app',
+  site: 'https://aipm-insider.com',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

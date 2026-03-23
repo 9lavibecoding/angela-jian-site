@@ -5,24 +5,22 @@ const loaderBar = document.getElementById('loaderBar');
 const loader = document.getElementById('loader');
 let progress = 0;
 const loadInterval = setInterval(() => {
-  progress += Math.random() * 15 + 5;
+  progress += Math.random() * 30 + 20;
   if (progress >= 100) {
     progress = 100;
     clearInterval(loadInterval);
-    setTimeout(() => {
-      gsap.to(loader, {
-        yPercent: -100,
-        duration: 1,
-        ease: 'power4.inOut',
-        onComplete: () => {
-          loader.style.display = 'none';
-          initAnimations();
-        }
-      });
-    }, 300);
+    gsap.to(loader, {
+      yPercent: -100,
+      duration: 0.6,
+      ease: 'power4.inOut',
+      onComplete: () => {
+        loader.style.display = 'none';
+        initAnimations();
+      }
+    });
   }
   loaderBar.style.width = progress + '%';
-}, 80);
+}, 50);
 
 // ========================================
 // CUSTOM CURSOR (desktop only)
