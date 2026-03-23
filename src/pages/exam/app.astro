@@ -52,31 +52,31 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           <h1 class="font-heading font-bold text-2xl md:text-3xl text-brand-text">iPAS AI 題庫</h1>
           <p class="font-body text-sm text-brand-subtle mt-1">1000 題完整版</p>
         </div>
-        <div class="flex items-center gap-3">
-          <a href="/exam/print" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-brand-light-border rounded-full text-sm font-heading font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent transition-colors">
-            <iconify-icon icon="solar:document-add-bold" class="text-base"></iconify-icon>
+        <div class="flex items-center gap-2 md:gap-3">
+          <a href="/exam/print" target="_blank" class="inline-flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 bg-white border border-brand-light-border rounded-full text-xs md:text-sm font-heading font-semibold text-brand-text hover:border-brand-accent hover:text-brand-accent transition-colors">
+            <iconify-icon icon="solar:document-add-bold" class="text-sm md:text-base"></iconify-icon>
             下載 PDF
           </a>
-          <a href="/exam/" class="inline-flex items-center gap-2 text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors">
+          <a href="/exam/" class="inline-flex items-center gap-1 text-xs md:text-sm font-body text-brand-subtle hover:text-brand-accent transition-colors">
             <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
-            返回
+            <span class="hidden sm:inline">返回</span>
           </a>
         </div>
       </div>
 
       <!-- Tab Navigation -->
-      <div class="flex gap-1 bg-brand-light-surface rounded-xl p-1 mb-8 overflow-x-auto">
-        <button class="exam-tab active font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="practice">
-          <iconify-icon icon="solar:book-2-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
-          章節練習
+      <div class="flex gap-1 bg-brand-light-surface rounded-xl p-1 mb-6 md:mb-8 overflow-x-auto">
+        <button class="exam-tab active font-heading font-semibold text-[11px] md:text-sm px-2 md:px-5 py-2 md:py-2.5 rounded-lg whitespace-nowrap transition-all flex-1 text-center" data-tab="practice">
+          <iconify-icon icon="solar:book-2-bold" class="align-[-2px]"></iconify-icon>
+          練習
         </button>
-        <button class="exam-tab font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="mock">
-          <iconify-icon icon="solar:clock-circle-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
-          模擬考試
+        <button class="exam-tab font-heading font-semibold text-[11px] md:text-sm px-2 md:px-5 py-2 md:py-2.5 rounded-lg whitespace-nowrap transition-all flex-1 text-center" data-tab="mock">
+          <iconify-icon icon="solar:clock-circle-bold" class="align-[-2px]"></iconify-icon>
+          模擬考
         </button>
-        <button class="exam-tab font-heading font-semibold text-sm px-5 py-2.5 rounded-lg whitespace-nowrap transition-all" data-tab="stats">
-          <iconify-icon icon="solar:chart-2-bold" class="mr-1.5 align-[-2px]"></iconify-icon>
-          統計分析
+        <button class="exam-tab font-heading font-semibold text-[11px] md:text-sm px-2 md:px-5 py-2 md:py-2.5 rounded-lg whitespace-nowrap transition-all flex-1 text-center" data-tab="stats">
+          <iconify-icon icon="solar:chart-2-bold" class="align-[-2px]"></iconify-icon>
+          統計
         </button>
       </div>
 
@@ -236,21 +236,21 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           </div>
 
           <!-- Bottom fixed toolbar -->
-          <div id="mockToolbar" class="fixed bottom-0 left-0 right-0 z-50 p-3 bg-white/95 backdrop-blur-sm border-t border-gray-100">
-            <div class="max-w-4xl mx-auto flex items-center justify-between gap-3">
-              <button id="mockPrev" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
+          <div id="mockToolbar" class="fixed bottom-0 left-0 right-0 z-50 p-2 md:p-3 bg-white/95 backdrop-blur-sm border-t border-gray-100">
+            <div class="max-w-4xl mx-auto flex items-center justify-between gap-1.5 md:gap-3">
+              <button id="mockPrev" class="inline-flex items-center gap-1 px-2.5 md:px-4 py-2 md:py-2.5 border border-gray-200 rounded-lg text-xs md:text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
                 <iconify-icon icon="solar:arrow-left-linear"></iconify-icon>
-                上一題
+                <span class="hidden sm:inline">上一題</span>
               </button>
-              <button id="mockMark" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-amber-400 hover:text-amber-600 transition-colors">
+              <button id="mockMark" class="inline-flex items-center gap-1 px-2.5 md:px-4 py-2 md:py-2.5 border border-gray-200 rounded-lg text-xs md:text-sm font-heading font-medium text-brand-subtle hover:border-amber-400 hover:text-amber-600 transition-colors">
                 <iconify-icon icon="solar:flag-bold" id="mockMarkIcon"></iconify-icon>
-                <span id="mockMarkText">標記</span>
+                <span id="mockMarkText" class="hidden sm:inline">標記</span>
               </button>
-              <button id="mockNext" class="inline-flex items-center gap-1.5 px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
-                <span id="mockNextText">下一題</span>
+              <button id="mockNext" class="inline-flex items-center gap-1 px-2.5 md:px-4 py-2 md:py-2.5 border border-gray-200 rounded-lg text-xs md:text-sm font-heading font-medium text-brand-subtle hover:border-brand-accent hover:text-brand-accent transition-colors">
+                <span id="mockNextText" class="hidden sm:inline">下一題</span>
                 <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
               </button>
-              <button id="mockSubmit" class="px-5 py-2.5 gold-gradient text-white font-heading font-semibold rounded-lg text-sm hover:opacity-90 transition-opacity">
+              <button id="mockSubmit" class="px-3 md:px-5 py-2 md:py-2.5 gold-gradient text-white font-heading font-semibold rounded-lg text-xs md:text-sm hover:opacity-90 transition-opacity">
                 交卷
               </button>
             </div>
