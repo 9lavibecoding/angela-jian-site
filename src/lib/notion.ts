@@ -352,7 +352,7 @@ async function blocksToHtml(blockId: string): Promise<string> {
         if (inNumberedList) html += '</ol>';
       }
     }
-    return html;
+    return html.replaceAll('——', '，');
   } catch {
     return '';
   }
