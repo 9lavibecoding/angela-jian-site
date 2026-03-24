@@ -23,4 +23,4 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://aipm-insider.vercel.app/sitemap-index.xml
+Sitemap: https://aipm-insider.com/sitemap-index.xml
