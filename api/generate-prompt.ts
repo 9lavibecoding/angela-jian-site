@@ -42,7 +42,11 @@ Prompt 必須包含：
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const allowedOrigins = ['https://aipm-insider.com', 'https://aipm-insider.vercel.app'];
+  const origin = req.headers.origin || '';
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 

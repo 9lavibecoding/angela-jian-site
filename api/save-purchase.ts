@@ -3,7 +3,11 @@ import { createClient } from '@supabase/supabase-js';
 
 // 付款成功後，前端呼叫此 API 把購買紀錄存到 Supabase
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const allowedOrigins = ['https://aipm-insider.com', 'https://aipm-insider.vercel.app'];
+  const origin = req.headers.origin || '';
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
