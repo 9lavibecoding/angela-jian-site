@@ -138,6 +138,7 @@
 
   /* Article Reading Page — Light Theme */
   .article-content-light { font-family: var(--font-body); line-height: 1.8; }
+  .article-content-light > div > *:first-child { margin-top: 0; }
   .article-content-light h2 { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--color-brand-light-text); }
   .article-content-light h3 { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600; margin: 2rem 0 0.75rem; color: var(--color-brand-light-text); }
   .article-content-light p { margin-bottom: 1.25rem; color: #3d3832; }
