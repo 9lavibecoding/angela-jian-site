@@ -75,8 +75,9 @@ import Base from '../layouts/Base.astro';
         一覽比較
       </h2>
 
-      <div class="overflow-x-auto -mx-6 px-6">
-        <table class="w-full text-sm font-body border-collapse min-w-[700px]">
+      <!-- Desktop Table -->
+      <div class="hidden md:block overflow-x-auto">
+        <table class="w-full text-sm font-body border-collapse">
           <thead>
             <tr class="border-b-2 border-brand-accent-dark/20">
               <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">證照</th>
@@ -136,6 +137,75 @@ import Base from '../layouts/Base.astro';
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="md:hidden space-y-4">
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-heading font-semibold text-sm text-brand-light-text">iPAS AI 應用規劃師</h3>
+            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs shrink-0">入門</span>
+          </div>
+          <div class="grid grid-cols-2 gap-y-1.5 text-xs font-body text-brand-light-subtle">
+            <span>發照單位</span><span class="text-brand-light-text">經濟部</span>
+            <span>費用</span><span class="text-brand-light-text">NT$ 1,500</span>
+            <span>語言</span><span class="text-brand-light-text">中文</span>
+            <span>適合誰</span><span class="text-brand-light-text">PM、行銷、轉職者</span>
+            <span>形式</span><span class="text-brand-light-text">線下考試</span>
+          </div>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-heading font-semibold text-sm text-brand-light-text">Microsoft AI Product Manager</h3>
+            <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs shrink-0 ml-2">中階</span>
+          </div>
+          <div class="grid grid-cols-2 gap-y-1.5 text-xs font-body text-brand-light-subtle">
+            <span>發照單位</span><span class="text-brand-light-text">Microsoft × Coursera</span>
+            <span>費用</span><span class="text-brand-light-text">約 US$ 49/月</span>
+            <span>語言</span><span class="text-brand-light-text">英文</span>
+            <span>適合誰</span><span class="text-brand-light-text">AI PM、產品經理</span>
+            <span>形式</span><span class="text-brand-light-text">線上課程</span>
+          </div>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-heading font-semibold text-sm text-brand-light-text">Google AI Essentials</h3>
+            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs shrink-0 ml-2">入門</span>
+          </div>
+          <div class="grid grid-cols-2 gap-y-1.5 text-xs font-body text-brand-light-subtle">
+            <span>發照單位</span><span class="text-brand-light-text">Google × Coursera</span>
+            <span>費用</span><span class="text-brand-light-text">約 US$ 49/月</span>
+            <span>語言</span><span class="text-brand-light-text">英文（有字幕）</span>
+            <span>適合誰</span><span class="text-brand-light-text">所有非技術角色</span>
+            <span>形式</span><span class="text-brand-light-text">線上課程</span>
+          </div>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-heading font-semibold text-sm text-brand-light-text">Google Cloud Digital Leader</h3>
+            <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs shrink-0 ml-2">中階</span>
+          </div>
+          <div class="grid grid-cols-2 gap-y-1.5 text-xs font-body text-brand-light-subtle">
+            <span>發照單位</span><span class="text-brand-light-text">Google</span>
+            <span>費用</span><span class="text-brand-light-text">US$ 99</span>
+            <span>語言</span><span class="text-brand-light-text">英文 / 中文</span>
+            <span>適合誰</span><span class="text-brand-light-text">PM、商業決策者</span>
+            <span>形式</span><span class="text-brand-light-text">線上考試</span>
+          </div>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-heading font-semibold text-sm text-brand-light-text">AWS AI Practitioner</h3>
+            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs shrink-0 ml-2">入門</span>
+          </div>
+          <div class="grid grid-cols-2 gap-y-1.5 text-xs font-body text-brand-light-subtle">
+            <span>發照單位</span><span class="text-brand-light-text">Amazon</span>
+            <span>費用</span><span class="text-brand-light-text">US$ 75</span>
+            <span>語言</span><span class="text-brand-light-text">英文 / 中文</span>
+            <span>適合誰</span><span class="text-brand-light-text">PM、商業分析師</span>
+            <span>形式</span><span class="text-brand-light-text">線上考試</span>
+          </div>
+        </div>
       </div>
 
     </div>
