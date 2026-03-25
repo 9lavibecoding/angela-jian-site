@@ -5,20 +5,15 @@ export interface Props {
   title: string;
   description?: string;
   ogImage?: string;
-  lang?: 'zh' | 'en';
   noindex?: boolean;
 }
 
-const { title, description = '產品人的 AI 轉型指南 — 從 AI 產品策略、工具實戰到職涯轉型，資深 PM 的第一手觀察與實踐。', ogImage = '', lang = 'zh', noindex = false } = Astro.props;
+const { title, description = '產品人的 AI 轉型指南 — 從 AI 產品策略、工具實戰到職涯轉型，資深 PM 的第一手觀察與實踐。', ogImage = '', noindex = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const isEn = lang === 'en';
-const homeHref = isEn ? '/en' : '/';
-const langSwitchHref = isEn ? '/' : '/en';
-const langSwitchLabel = isEn ? '中' : 'EN';
 ---
 
 <!DOCTYPE html>
-<html lang={isEn ? 'en' : 'zh-Hant'} class="scroll-smooth" style="overflow-x:hidden;">
+<html lang="zh-Hant" class="scroll-smooth" style="overflow-x:hidden;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -103,24 +98,20 @@ const langSwitchLabel = isEn ? '中' : 'EN';
 
 <!-- Navigation -->
 <nav class="nav-glass fixed top-0 left-0 w-full z-50 px-6 py-4 md:py-5 flex items-center justify-between" id="mainNav">
-  <a href={homeHref} class="font-heading font-bold text-lg tracking-widest gold-text">AI PM<span class="text-white"> INSIDER</span></a>
+  <a href="/" class="font-heading font-bold text-lg tracking-widest gold-text">AI PM<span class="text-white"> INSIDER</span></a>
   <div class="hidden md:flex items-center gap-8 text-sm font-body text-gray-400">
-    <a href={`${homeHref}#articles`} class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'Articles' : '文章'}</a>
-    <a href="/ipas" class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'iPAS Course' : 'iPAS 課程'}</a>
-    <a href="/exam" class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'Exam Bank' : '題庫'}</a>
-    <a href={`${homeHref}#portfolio`} class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'Portfolio' : '作品集'}</a>
-    <a href={`${homeHref}#about`} class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'About' : '關於我'}</a>
-    <a href={`${homeHref}#contact`} class="hover:text-brand-accent transition-colors duration-300">{isEn ? 'Contact' : '聯繫'}</a>
+    <a href="/#articles" class="hover:text-brand-accent transition-colors duration-300">文章</a>
+    <a href="/ipas" class="hover:text-brand-accent transition-colors duration-300">iPAS 課程</a>
+    <a href="/exam" class="hover:text-brand-accent transition-colors duration-300">題庫</a>
+    <a href="/#portfolio" class="hover:text-brand-accent transition-colors duration-300">作品集</a>
+    <a href="/#contact" class="hover:text-brand-accent transition-colors duration-300">聯繫</a>
   </div>
   <div class="flex items-center gap-3">
-    <a href={langSwitchHref} class="hidden md:inline-flex px-3 py-1.5 rounded-full border border-gray-600 text-xs font-heading font-semibold text-gray-400 hover:text-brand-accent hover:border-brand-accent transition-colors">
-      {langSwitchLabel}
-    </a>
     <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="hidden md:inline-flex mag-btn px-5 py-2.5 gold-gradient text-white rounded-full text-sm font-body font-medium">
-      <span>{isEn ? 'Subscribe' : '訂閱電子報'}</span>
+      <span>訂閱電子報</span>
     </a>
     <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" class="md:hidden w-10 h-10 flex items-center justify-center text-gray-300" aria-label={isEn ? 'Menu' : '選單'}>
+    <button id="mobileMenuBtn" class="md:hidden w-10 h-10 flex items-center justify-center text-gray-300" aria-label="選單">
       <iconify-icon icon="solar:hamburger-menu-linear" class="text-2xl"></iconify-icon>
     </button>
   </div>
@@ -128,18 +119,16 @@ const langSwitchLabel = isEn ? '中' : 'EN';
 
 <!-- Mobile Menu Overlay -->
 <div id="mobileMenu" class="fixed inset-0 z-[60] bg-white/95 backdrop-blur-lg hidden flex-col items-center justify-center gap-8">
-  <button id="mobileMenuClose" class="absolute top-5 right-6 w-10 h-10 flex items-center justify-center text-brand-text" aria-label={isEn ? 'Close' : '關閉'}>
+  <button id="mobileMenuClose" class="absolute top-5 right-6 w-10 h-10 flex items-center justify-center text-brand-text" aria-label="關閉">
     <iconify-icon icon="solar:close-circle-linear" class="text-3xl"></iconify-icon>
   </button>
-  <a href={`${homeHref}#articles`} class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'Articles' : '文章'}</a>
-  <a href="/ipas" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'iPAS Course' : 'iPAS 課程'}</a>
-  <a href="/exam" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'Exam Bank' : '題庫'}</a>
-  <a href={`${homeHref}#portfolio`} class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'Portfolio' : '作品集'}</a>
-  <a href={`${homeHref}#about`} class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'About' : '關於我'}</a>
-  <a href={`${homeHref}#contact`} class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">{isEn ? 'Contact' : '聯繫'}</a>
-  <a href={langSwitchHref} class="mobile-nav-link font-heading text-lg text-brand-subtle hover:text-brand-accent transition-colors">{isEn ? '中文版' : 'English'}</a>
+  <a href="/#articles" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">文章</a>
+  <a href="/ipas" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">iPAS 課程</a>
+  <a href="/exam" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">題庫</a>
+  <a href="/#portfolio" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">作品集</a>
+  <a href="/#contact" class="mobile-nav-link font-heading text-2xl text-brand-text hover:text-brand-accent transition-colors">聯繫</a>
   <a href="https://www.linkedin.com/newsletters/ai-applied-playbook%EF%BD%9Caipm-%E6%80%9D%E7%B6%AD%E5%AF%A6%E9%A9%97%E5%AE%A4-7402251966258720768" target="_blank" class="mag-btn mt-4 px-8 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-base">
-    <span>{isEn ? 'Subscribe' : '訂閱電子報'}</span>
+    <span>訂閱電子報</span>
   </a>
 </div>
 
