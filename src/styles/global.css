@@ -159,6 +159,7 @@
     background: #f8f8f8; border-radius: 0 0.75rem 0.75rem 0;
     box-shadow: none;
   }
+  .article-content-light hr { border: none; height: 1px; background: #e5e7eb; margin: 2rem 0; }
   .article-content-light blockquote p { color: #3d3832; font-weight: 500; margin-bottom: 0; }
   .article-content-light blockquote strong { color: #A8893E; }
   .article-content-light img { border-radius: 1rem; margin: 2rem 0; width: 100%; min-height: 0; }
