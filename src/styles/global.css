@@ -187,6 +187,9 @@
 
 /* Keyframes */
 @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes ctaShimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.ipas-cta-banner { position: relative; }
+.ipas-cta-banner::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1.5px solid transparent; background: linear-gradient(90deg, transparent, #EF444444, transparent) border-box; -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; background-size: 200% 100%; animation: ctaShimmer 3s ease-in-out infinite; }
 
 @media (max-width: 768px) {
   .hero-title { font-size: clamp(2rem, 9vw, 3.5rem) !important; }

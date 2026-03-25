@@ -1,0 +1,565 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="AI PM 必備證照指南：2025 年最值得考的 5 張 AI 證照 — AI PM INSIDER" description="AI 產品經理必備證照完整比較：iPAS AI 應用規劃師、Microsoft AI Product Manager、Google AI Essentials、Google Cloud Digital Leader、PMP AI 改版。費用、難度、適合誰一次看懂。">
+
+  <!-- JSON-LD: FAQPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "AI 產品經理需要考什麼證照？",
+        "acceptedAnswer": { "@type": "Answer", "text": "AI PM 最推薦的證照組合：台灣考 iPAS AI 應用規劃師（經濟部官方認證），國際考 Microsoft AI Product Manager Professional Certificate（微軟 × Coursera 聯合推出，直接對標 AI PM 職能）。如果想補強基礎，Google AI Essentials 是快速入門的好選擇。" }
+      },
+      {
+        "@type": "Question",
+        "name": "非技術背景可以考哪些 AI 證照？",
+        "acceptedAnswer": { "@type": "Answer", "text": "iPAS AI 應用規劃師初級不需要程式背景，考的是 AI 概念理解與應用規劃能力，非常適合 PM、行銷、商業分析師。Microsoft AI Product Manager 和 Google AI Essentials 也偏重應用與策略，不要求寫 code。" }
+      },
+      {
+        "@type": "Question",
+        "name": "AI 證照對產品經理求職加薪有幫助嗎？",
+        "acceptedAnswer": { "@type": "Answer", "text": "有。iPAS 證照受台灣企業認可，部分企業提供考取加薪或補助；Microsoft 和 Google 的證照在國際求職市場上是明確的能力證明。PMP 2025 年改版加入 AI 題型，更是 PM 圈含金量最高的管理證照。" }
+      }
+    ]
+  })} />
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "首頁", "item": Astro.site?.toString() },
+      { "@type": "ListItem", "position": 2, "name": "AI PM 證照指南", "item": new URL("/ai-certifications", Astro.site).toString() }
+    ]
+  })} />
+
+  <!-- Hero -->
+  <section class="relative pt-28 md:pt-32 pb-12 md:pb-16 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10">
+
+      <a href="/" class="inline-flex items-center gap-2 text-brand-light-subtle text-sm font-body mb-8 md:mb-10 hover:text-brand-accent-dark transition-colors">
+        <iconify-icon icon="solar:arrow-left-linear" class="text-lg"></iconify-icon>
+        <span>返回首頁</span>
+      </a>
+
+      <div class="mb-10 md:mb-14">
+        <div class="flex items-center gap-3 text-brand-light-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
+          <div class="w-8 h-px bg-brand-accent-dark"></div>
+          <span>AI PM Certification Guide</span>
+        </div>
+        <h1 class="font-heading font-bold text-3xl md:text-5xl lg:text-6xl text-brand-light-text mb-4 md:mb-6">
+          AI PM <span class="text-brand-accent-dark">必備證照指南</span>
+        </h1>
+        <p class="text-base md:text-lg text-brand-light-subtle font-body leading-relaxed max-w-2xl">
+          想成為 AI 產品經理，該從哪張證照開始？精選 5 張最適合 PM 的 AI 證照，從台灣到國際、從入門到進階，幫你規劃最有效的學習路徑。
+        </p>
+        <div class="flex items-center gap-4 mt-4 md:mt-6 flex-wrap">
+          <span class="px-3 py-1.5 text-xs bg-brand-accent-dark/10 text-brand-accent-dark rounded-full font-body">PM 視角精選</span>
+          <span class="px-3 py-1.5 text-xs bg-purple-600/10 text-purple-600 rounded-full font-body">台灣 + 國際</span>
+          <span class="px-3 py-1.5 text-xs bg-emerald-600/10 text-emerald-600 rounded-full font-body">非技術友善</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="relative pb-16 md:pb-20 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10">
+
+      <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-light-text mb-6 md:mb-8">
+        一覽比較
+      </h2>
+
+      <div class="overflow-x-auto -mx-6 px-6">
+        <table class="w-full text-sm font-body border-collapse min-w-[700px]">
+          <thead>
+            <tr class="border-b-2 border-brand-accent-dark/20">
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">證照</th>
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">發照單位</th>
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">難度</th>
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">費用</th>
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">語言</th>
+              <th class="text-left py-3 pr-4 font-heading font-semibold text-brand-light-text">適合誰</th>
+              <th class="text-left py-3 font-heading font-semibold text-brand-light-text">形式</th>
+            </tr>
+          </thead>
+          <tbody class="text-brand-light-subtle">
+            <tr class="border-b border-brand-light-border">
+              <td class="py-4 pr-4 font-semibold text-brand-light-text">iPAS AI 應用規劃師</td>
+              <td class="py-4 pr-4">經濟部</td>
+              <td class="py-4 pr-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs">入門</span></td>
+              <td class="py-4 pr-4">NT$ 1,500</td>
+              <td class="py-4 pr-4">中文</td>
+              <td class="py-4 pr-4">PM、行銷、轉職者</td>
+              <td class="py-4">線下考試</td>
+            </tr>
+            <tr class="border-b border-brand-light-border">
+              <td class="py-4 pr-4 font-semibold text-brand-light-text">Microsoft AI Product Manager</td>
+              <td class="py-4 pr-4">Microsoft × Coursera</td>
+              <td class="py-4 pr-4"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs">中階</span></td>
+              <td class="py-4 pr-4">約 US$ 49/月</td>
+              <td class="py-4 pr-4">英文</td>
+              <td class="py-4 pr-4">AI PM、產品經理</td>
+              <td class="py-4">線上課程</td>
+            </tr>
+            <tr class="border-b border-brand-light-border">
+              <td class="py-4 pr-4 font-semibold text-brand-light-text">Google AI Essentials</td>
+              <td class="py-4 pr-4">Google × Coursera</td>
+              <td class="py-4 pr-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs">入門</span></td>
+              <td class="py-4 pr-4">約 US$ 49/月</td>
+              <td class="py-4 pr-4">英文（有字幕）</td>
+              <td class="py-4 pr-4">所有非技術角色</td>
+              <td class="py-4">線上課程</td>
+            </tr>
+            <tr class="border-b border-brand-light-border">
+              <td class="py-4 pr-4 font-semibold text-brand-light-text">Google Cloud Digital Leader</td>
+              <td class="py-4 pr-4">Google</td>
+              <td class="py-4 pr-4"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs">中階</span></td>
+              <td class="py-4 pr-4">US$ 99</td>
+              <td class="py-4 pr-4">英文 / 中文</td>
+              <td class="py-4 pr-4">PM、商業決策者</td>
+              <td class="py-4">線上考試</td>
+            </tr>
+            <tr class="border-b border-brand-light-border">
+              <td class="py-4 pr-4 font-semibold text-brand-light-text">AWS AI Practitioner</td>
+              <td class="py-4 pr-4">Amazon</td>
+              <td class="py-4 pr-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs">入門</span></td>
+              <td class="py-4 pr-4">US$ 75</td>
+              <td class="py-4 pr-4">英文 / 中文</td>
+              <td class="py-4 pr-4">PM、商業分析師</td>
+              <td class="py-4">線上考試</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Detail Cards -->
+  <section class="relative pb-16 md:pb-20 bg-gray-50/50">
+    <div class="site-container px-6 relative z-10 pt-12 md:pt-16">
+
+      <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-light-text mb-8 md:mb-10">
+        各證照詳細介紹
+      </h2>
+
+      <div class="space-y-8 md:space-y-10">
+
+        <!-- Card 1: iPAS -->
+        <div class="bg-white border border-brand-light-border rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-3 p-6 md:p-8 pb-0 flex-wrap">
+            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm">1</span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-heading font-bold text-lg md:text-xl text-brand-light-text">iPAS AI 應用規劃師</h3>
+              <span class="text-xs text-brand-light-subtle font-body">經濟部 ・ 台灣</span>
+            </div>
+            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-body font-medium sm:ml-auto">台灣首選 ・ CP 值最高</span>
+          </div>
+          <div class="p-6 md:p-8 space-y-5">
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">考什麼</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                初級分兩科：（1）人工智慧基礎概論 — AI 定義與分類、資料處理、機器學習、生成式 AI；（2）生成式 AI 應用與規劃 — No Code/Low Code 工具、導入評估與風險管理。全選擇題，各科 50 題。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">為什麼 PM 該考這張</h4>
+              <ul class="text-sm text-brand-light-subtle font-body leading-relaxed space-y-1 list-disc list-inside">
+                <li>台灣唯一政府級 AI 證照，企業 HR 認得</li>
+                <li>不用寫 code，考的是 AI 規劃能力 — PM 的核心價值</li>
+                <li>費用最低（NT$1,500），2-4 週可準備</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">Angela 觀點</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed italic">
+                「如果你在台灣，這張是投資報酬率最高的第一步。不用寫 code、費用低、政府背書，考的正是企業最缺的 AI 應用規劃能力。先拿這張打底，再往國際證照進攻。」
+              </p>
+            </div>
+          </div>
+          <!-- Highlighted CTA -->
+          <div class="ipas-cta-banner mx-6 md:mx-8 mb-6 md:mb-8 rounded-xl p-5 md:p-6 relative overflow-hidden" style="background: linear-gradient(135deg, #FEF2F2, #FEE2E2, #FEF2F2);">
+            <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(45deg, #EF4444 0, #EF4444 1px, transparent 0, transparent 50%); background-size: 12px 12px;"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-2 mb-2">
+                <iconify-icon icon="solar:star-bold" class="text-red-500 text-lg"></iconify-icon>
+                <span class="font-heading font-bold text-sm text-red-600">本站免費備考資源</span>
+              </div>
+              <p class="text-sm text-brand-light-text font-body leading-relaxed mb-4">
+                50 篇白話教學 + 模擬題庫，用生活化比喻與圖解帶你從零基礎一次考過。
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <a href="/ipas" class="inline-flex items-center gap-2 px-5 py-2.5 gold-gradient text-white font-heading font-semibold rounded-full text-xs no-underline transition-transform hover:scale-105">
+                  <iconify-icon icon="solar:book-bold" class="text-sm"></iconify-icon>
+                  50 篇免費教學
+                </a>
+                <a href="/exam" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-brand-accent-dark/30 text-brand-accent-dark font-heading font-semibold rounded-full text-xs no-underline transition-transform hover:scale-105">
+                  <iconify-icon icon="solar:document-text-bold" class="text-sm"></iconify-icon>
+                  模擬題庫
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Microsoft AI PM -->
+        <div class="bg-white border border-brand-light-border rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-3 p-6 md:p-8 pb-0 flex-wrap">
+            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm">2</span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-heading font-bold text-lg md:text-xl text-brand-light-text">Microsoft AI Product Manager</h3>
+              <span class="text-xs text-brand-light-subtle font-body">Microsoft × Coursera ・ 國際</span>
+            </div>
+            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-body font-medium sm:ml-auto">最對標 AI PM</span>
+          </div>
+          <div class="p-6 md:p-8 space-y-5">
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">學什麼</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                微軟官方推出的 AI 產品經理專業證照課程，涵蓋：AI 產品策略、使用者需求與 AI 能力匹配、負責任的 AI 設計、AI 產品生命週期管理、利害關係人溝通，以及如何將 AI 功能落地為產品。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">為什麼 PM 該考這張</h4>
+              <ul class="text-sm text-brand-light-subtle font-body leading-relaxed space-y-1 list-disc list-inside">
+                <li>全球唯一「AI Product Manager」命名的證照</li>
+                <li>微軟品牌背書，LinkedIn 上辨識度高</li>
+                <li>課程內容直接對標 AI PM 日常工作</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">準備資源</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                Coursera 線上課程，可自由安排進度，約 3-4 個月完成。訂閱制約 US$ 49/月，完成後獲得 Professional Certificate。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">Angela 觀點</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed italic">
+                「這張是目前市場上最正宗的 AI PM 證照。如果你想在履歷上直接寫『Microsoft Certified AI Product Manager』，沒有比這張更對口的了。英文授課是門檻，但也是加分項。」
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Google AI Essentials -->
+        <div class="bg-white border border-brand-light-border rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-3 p-6 md:p-8 pb-0 flex-wrap">
+            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm">3</span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-heading font-bold text-lg md:text-xl text-brand-light-text">Google AI Essentials</h3>
+              <span class="text-xs text-brand-light-subtle font-body">Google × Coursera ・ 國際</span>
+            </div>
+            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-body font-medium sm:ml-auto">最快入門</span>
+          </div>
+          <div class="p-6 md:p-8 space-y-5">
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">學什麼</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                Google 設計的 AI 入門課程，涵蓋：AI 基礎概念、提示工程（Prompt Engineering）、AI 工具的實際應用、負責任的 AI 使用原則。強調動手做，學完就能在工作中用 AI 提升效率。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">為什麼 PM 該考這張</h4>
+              <ul class="text-sm text-brand-light-subtle font-body leading-relaxed space-y-1 list-disc list-inside">
+                <li>Google 品牌，全球認知度最高</li>
+                <li>入門難度，幾週就能完成</li>
+                <li>重視實際應用，不是純理論</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">準備資源</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                Coursera 線上課程，約 2-4 週完成。訂閱制約 US$ 49/月，有中文字幕。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">Angela 觀點</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed italic">
+                「如果你對 AI 完全零基礎，這張是最無壓力的起點。Google 的課程品質穩定，內容實用不灌水。拿到後放 LinkedIn，Google 的 logo 自帶說服力。」
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Google Cloud Digital Leader -->
+        <div class="bg-white border border-brand-light-border rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-3 p-6 md:p-8 pb-0 flex-wrap">
+            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm">4</span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-heading font-bold text-lg md:text-xl text-brand-light-text">Google Cloud Digital Leader</h3>
+              <span class="text-xs text-brand-light-subtle font-body">Google ・ 國際</span>
+            </div>
+            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-body font-medium sm:ml-auto">商業 + 技術橋樑</span>
+          </div>
+          <div class="p-6 md:p-8 space-y-5">
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">考什麼</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                Google Cloud 的入門級認證，涵蓋：數位轉型與雲端策略、GCP 基礎架構、資料與 AI/ML 的商業應用、資安與合規。考的是「用商業語言理解技術」的能力。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">為什麼 PM 該考這張</h4>
+              <ul class="text-sm text-brand-light-subtle font-body leading-relaxed space-y-1 list-disc list-inside">
+                <li>學會用技術語言跟工程師溝通</li>
+                <li>理解雲端 + AI 架構，做產品決策更有底氣</li>
+                <li>Google 官方認證考試，含金量高於課程證書</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">準備資源</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                約 1-2 個月準備。Google Cloud Skills Boost 有免費學習路徑，考試費 US$ 99，支援中文考試。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">Angela 觀點</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed italic">
+                「這張是 PM 跨越『技術鴻溝』的最佳跳板。考完你會知道 AI/ML 在雲端怎麼跑、資料怎麼流、架構怎麼選 — 這些是你跟工程師開會時最需要的底氣。支援中文考試是大加分。」
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: AWS AI Practitioner -->
+        <div class="bg-white border border-brand-light-border rounded-2xl overflow-hidden">
+          <div class="flex items-center gap-3 p-6 md:p-8 pb-0 flex-wrap">
+            <div class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm">5</span>
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-heading font-bold text-lg md:text-xl text-brand-light-text">AWS AI Practitioner (AIF-C01)</h3>
+              <span class="text-xs text-brand-light-subtle font-body">Amazon ・ 國際</span>
+            </div>
+            <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-body font-medium sm:ml-auto">2024 新推出</span>
+          </div>
+          <div class="p-6 md:p-8 space-y-5">
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">考什麼</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                AWS 2024 年全新推出的 AI 基礎認證，涵蓋：AI/ML 基礎概念、生成式 AI 基礎、Foundation Model 的應用、負責任的 AI 實踐、AI 解決方案的安全性。不考程式，考的是理解和應用。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">為什麼 PM 該考這張</h4>
+              <ul class="text-sm text-brand-light-subtle font-body leading-relaxed space-y-1 list-disc list-inside">
+                <li>AWS 市佔全球第一，企業端辨識度最高</li>
+                <li>入門級不需技術背景，專為商業角色設計</li>
+                <li>考試費僅 US$ 75，三大雲端中最便宜</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">準備資源</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed">
+                約 3-6 週準備。AWS Skill Builder 有免費官方課程，考試支援中文，65 題選擇題，90 分鐘。
+              </p>
+            </div>
+            <div>
+              <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-2">Angela 觀點</h4>
+              <p class="text-sm text-brand-light-subtle font-body leading-relaxed italic">
+                「這張是三大雲端廠商中對 PM 最友善的入門認證 — 費用最低、不考 code、支援中文。如果你的公司用 AWS，這張能讓你跟工程師討論 AI 架構時有共同語言。2024 年才推出，現在考還很新鮮。」
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Decision Flow -->
+  <section class="relative py-16 md:py-20 bg-white">
+    <div class="site-container px-6 relative z-10">
+
+      <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-light-text mb-4">
+        我該從哪張開始？
+      </h2>
+      <p class="text-base text-brand-light-subtle font-body mb-8 md:mb-10 max-w-2xl">
+        回答三個問題，找到你的最佳起點。
+      </p>
+
+      <div class="max-w-2xl space-y-6">
+
+        <!-- Q1 -->
+        <div class="bg-gray-50 border border-brand-light-border rounded-xl p-5 md:p-6">
+          <h3 class="font-heading font-semibold text-base text-brand-light-text mb-3">Q1. 你目前的 AI 基礎程度？</h3>
+          <div class="space-y-2 text-sm font-body text-brand-light-subtle">
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">A.</span>
+              <span><strong>零基礎</strong> — 從 <strong>Google AI Essentials</strong> 開始，最無壓力的入門</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">B.</span>
+              <span><strong>有基本概念</strong> — 繼續看 Q2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="bg-gray-50 border border-brand-light-border rounded-xl p-5 md:p-6">
+          <h3 class="font-heading font-semibold text-base text-brand-light-text mb-3">Q2. 你的目標市場是？</h3>
+          <div class="space-y-2 text-sm font-body text-brand-light-subtle">
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">A.</span>
+              <span><strong>台灣為主</strong> — 先考 <strong>iPAS AI 應用規劃師</strong>，政府背書、企業認得</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">B.</span>
+              <span><strong>外商 / 國際</strong> — 考 <strong>Microsoft AI Product Manager</strong>，最對標 AI PM</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">C.</span>
+              <span><strong>兩邊都要</strong> — iPAS + Microsoft AI PM，台灣國際雙軌並進</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="bg-gray-50 border border-brand-light-border rounded-xl p-5 md:p-6">
+          <h3 class="font-heading font-semibold text-base text-brand-light-text mb-3">Q3. 你公司主要用哪家雲端？</h3>
+          <div class="space-y-2 text-sm font-body text-brand-light-subtle">
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">A.</span>
+              <span><strong>AWS</strong> — 加考 <strong>AWS AI Practitioner</strong>，費用最低、中文考試</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">B.</span>
+              <span><strong>GCP</strong> — 加考 <strong>Google Cloud Digital Leader</strong>，商業 + 技術橋樑</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-brand-accent-dark font-bold mt-0.5">C.</span>
+              <span><strong>不確定</strong> — 選 Google 的，品牌辨識度最高</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended Path -->
+  <section class="relative py-16 md:py-20 bg-gray-50/50">
+    <div class="site-container px-6 relative z-10">
+
+      <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-light-text mb-8 md:mb-10">
+        Angela 推薦的學習路徑
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white border border-brand-light-border rounded-xl p-5 md:p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <iconify-icon icon="solar:rocket-bold" class="text-2xl text-brand-accent-dark"></iconify-icon>
+            <h3 class="font-heading font-semibold text-base text-brand-light-text">快速起步型</h3>
+          </div>
+          <p class="text-sm text-brand-light-subtle font-body leading-relaxed mb-3">
+            想用最短時間拿到第一張 AI 證照
+          </p>
+          <div class="text-sm font-body text-brand-light-text font-medium">
+            Google AI Essentials → iPAS
+          </div>
+          <p class="text-xs text-brand-light-subtle font-body mt-1">約 1-2 個月</p>
+        </div>
+
+        <div class="bg-white border-2 border-brand-accent-dark/30 rounded-xl p-5 md:p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <iconify-icon icon="solar:star-bold" class="text-2xl text-brand-accent-dark"></iconify-icon>
+            <h3 class="font-heading font-semibold text-base text-brand-light-text">AI PM 專精型</h3>
+          </div>
+          <p class="text-sm text-brand-light-subtle font-body leading-relaxed mb-3">
+            目標成為有認證的 AI 產品經理
+          </p>
+          <div class="text-sm font-body text-brand-light-text font-medium">
+            iPAS → Microsoft AI PM → Digital Leader
+          </div>
+          <p class="text-xs text-brand-light-subtle font-body mt-1">約 4-6 個月</p>
+        </div>
+
+        <div class="bg-white border border-brand-light-border rounded-xl p-5 md:p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <iconify-icon icon="solar:crown-bold" class="text-2xl text-brand-accent-dark"></iconify-icon>
+            <h3 class="font-heading font-semibold text-base text-brand-light-text">全方位進階型</h3>
+          </div>
+          <p class="text-sm text-brand-light-subtle font-body leading-relaxed mb-3">
+            三大雲端 AI 認證全收集
+          </p>
+          <div class="text-sm font-body text-brand-light-text font-medium">
+            iPAS → Microsoft AI PM → AWS AI + Digital Leader
+          </div>
+          <p class="text-xs text-brand-light-subtle font-body mt-1">約 5-7 個月</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Engineer Extension -->
+  <section class="relative py-12 md:py-16 bg-white">
+    <div class="site-container px-6 relative z-10">
+
+      <h2 class="font-heading font-bold text-xl md:text-2xl text-brand-light-text mb-3">
+        工程師？這些也值得看
+      </h2>
+      <p class="text-sm text-brand-light-subtle font-body mb-6 max-w-2xl">
+        如果你是工程師或有技術背景，以下國際認證更對口：
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-4">
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-1">Google Cloud Professional ML Engineer</h4>
+          <p class="text-xs text-brand-light-subtle font-body">ML 工程師黃金標準，US$ 200</p>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-1">AWS Certified ML – Specialty</h4>
+          <p class="text-xs text-brand-light-subtle font-body">AWS 生態系必備，US$ 300</p>
+        </div>
+        <div class="border border-brand-light-border rounded-xl p-4">
+          <h4 class="font-heading font-semibold text-sm text-brand-light-text mb-1">NVIDIA DLI Certifications</h4>
+          <p class="text-xs text-brand-light-subtle font-body">深度學習實作，GPU 生態系</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative py-16 md:py-20 bg-gray-50/50">
+    <div class="site-container px-6 relative z-10 text-center">
+
+      <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-light-text mb-4">
+        準備好開始了嗎？
+      </h2>
+      <p class="text-base text-brand-light-subtle font-body mb-8 max-w-xl mx-auto">
+        如果你決定從 iPAS 開始，這裡有完整的免費資源幫你一次考過。
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/ipas" class="mag-btn px-8 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-sm no-underline">
+          iPAS 免費教學課程
+        </a>
+        <a href="/exam" class="mag-btn px-8 py-4 border border-brand-light-border text-brand-light-text font-heading font-medium rounded-full text-sm hover:border-brand-accent-dark hover:text-brand-accent-dark transition-colors no-underline">
+          iPAS 模擬題庫
+        </a>
+        <a href="mailto:aipm.insider@gmail.com" class="mag-btn px-8 py-4 border border-brand-light-border text-brand-light-text font-heading font-medium rounded-full text-sm hover:border-brand-accent-dark hover:text-brand-accent-dark transition-colors no-underline">
+          與我聊聊
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</Base>
