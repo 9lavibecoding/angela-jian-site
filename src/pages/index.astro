@@ -139,9 +139,68 @@ const moreArticles = articles.slice(2, 6);
           <a href={`/articles/${article.slug}`}
              class="card-hover rounded-2xl bg-white border border-brand-light-border block overflow-hidden group no-underline"
              data-stagger={i}>
-            <div class={`${header.bg} flex items-center justify-center py-10 md:py-14`}>
-              <iconify-icon icon={header.icon} class="text-5xl md:text-6xl text-brand-text/15 group-hover:text-brand-text/30 transition-colors"></iconify-icon>
+            {i === 0 ? (
+            <div class="relative h-40 md:h-52 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-5 md:p-7 flex flex-col justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-heading font-bold text-amber-400/80 tracking-widest uppercase">PM 轉型 AI 三步驟</span>
+              </div>
+              <div class="flex gap-2 md:gap-3">
+                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
+                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 1</span>
+                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">先用 AI 工具</span>
+                  <span class="text-white/50 text-[10px] font-body">不是先學理論</span>
+                </div>
+                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
+                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 2</span>
+                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">追問 Edge Case</span>
+                  <span class="text-white/50 text-[10px] font-body">那 5% 錯在哪</span>
+                </div>
+                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
+                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 3</span>
+                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">AI + 領域定位</span>
+                  <span class="text-white/50 text-[10px] font-body">你的護城河</span>
+                </div>
+              </div>
             </div>
+            ) : (
+            <div class="relative h-40 md:h-52 overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-5 md:p-7 flex flex-col justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-heading font-bold text-amber-700/70 tracking-widest uppercase">PM 的 5 個 AI 場景</span>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">1</span>
+                  <span class="text-xs font-body text-slate-700 font-medium">競品分析</span>
+                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">ChatGPT + Perplexity</span>
+                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 4hr</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">2</span>
+                  <span class="text-xs font-body text-slate-700 font-medium">PRD 撰寫</span>
+                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Claude + Notion AI</span>
+                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 2hr</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">3</span>
+                  <span class="text-xs font-body text-slate-700 font-medium">數據分析</span>
+                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Code Interpreter</span>
+                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 1.5hr</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">4</span>
+                  <span class="text-xs font-body text-slate-700 font-medium">用戶訪談整理</span>
+                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Otter + Claude</span>
+                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 1hr</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">5</span>
+                  <span class="text-xs font-body text-slate-700 font-medium">自動化週報</span>
+                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Zapier + GPT API</span>
+                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 30min</span>
+                </div>
+              </div>
+            </div>
+            )}
             <div class="p-5 md:p-6">
               <div class="flex items-center gap-2 mb-3 flex-wrap">
                 {article.tags.map((tag, j) => (
@@ -196,9 +255,6 @@ const moreArticles = articles.slice(2, 6);
       <!-- 免費課程 -->
       <a href="/ipas" class="group block bg-white rounded-2xl border border-brand-light-border p-8 hover:shadow-lg hover:border-brand-accent/30 transition-all no-underline">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-            <iconify-icon icon="solar:book-2-bold" class="text-2xl text-emerald-600"></iconify-icon>
-          </div>
           <span class="px-3 py-1 text-xs font-body font-medium rounded-full bg-emerald-100 text-emerald-700">免費</span>
         </div>
         <h3 class="font-heading font-bold text-xl text-brand-text mb-2 group-hover:text-brand-accent transition-colors">50 篇白話教學課程</h3>
@@ -215,9 +271,6 @@ const moreArticles = articles.slice(2, 6);
       <!-- 付費題庫 -->
       <a href="/exam" class="group block bg-white rounded-2xl border border-brand-light-border p-8 hover:shadow-lg hover:border-brand-accent/30 transition-all no-underline">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
-            <iconify-icon icon="solar:document-add-bold" class="text-2xl text-brand-accent"></iconify-icon>
-          </div>
           <span class="px-3 py-1 text-xs font-body font-medium rounded-full bg-red-100 text-red-600">NT$699 早鳥價</span>
         </div>
         <h3 class="font-heading font-bold text-xl text-brand-text mb-2 group-hover:text-brand-accent transition-colors">1000 題互動題庫</h3>
@@ -241,33 +294,33 @@ const moreArticles = articles.slice(2, 6);
 
     <div class="flex items-center gap-3 text-brand-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
       <div class="w-8 h-px bg-brand-accent"></div>
-      <span>Selected Works</span>
+      <span>What I Can Help</span>
     </div>
     <h2 class="font-heading font-black text-3xl md:text-4xl mb-8 md:mb-10 text-brand-text">
-      AI<span class="text-brand-accent">作品集</span>
+      我能<span class="text-brand-accent">幫你什麼</span>
     </h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <a href="/portfolio/ai-competitive-dashboard" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+      <div class="block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">01</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI 競品分析 Dashboard</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">OpenAI + Supabase 即時競品追蹤</p>
-      </a>
-      <a href="/portfolio/human-in-the-loop-accounting" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">一起聊聊 AI 產品</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">1-on-1 產品策略討論，幫你釐清方向</p>
+      </div>
+      <div class="block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">02</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">Human-in-the-Loop AI 會計系統</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">自動化帳務流程，準確率 97%</p>
-      </a>
-      <a href="/portfolio/prompt-generator" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">團隊 AI 小工作坊</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">帶你的團隊動手玩 AI，從概念到實作</p>
+      </div>
+      <div class="block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">03</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">AI Prompt 模板產生器</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">5 大 PM 場景一鍵生成提示詞</p>
-      </a>
-      <a href="/portfolio/ai-pm-assessment" class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:shadow-md transition-all duration-300 no-underline">
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">iPAS 備考陪跑</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">不只教材，還幫你規劃讀書計畫</p>
+      </div>
+      <div class="block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl">
         <span class="text-2xl font-heading font-light italic text-brand-accent/20 block mb-3">04</span>
-        <h3 class="font-heading font-bold text-base text-brand-text mb-2 group-hover:text-brand-accent transition-colors">PM → AI PM 能力自評表</h3>
-        <p class="text-xs text-brand-subtle leading-relaxed">互動式自評檢核與學習建議</p>
-      </a>
+        <h3 class="font-heading font-bold text-base text-brand-text mb-2">AI PM 轉職聊聊</h3>
+        <p class="text-xs text-brand-subtle leading-relaxed">想轉 AI PM？來聊聯怎麼開始</p>
+      </div>
     </div>
 
   </div>
