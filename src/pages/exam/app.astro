@@ -33,13 +33,31 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
             <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-600 text-xs font-heading font-bold">-42%</span>
           </div>
           <p class="font-heading font-black text-4xl text-brand-text mb-1">NT$699</p>
-          <p class="font-body text-xs text-brand-subtle mb-5">一次付費，永久使用</p>
+          <p class="font-body text-xs text-brand-subtle mb-5">PDF 永久保存 · 線上平台 6 個月</p>
           <button id="buyInAppBtn" class="w-full py-3.5 gold-gradient text-white font-heading font-semibold rounded-xl text-base hover:opacity-90 transition-opacity mb-3">
             立即購買
           </button>
           <p class="font-body text-[11px] text-brand-subtle">綠界安全付款（信用卡 / ATM / 超商）</p>
         </div>
         <button id="logoutBtn" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">登出帳號</button>
+      </div>
+
+      <!-- 已到期 -->
+      <div id="expiredSection" class="hidden max-w-md mx-auto">
+        <div class="bg-white rounded-2xl border border-amber-200 p-8 text-center mb-4">
+          <iconify-icon icon="solar:clock-circle-bold" class="text-4xl text-amber-500 mb-3"></iconify-icon>
+          <p class="font-heading font-bold text-xl text-brand-text mb-2">線上平台使用期限已到</p>
+          <p class="font-body text-sm text-brand-subtle mb-4 leading-relaxed">
+            你的 6 個月線上使用權已到期。<br>PDF 題庫仍可永久使用，隨時離線複習。
+          </p>
+          <a href="/exam/print" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 gold-gradient text-white font-heading font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity mb-3">
+            <iconify-icon icon="solar:document-add-bold"></iconify-icon>
+            下載 PDF 題庫
+          </a>
+          <p class="font-body text-xs text-brand-subtle mt-3">如需重新開通線上平台，請重新購買。</p>
+          <a href="/exam/" class="inline-block mt-2 font-body text-xs text-brand-accent hover:underline">前往購買頁</a>
+        </div>
+        <button id="logoutBtnExpired" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">登出帳號</button>
       </div>
     </div>
 
@@ -408,6 +426,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   var examApp = document.getElementById('examApp');
   var loginSection = document.getElementById('loginSection');
   var noPurchaseSection = document.getElementById('noPurchaseSection');
+  var expiredSection = document.getElementById('expiredSection');
   var currentSession = null;
 
   // 初始化 Supabase client（瀏覽器端）
@@ -428,6 +447,13 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   function showNoPurchase() {
     loginSection.classList.add('hidden');
     noPurchaseSection.classList.remove('hidden');
+    gateMsg.textContent = '';
+  }
+
+  function showExpired() {
+    loginSection.classList.add('hidden');
+    noPurchaseSection.classList.add('hidden');
+    expiredSection.classList.remove('hidden');
     gateMsg.textContent = '';
   }
 
@@ -492,6 +518,14 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     window.location.reload();
   });
 
+  document.getElementById('logoutBtnExpired').addEventListener('click', async function() {
+    var sb = getSB();
+    await sb.auth.signOut();
+    localStorage.removeItem(PURCHASE_KEY);
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  });
+
   // 載入題目從 API
   async function loadQuestions() {
     if (!currentSession) return false;
@@ -506,6 +540,10 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         body: JSON.stringify({})
       });
       var data = await res.json();
+      if (data.expired) {
+        showExpired();
+        return false;
+      }
       if (data.questions && data.questions.length > 0) {
         QUESTIONS = data.questions;
         return true;
