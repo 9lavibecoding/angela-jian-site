@@ -90,23 +90,28 @@ import Base from '../../layouts/Base.astro';
         </p>
 
         <!-- Price -->
-        <div class="inline-flex flex-col items-center bg-white rounded-2xl border-2 border-brand-accent/30 p-8 md:p-10 mb-8 shadow-lg">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="font-body text-lg text-brand-subtle line-through">NT$1,199</span>
-            <span class="px-2.5 py-0.5 rounded-full bg-red-100 text-red-600 text-xs font-heading font-bold">-42%</span>
+        <div class="inline-flex flex-col items-center bg-white rounded-2xl border-2 border-brand-accent/30 p-6 md:p-8 mb-8 shadow-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="font-body text-sm text-brand-subtle line-through">NT$1,199</span>
+            <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-600 text-[10px] font-heading font-bold">-42%</span>
           </div>
-          <div class="flex items-baseline gap-1 mb-1">
-            <span class="font-heading font-black text-4xl md:text-6xl text-brand-text">NT$699</span>
+          <span class="font-heading font-black text-3xl md:text-5xl text-brand-text mb-3">NT$699</span>
+          <div class="flex items-center gap-3 text-[11px] font-body text-brand-subtle mb-5">
+            <span class="flex items-center gap-1"><iconify-icon icon="solar:document-text-bold" class="text-sm text-brand-accent"></iconify-icon>PDF 永久保存</span>
+            <span class="text-brand-light-border">|</span>
+            <span class="flex items-center gap-1"><iconify-icon icon="solar:monitor-bold" class="text-sm text-brand-accent"></iconify-icon>線上平台 6 個月</span>
           </div>
-          <p class="font-body text-xs text-brand-subtle mb-2">PDF 題庫永久保存 · 線上平台 6 個月使用權</p>
-          <p class="font-body text-[11px] text-brand-subtle/70 mb-6">綠界安全付款 · 信用卡 / ATM / 超商</p>
-          <button id="buyBtn" class="mag-btn px-10 md:px-14 py-3.5 md:py-4 gold-gradient text-white font-heading font-semibold rounded-full text-sm md:text-base tracking-wide hover:opacity-90 transition-opacity">
+          <button id="buyBtn" class="mag-btn w-full px-8 py-3 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide hover:opacity-90 transition-opacity mb-3">
             <span>立即購買題庫</span>
           </button>
-          <p class="mt-4 space-x-3">
-            <a href="/exam/app" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">已購買？登入進入題庫</a>
-            <a href="/terms" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">使用條款</a>
-          </p>
+          <div class="flex items-center gap-2 text-[10px] font-body text-brand-subtle/60">
+            <iconify-icon icon="solar:lock-bold" class="text-xs"></iconify-icon>
+            <span>綠界安全付款 · 信用卡 / ATM / 超商</span>
+          </div>
+          <div class="flex items-center gap-3 mt-3">
+            <a href="/exam/app" class="font-body text-[11px] text-brand-subtle hover:text-brand-accent transition-colors underline">已購買？登入</a>
+            <a href="/terms" class="font-body text-[11px] text-brand-subtle hover:text-brand-accent transition-colors underline">使用條款</a>
+          </div>
         </div>
       </div>
 
