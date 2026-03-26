@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# Notion images (downloaded at build time)
+public/images/notion/
+
 # macOS-specific files
 .DS_Store
 
