@@ -159,7 +159,7 @@ const moreArticles = articles.slice(2, 6);
              data-stagger={i}>
             {article.image ? (
               <div class="h-52 overflow-hidden">
-                <img src={article.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                <img src={article.image} alt="" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
             ) : (
               <div class={`${header.bg} flex items-center justify-center py-14`}>

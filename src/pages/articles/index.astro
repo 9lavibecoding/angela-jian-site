@@ -67,7 +67,7 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
               {/* Thumbnail — Notion image or fallback icon */}
               {article.image ? (
                 <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl overflow-hidden">
-                  <img src={article.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  <img src={article.image} alt="" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
               ) : (
                 <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl bg-gradient-to-br from-amber-50 to-amber-50 flex items-center justify-center">
