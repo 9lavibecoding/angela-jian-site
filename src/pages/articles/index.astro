@@ -64,17 +64,23 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
              data-article-tags={article.tags.join(',')}>
             <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
 
-              {/* Thumbnail — tag-based icon */}
-              <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl bg-gradient-to-br from-amber-50 to-amber-50 flex items-center justify-center">
-                <iconify-icon icon={
-                  article.tags.includes('AI 工具') ? 'solar:lightbulb-bolt-bold' :
-                  article.tags.includes('AI PM') ? 'solar:document-text-bold' :
-                  article.tags.includes('Product Sense') ? 'solar:chart-2-bold' :
-                  article.tags.includes('AI 流程設計') ? 'solar:settings-bold' :
-                  article.tags.includes('AI 規劃師') ? 'solar:cpu-bolt-bold' :
-                  'solar:document-text-bold'
-                } class="text-4xl text-brand-accent/25 group-hover:text-brand-accent/40 transition-colors"></iconify-icon>
-              </div>
+              {/* Thumbnail — Notion image or fallback icon */}
+              {article.image ? (
+                <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl overflow-hidden">
+                  <img src={article.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                </div>
+              ) : (
+                <div class="w-full md:w-48 h-32 md:h-28 shrink-0 rounded-xl bg-gradient-to-br from-amber-50 to-amber-50 flex items-center justify-center">
+                  <iconify-icon icon={
+                    article.tags.includes('AI 工具') ? 'solar:lightbulb-bolt-bold' :
+                    article.tags.includes('AI PM') ? 'solar:document-text-bold' :
+                    article.tags.includes('Product Sense') ? 'solar:chart-2-bold' :
+                    article.tags.includes('AI 流程設計') ? 'solar:settings-bold' :
+                    article.tags.includes('AI 規劃師') ? 'solar:cpu-bolt-bold' :
+                    'solar:document-text-bold'
+                  } class="text-4xl text-brand-accent/25 group-hover:text-brand-accent/40 transition-colors"></iconify-icon>
+                </div>
+              )}
 
               {/* Title + Tags + Summary */}
               <div class="flex-1 min-w-0">
