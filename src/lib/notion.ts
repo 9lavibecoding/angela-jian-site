@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 
 // ---- 圖片下載 ----
-const IMG_DIR = 'public/images/notion';
+const IMG_DIRS = ['public/images/notion', 'dist/images/notion'];
 
 async function downloadImage(url: string): Promise<string> {
   // External images (non-Notion) don't need downloading
@@ -19,17 +19,23 @@ async function downloadImage(url: string): Promise<string> {
     const hash = createHash('md5').update(urlPath).digest('hex').slice(0, 12);
     const ext = urlPath.match(/\.(png|jpg|jpeg|gif|webp|svg)/i)?.[0] || '.png';
     const filename = `${hash}${ext}`;
-    const localPath = join(IMG_DIR, filename);
 
-    if (!existsSync(IMG_DIR)) {
-      await mkdir(IMG_DIR, { recursive: true });
-    }
+    // Download once, then write to all target dirs
+    let buffer: Buffer | null = null;
 
-    if (!existsSync(localPath)) {
-      const res = await fetch(url);
-      if (!res.ok) return url;
-      const buffer = Buffer.from(await res.arrayBuffer());
-      await writeFile(localPath, buffer);
+    for (const dir of IMG_DIRS) {
+      const localPath = join(dir, filename);
+      if (!existsSync(dir)) {
+        await mkdir(dir, { recursive: true });
+      }
+      if (!existsSync(localPath)) {
+        if (!buffer) {
+          const res = await fetch(url);
+          if (!res.ok) return url;
+          buffer = Buffer.from(await res.arrayBuffer());
+        }
+        await writeFile(localPath, buffer);
+      }
     }
 
     return `/images/notion/${filename}`;
