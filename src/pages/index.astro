@@ -132,83 +132,48 @@ const moreArticles = articles.slice(2, 6);
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Mobile: 所有文章統一小卡片 -->
+    <div class="md:hidden grid grid-cols-1 gap-4">
+      {[...featuredArticles, ...moreArticles].map((article, i) => (
+        <a href={`/articles/${article.slug}`}
+           class="card-hover rounded-xl bg-white border border-brand-light-border block overflow-hidden group no-underline p-4"
+           data-stagger={i}>
+          <div class="flex items-center gap-2 mb-2 flex-wrap">
+            {article.tags.slice(0, 2).map((tag, j) => (
+              <span class={`px-2 py-0.5 text-[10px] rounded-full font-body ${tagStyles[article.tagColors[j]] || tagStyles.accent}`}>{tag}</span>
+            ))}
+            <span class="text-[10px] text-brand-subtle font-body">{article.date}</span>
+          </div>
+          <h4 class="font-heading font-semibold text-sm mb-1.5 leading-snug text-brand-text line-clamp-2">{article.title}</h4>
+        </a>
+      ))}
+    </div>
+
+    <!-- Desktop: 前兩篇大卡 + banner，後四篇小卡 -->
+    <div class="hidden md:grid grid-cols-2 gap-6 mb-6">
       {featuredArticles.map((article, i) => {
         const header = cardHeaderStyles[article.tagColors[0]] || cardHeaderStyles.accent;
         return (
           <a href={`/articles/${article.slug}`}
              class="card-hover rounded-2xl bg-white border border-brand-light-border block overflow-hidden group no-underline"
              data-stagger={i}>
-            {i === 0 ? (
-            <div class="relative h-40 md:h-52 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-5 md:p-7 flex flex-col justify-between">
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] font-heading font-bold text-amber-400/80 tracking-widest uppercase">PM 轉型 AI 三步驟</span>
+            {article.image ? (
+              <div class="h-52 overflow-hidden">
+                <img src={article.image} alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
-              <div class="flex gap-2 md:gap-3">
-                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
-                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 1</span>
-                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">先用 AI 工具</span>
-                  <span class="text-white/50 text-[10px] font-body">不是先學理論</span>
-                </div>
-                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
-                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 2</span>
-                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">追問 Edge Case</span>
-                  <span class="text-white/50 text-[10px] font-body">那 5% 錯在哪</span>
-                </div>
-                <div class="flex-1 bg-white/10 backdrop-blur rounded-lg p-2.5 md:p-3 border border-white/10">
-                  <span class="text-amber-400 font-heading font-bold text-xs block mb-1">Step 3</span>
-                  <span class="text-white/90 text-[11px] md:text-xs font-body leading-snug block">AI + 領域定位</span>
-                  <span class="text-white/50 text-[10px] font-body">你的護城河</span>
-                </div>
-              </div>
-            </div>
             ) : (
-            <div class="relative h-40 md:h-52 overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-5 md:p-7 flex flex-col justify-between">
-              <div class="flex items-center gap-2">
-                <span class="text-[10px] font-heading font-bold text-amber-700/70 tracking-widest uppercase">PM 的 5 個 AI 場景</span>
+              <div class={`${header.bg} flex items-center justify-center py-14`}>
+                <iconify-icon icon={header.icon} class="text-6xl text-brand-text/15 group-hover:text-brand-text/30 transition-colors"></iconify-icon>
               </div>
-              <div class="space-y-1.5">
-                <div class="flex items-center gap-2.5">
-                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">1</span>
-                  <span class="text-xs font-body text-slate-700 font-medium">競品分析</span>
-                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">ChatGPT + Perplexity</span>
-                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 4hr</span>
-                </div>
-                <div class="flex items-center gap-2.5">
-                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">2</span>
-                  <span class="text-xs font-body text-slate-700 font-medium">PRD 撰寫</span>
-                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Claude + Notion AI</span>
-                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 2hr</span>
-                </div>
-                <div class="flex items-center gap-2.5">
-                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">3</span>
-                  <span class="text-xs font-body text-slate-700 font-medium">數據分析</span>
-                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Code Interpreter</span>
-                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 1.5hr</span>
-                </div>
-                <div class="flex items-center gap-2.5">
-                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">4</span>
-                  <span class="text-xs font-body text-slate-700 font-medium">用戶訪談整理</span>
-                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Otter + Claude</span>
-                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 1hr</span>
-                </div>
-                <div class="flex items-center gap-2.5">
-                  <span class="w-5 h-5 rounded-md bg-amber-600 text-white text-[10px] font-heading font-bold flex items-center justify-center shrink-0">5</span>
-                  <span class="text-xs font-body text-slate-700 font-medium">自動化週報</span>
-                  <span class="text-[10px] font-body text-slate-400 hidden md:inline">Zapier + GPT API</span>
-                  <span class="ml-auto text-[10px] text-amber-600 font-body font-medium">省 30min</span>
-                </div>
-              </div>
-            </div>
             )}
-            <div class="p-5 md:p-6">
+            <div class="p-6">
               <div class="flex items-center gap-2 mb-3 flex-wrap">
                 {article.tags.map((tag, j) => (
                   <span class={`px-2.5 py-1 text-[11px] rounded-full font-body ${tagStyles[article.tagColors[j]] || tagStyles.accent}`}>{tag}</span>
                 ))}
                 <span class="text-[11px] text-brand-subtle font-body">{article.date}</span>
               </div>
-              <h3 class="font-heading font-bold text-lg md:text-xl mb-2 leading-snug text-brand-text">{article.title}</h3>
+              <h3 class="font-heading font-bold text-xl mb-2 leading-snug text-brand-text">{article.title}</h3>
               {article.summary && (
                 <p class="text-sm text-brand-subtle leading-relaxed line-clamp-3">{article.summary}</p>
               )}
@@ -219,11 +184,10 @@ const moreArticles = articles.slice(2, 6);
     </div>
 
     {moreArticles.length > 0 && (
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {moreArticles.map((article, i) => {
-          return (
+      <div class="hidden md:grid grid-cols-4 gap-4">
+        {moreArticles.map((article, i) => (
             <a href={`/articles/${article.slug}`}
-               class="card-hover rounded-xl bg-white border border-brand-light-border block overflow-hidden group no-underline p-4 md:p-5"
+               class="card-hover rounded-xl bg-white border border-brand-light-border block overflow-hidden group no-underline p-5"
                data-stagger={i + 2}>
               <div class="flex items-center gap-2 mb-2 flex-wrap">
                 {article.tags.slice(0, 1).map((tag, j) => (
@@ -233,8 +197,7 @@ const moreArticles = articles.slice(2, 6);
               <h4 class="font-heading font-semibold text-sm mb-1.5 leading-snug text-brand-text line-clamp-2">{article.title}</h4>
               <span class="text-[11px] text-brand-subtle font-body">{article.date}</span>
             </a>
-          );
-        })}
+        ))}
       </div>
     )}
   </div>
