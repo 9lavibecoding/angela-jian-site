@@ -35,7 +35,7 @@ import Base from '../../layouts/Base.astro';
     {
       "@type": "Question",
       "name": "購買後可以使用多久？",
-      "acceptedAnswer": { "@type": "Answer", "text": "一次購買、永久使用。題庫會隨 iPAS 考試範圍調整持續更新，購買後自動獲得所有更新。" }
+      "acceptedAnswer": { "@type": "Answer", "text": "PDF 題庫下載後永久保存。線上互動平台（章節練習、模擬考、統計）提供自購買日起 6 個月使用權，涵蓋一整個考季。" }
     },
     {
       "@type": "Question",
@@ -98,11 +98,15 @@ import Base from '../../layouts/Base.astro';
           <div class="flex items-baseline gap-1 mb-1">
             <span class="font-heading font-black text-4xl md:text-6xl text-brand-text">NT$699</span>
           </div>
-          <p class="font-body text-xs text-brand-subtle mb-6">一次付費，永久使用 · 綠界安全付款</p>
+          <p class="font-body text-xs text-brand-subtle mb-2">PDF 題庫永久保存 · 線上平台 6 個月使用權</p>
+          <p class="font-body text-[11px] text-brand-subtle/70 mb-6">綠界安全付款 · 信用卡 / ATM / 超商</p>
           <button id="buyBtn" class="mag-btn px-10 md:px-14 py-3.5 md:py-4 gold-gradient text-white font-heading font-semibold rounded-full text-sm md:text-base tracking-wide hover:opacity-90 transition-opacity">
             <span>立即購買題庫</span>
           </button>
-          <p class="mt-4"><a href="/exam/app" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">已購買？登入進入題庫</a></p>
+          <p class="mt-4 space-x-3">
+            <a href="/exam/app" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">已購買？登入進入題庫</a>
+            <a href="/terms" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">使用條款</a>
+          </p>
         </div>
       </div>
 
@@ -192,7 +196,7 @@ import Base from '../../layouts/Base.astro';
               <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-subtle text-lg faq-arrow transition-transform duration-300"></iconify-icon>
             </button>
             <div class="faq-content hidden px-6 pb-4">
-              <p class="font-body text-sm text-brand-subtle">一次購買、永久使用。題庫會隨 iPAS 考試範圍調整持續更新，購買後自動獲得所有更新。</p>
+              <p class="font-body text-sm text-brand-subtle">PDF 題庫下載後永久保存，隨時離線複習。線上互動平台（章節練習、模擬考、統計）提供自購買日起 6 個月使用權，涵蓋一整個考季，從零基礎到上考場綽綽有餘。</p>
             </div>
           </div>
           <div class="faq-item bg-white rounded-xl border border-brand-light-border overflow-hidden">
@@ -229,7 +233,7 @@ import Base from '../../layouts/Base.astro';
       <div class="text-center rounded-2xl bg-gradient-to-br from-amber-50 to-amber-50/50 p-10 md:p-14 border border-brand-light-border">
         <iconify-icon icon="solar:medal-ribbons-star-bold" class="text-brand-accent text-4xl mb-4"></iconify-icon>
         <h2 class="font-heading font-bold text-2xl md:text-3xl text-brand-text mb-3">準備好拿下 iPAS AI 證照了嗎？</h2>
-        <p class="font-body text-brand-subtle mb-2 max-w-lg mx-auto">1000 題 + 白話解析 + 模擬考卷，用最有效率的方式通過考試。</p>
+        <p class="font-body text-brand-subtle mb-2 max-w-lg mx-auto">1000 題 PDF 永久保存 + 6 個月線上模擬考，用最有效率的方式通過考試。</p>
         <p class="font-body text-sm text-red-500 font-semibold mb-6">前 100 名早鳥價 NT$699（原價 NT$1,199）</p>
         <button id="buyBtn2" class="mag-btn px-12 py-4 gold-gradient text-white font-heading font-semibold rounded-full text-base tracking-wide hover:opacity-90 transition-opacity">
           <span>NT$699 — 立即購買</span>

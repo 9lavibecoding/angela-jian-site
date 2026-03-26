@@ -37,16 +37,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(401).json({ error: '登入驗證失敗' });
   }
 
-  // 用 service role 檢查購買紀錄
+  // 用 service role 檢查購買紀錄與到期日
   const adminClient = createClient(supabaseUrl, supabaseSecretKey);
   const { data: purchases } = await adminClient
     .from('purchases')
-    .select('id')
+    .select('id, expires_at')
     .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
     .limit(1);
 
   if (!purchases || purchases.length === 0) {
     return res.status(403).json({ error: '尚未購買題庫' });
+  }
+
+  // 檢查是否到期（舊用戶沒有 expires_at 欄位則不限制）
+  const purchase = purchases[0];
+  if (purchase.expires_at && new Date(purchase.expires_at) < new Date()) {
+    return res.status(403).json({ error: '使用期限已到期', expired: true });
   }
 
   // 拉取題目
