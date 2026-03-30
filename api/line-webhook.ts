@@ -97,6 +97,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const signature = req.headers['x-line-signature'] as string;
     const bodyStr = JSON.stringify(req.body);
 
+    // DEBUG: temporary - remove after confirming
+    if (req.headers['x-debug'] === 'true') {
+      const expected = crypto.createHmac('SHA256', channelSecret).update(bodyStr).digest('base64');
+      return res.status(200).json({ bodyStr, signature, expected, match: signature === expected });
+    }
+
     if (!signature || !verifySignature(bodyStr, signature, channelSecret)) {
       return res.status(401).send('Invalid signature');
     }
