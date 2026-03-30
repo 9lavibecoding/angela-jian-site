@@ -84,20 +84,6 @@ function timeAgo(date: Date): string {
 
 // ---- Webhook Handler ----
 
-// Vercel 需要 raw body 來驗證 LINE signature
-export const config = {
-  api: { bodyParser: false },
-};
-
-async function getRawBody(req: VercelRequest): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
-    req.on('data', (chunk: Buffer) => chunks.push(chunk));
-    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-    req.on('error', reject);
-  });
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).send('Method not allowed');
 
@@ -107,16 +93,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!channelSecret) return res.status(500).send('LINE_CHANNEL_SECRET not set');
 
-    // 讀取 raw body 並驗證 signature
-    const rawBody = await getRawBody(req);
+    // 驗證 LINE signature
     const signature = req.headers['x-line-signature'] as string;
+    const bodyStr = JSON.stringify(req.body);
 
-    if (!signature || !verifySignature(rawBody, signature, channelSecret)) {
+    if (!signature || !verifySignature(bodyStr, signature, channelSecret)) {
       return res.status(401).send('Invalid signature');
     }
 
-    const body = JSON.parse(rawBody);
-    const events = body?.events || [];
+    const events = req.body?.events || [];
 
     for (const event of events) {
       if (event.type !== 'message' || event.message?.type !== 'text') continue;
