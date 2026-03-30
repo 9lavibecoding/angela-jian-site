@@ -1,7 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
-import { pushMessage } from './lib/line';
+
+async function linePush(userId: string, text: string): Promise<void> {
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  if (!token) return;
+  await fetch('https://api.line.me/v2/bot/message/push', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ to: userId, messages: [{ type: 'text', text }] }),
+  });
+}
 
 function generateCheckMacValue(params: Record<string, string>, hashKey: string, hashIV: string): string {
   const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&');
@@ -60,7 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const { count } = await sb.from('purchases').select('*', { count: 'exact', head: true });
           totalLine = `\n累計第 ${(count ?? 0) + 1} 位購買者`;
         }
-        await pushMessage(adminUserId, `🎉 新購買！\n訂單 ${body.MerchantTradeNo}${totalLine}`);
+        await linePush(adminUserId, `🎉 新購買！\n訂單 ${body.MerchantTradeNo}${totalLine}`);
       } catch (e) {
         console.error('LINE push notification error:', e);
       }

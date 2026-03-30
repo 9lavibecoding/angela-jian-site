@@ -1,6 +1,32 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
-import { verifySignature, replyMessage } from './lib/line';
+import crypto from 'crypto';
+
+// ---- LINE API helpers (inline to avoid import issues) ----
+
+function verifySignature(body: string, signature: string, channelSecret: string): boolean {
+  const hash = crypto.createHmac('SHA256', channelSecret).update(body).digest('base64');
+  return hash === signature;
+}
+
+async function replyMessage(replyToken: string, text: string): Promise<void> {
+  const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  if (!token) return;
+
+  await fetch('https://api.line.me/v2/bot/message/reply', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      replyToken,
+      messages: [{ type: 'text', text }],
+    }),
+  });
+}
+
+// ---- Supabase ----
 
 function getAdminSupabase() {
   const url = process.env.SUPABASE_URL!;
@@ -17,7 +43,6 @@ async function handleSales(): Promise<string> {
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-  // 並行查詢
   const [totalRes, monthRes, todayRes, recentRes] = await Promise.all([
     sb.from('purchases').select('amount', { count: 'exact' }),
     sb.from('purchases').select('amount', { count: 'exact' }).gte('created_at', monthStart),
@@ -39,7 +64,7 @@ async function handleSales(): Promise<string> {
     recentLine = `\n最近購買：${r.email}（${ago}）`;
   }
 
-  return `📊 營收統計\n今日：NT$${totalAmount > 0 ? todayAmount.toLocaleString() : 0}（${todayCount} 筆）\n本月：NT$${monthAmount.toLocaleString()}（${monthCount} 筆）\n總計：NT$${totalAmount.toLocaleString()}（${totalCount} 筆）${recentLine}`;
+  return `📊 營收統計\n今日：NT$${todayAmount.toLocaleString()}（${todayCount} 筆）\n本月：NT$${monthAmount.toLocaleString()}（${monthCount} 筆）\n總計：NT$${totalAmount.toLocaleString()}（${totalCount} 筆）${recentLine}`;
 }
 
 function handleHelp(): string {
@@ -59,60 +84,80 @@ function timeAgo(date: Date): string {
 
 // ---- Webhook Handler ----
 
+// Vercel 需要 raw body 來驗證 LINE signature
+export const config = {
+  api: { bodyParser: false },
+};
+
+async function getRawBody(req: VercelRequest): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    req.on('data', (chunk: Buffer) => chunks.push(chunk));
+    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    req.on('error', reject);
+  });
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).send('Method not allowed');
 
-  const channelSecret = process.env.LINE_CHANNEL_SECRET;
-  const adminUserId = process.env.ADMIN_LINE_USER_ID;
+  try {
+    const channelSecret = process.env.LINE_CHANNEL_SECRET;
+    const adminUserId = process.env.ADMIN_LINE_USER_ID;
 
-  if (!channelSecret) return res.status(500).send('LINE_CHANNEL_SECRET not set');
+    if (!channelSecret) return res.status(500).send('LINE_CHANNEL_SECRET not set');
 
-  // 驗證 LINE signature
-  const signature = req.headers['x-line-signature'] as string;
-  const rawBody = JSON.stringify(req.body);
+    // 讀取 raw body 並驗證 signature
+    const rawBody = await getRawBody(req);
+    const signature = req.headers['x-line-signature'] as string;
 
-  if (!signature || !verifySignature(rawBody, signature, channelSecret)) {
-    return res.status(401).send('Invalid signature');
-  }
-
-  const events = req.body?.events || [];
-
-  for (const event of events) {
-    if (event.type !== 'message' || event.message?.type !== 'text') continue;
-
-    const userId = event.source?.userId;
-    const text = (event.message.text || '').trim().toLowerCase();
-    const replyToken = event.replyToken;
-
-    // 如果還沒設定 ADMIN_LINE_USER_ID，先回傳 userId 讓管理者設定
-    if (!adminUserId) {
-      await replyMessage(replyToken, `你的 LINE User ID：\n${userId}\n\n請將此值設為 Vercel 環境變數 ADMIN_LINE_USER_ID`);
-      continue;
+    if (!signature || !verifySignature(rawBody, signature, channelSecret)) {
+      return res.status(401).send('Invalid signature');
     }
 
-    // 非管理者不回應
-    if (userId !== adminUserId) continue;
+    const body = JSON.parse(rawBody);
+    const events = body?.events || [];
 
-    // 指令路由
-    let reply: string;
-    try {
-      switch (text) {
-        case '/sales':
-          reply = await handleSales();
-          break;
-        case '/help':
-          reply = handleHelp();
-          break;
-        default:
-          reply = '未知指令，傳 /help 查看可用指令';
+    for (const event of events) {
+      if (event.type !== 'message' || event.message?.type !== 'text') continue;
+
+      const userId = event.source?.userId;
+      const text = (event.message.text || '').trim().toLowerCase();
+      const replyToken = event.replyToken;
+
+      // 如果還沒設定 ADMIN_LINE_USER_ID，先回傳 userId 讓管理者設定
+      if (!adminUserId) {
+        await replyMessage(replyToken, `你的 LINE User ID：\n${userId}\n\n請將此值設為 Vercel 環境變數 ADMIN_LINE_USER_ID`);
+        continue;
       }
-    } catch (err) {
-      console.error('Command error:', err);
-      reply = '⚠️ 執行錯誤，請稍後再試';
+
+      // 非管理者不回應
+      if (userId !== adminUserId) continue;
+
+      // 指令路由
+      let reply: string;
+      try {
+        switch (text) {
+          case '/sales':
+            reply = await handleSales();
+            break;
+          case '/help':
+            reply = handleHelp();
+            break;
+          default:
+            reply = '未知指令，傳 /help 查看可用指令';
+        }
+      } catch (err) {
+        console.error('Command error:', err);
+        reply = '⚠️ 執行錯誤，請稍後再試';
+      }
+
+      await replyMessage(replyToken, reply);
     }
 
-    await replyMessage(replyToken, reply);
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error('Webhook error:', err);
+    return res.status(200).json({ ok: true });
   }
-
-  return res.status(200).json({ ok: true });
 }
