@@ -47,7 +47,7 @@ async function handleSales(): Promise<string> {
     sb.from('purchases').select('amount', { count: 'exact' }),
     sb.from('purchases').select('amount', { count: 'exact' }).gte('created_at', monthStart),
     sb.from('purchases').select('amount', { count: 'exact' }).gte('created_at', todayStart),
-    sb.from('purchases').select('email, created_at').order('created_at', { ascending: false }).limit(1),
+    sb.from('purchases').select('email,created_at').order('created_at', { ascending: false }).limit(1),
   ]);
 
   const totalCount = totalRes.count ?? 0;
