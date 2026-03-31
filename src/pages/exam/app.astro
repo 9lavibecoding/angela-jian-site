@@ -39,7 +39,11 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           </button>
           <p class="font-body text-[11px] text-brand-subtle">綠界安全付款（信用卡 / ATM / 超商）</p>
         </div>
-        <button id="logoutBtn" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">登出帳號</button>
+        <div class="flex items-center justify-center gap-3">
+          <a href="/exam/" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">返回上一頁</a>
+          <span class="text-brand-subtle/30">|</span>
+          <button id="logoutBtn" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">登出帳號</button>
+        </div>
       </div>
 
       <!-- 已到期 -->
@@ -599,6 +603,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     // 嘗試載入題目（API 會檢查購買紀錄）
     var loaded = await loadQuestions();
     if (loaded) {
+      localStorage.setItem(PURCHASE_KEY, 'true');
       showApp();
     } else {
       showNoPurchase();
