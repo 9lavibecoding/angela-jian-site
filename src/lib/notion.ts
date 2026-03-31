@@ -323,9 +323,15 @@ async function blocksToHtmlAndImage(blockId: string): Promise<{ html: string; fi
       if (block.type !== 'numbered_list_item' && inNumberedList) { html += '</ol>'; inNumberedList = false; }
 
       switch (block.type) {
-        case 'paragraph':
-          html += `<p>${richTextToHtml(block.paragraph.rich_text)}</p>`;
+        case 'paragraph': {
+          const pText = richTextToHtml(block.paragraph.rich_text);
+          if (pText.trimStart().startsWith('####')) {
+            html += `<h3>${pText.replace(/^(\s*)#{4}\s*/, '')}</h3>`;
+          } else {
+            html += `<p>${pText}</p>`;
+          }
           break;
+        }
         case 'heading_1':
           html += `<h1>${richTextToHtml(block.heading_1.rich_text)}</h1>`;
           break;
