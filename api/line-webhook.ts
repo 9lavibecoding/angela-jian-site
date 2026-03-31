@@ -2,18 +2,26 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 
-// ---- LINE API helpers (inline to avoid import issues) ----
+// ---- LINE API helpers ----
+
+const LINE_API = 'https://api.line.me/v2/bot';
 
 function verifySignature(body: string, signature: string, channelSecret: string): boolean {
   const hash = crypto.createHmac('SHA256', channelSecret).update(body).digest('base64');
   return hash === signature;
 }
 
-async function replyMessage(replyToken: string, text: string): Promise<void> {
+// Quick Reply 按鈕定義
+const QUICK_REPLY_ITEMS = [
+  { type: 'action' as const, action: { type: 'message' as const, label: '📊 營收', text: '/sales' } },
+  { type: 'action' as const, action: { type: 'message' as const, label: '📋 指令', text: '/help' } },
+];
+
+async function replyWithQuickReply(replyToken: string, text: string): Promise<void> {
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
   if (!token) return;
 
-  await fetch('https://api.line.me/v2/bot/message/reply', {
+  await fetch(`${LINE_API}/message/reply`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -21,7 +29,11 @@ async function replyMessage(replyToken: string, text: string): Promise<void> {
     },
     body: JSON.stringify({
       replyToken,
-      messages: [{ type: 'text', text }],
+      messages: [{
+        type: 'text',
+        text,
+        quickReply: { items: QUICK_REPLY_ITEMS },
+      }],
     }),
   });
 }
@@ -68,7 +80,7 @@ async function handleSales(): Promise<string> {
 }
 
 function handleHelp(): string {
-  return `📋 可用指令\n/sales — 查詢營收統計\n/help — 顯示此說明`;
+  return `📋 可用指令\n/sales — 查詢營收統計\n/help — 顯示此說明\n\n也可以直接點下方選單或快捷按鈕`;
 }
 
 function timeAgo(date: Date): string {
@@ -112,7 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       // 如果還沒設定 ADMIN_LINE_USER_ID，先回傳 userId 讓管理者設定
       if (!adminUserId) {
-        await replyMessage(replyToken, `你的 LINE User ID：\n${userId}\n\n請將此值設為 Vercel 環境變數 ADMIN_LINE_USER_ID`);
+        await replyWithQuickReply(replyToken, `你的 LINE User ID：\n${userId}\n\n請將此值設為 Vercel 環境變數 ADMIN_LINE_USER_ID`);
         continue;
       }
 
@@ -137,7 +149,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         reply = '⚠️ 執行錯誤，請稍後再試';
       }
 
-      await replyMessage(replyToken, reply);
+      await replyWithQuickReply(replyToken, reply);
     }
 
     return res.status(200).json({ ok: true });
