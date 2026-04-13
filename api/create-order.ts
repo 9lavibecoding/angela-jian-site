@@ -42,7 +42,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: '伺服器設定錯誤' });
   }
 
-  const origin = req.headers.origin || 'https://aipm-insider.vercel.app';
+  const baseUrl = req.headers.origin || 'https://aipm-insider.com';
   const now = new Date();
   const pad = (n: number) => n.toString().padStart(2, '0');
   const tradeDate = `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
@@ -56,8 +56,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     TotalAmount: '699',
     TradeDesc: 'iPAS AI Exam Bank',
     ItemName: 'iPAS AI 題庫 1000題完整版',
-    ReturnURL: `${origin}/api/ecpay-notify`,
-    OrderResultURL: `${origin}/api/ecpay-return?trade_no=${tradeNo}`,
+    ReturnURL: `${baseUrl}/api/ecpay-notify`,
+    OrderResultURL: `${baseUrl}/api/ecpay-return?trade_no=${tradeNo}`,
     ChoosePayment: 'ALL',
     EncryptType: '1',
     NeedExtraPaidInfo: 'N',
