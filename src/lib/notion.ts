@@ -440,13 +440,14 @@ export async function getArticles(): Promise<Article[]> {
       const tagColors = tags.map((t: string) => getTagColor(t));
 
       const { html: content, firstImage } = await blocksToHtmlAndImage(page.id);
+      const imageUrlProp = props.Image?.url || '';
       articles.push({
         title: props.Title?.title?.[0]?.plain_text || '',
         slug: props.Slug?.rich_text?.[0]?.plain_text || '',
         tags,
         tagColors,
         date: props.Date?.date?.start?.replaceAll('-', '.') || '',
-        image: firstImage,
+        image: imageUrlProp || firstImage,
         summary: props.Summary?.rich_text?.[0]?.plain_text || '',
         summaryEn: '',
         content,
