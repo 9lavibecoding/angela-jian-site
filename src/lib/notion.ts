@@ -423,18 +423,36 @@ export async function getArticles(): Promise<Article[]> {
   }
 
   try {
-    const response = await notion.databases.query({
-      database_id: databaseId,
-      filter: {
-        property: 'Published',
-        checkbox: { equals: true },
-      },
-      sorts: [{ property: 'Date', direction: 'descending' }],
-    });
+    // Query ALL articles (no Published filter) so we know which slugs are
+    // explicitly unpublished — those should NOT be backfilled from STATIC_ARTICLES.
+    const allPages: any[] = [];
+    let cursor: string | undefined;
+    do {
+      const response = await notion.databases.query({
+        database_id: databaseId,
+        sorts: [{ property: 'Date', direction: 'descending' }],
+        start_cursor: cursor,
+        page_size: 100,
+      });
+      allPages.push(...response.results);
+      cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined;
+    } while (cursor);
+
+    const unpublishedSlugs = new Set<string>();
+    const publishedPages: any[] = [];
+    for (const page of allPages) {
+      const props = page.properties;
+      const slug = props.Slug?.rich_text?.[0]?.plain_text || '';
+      const isPublished = props.Published?.checkbox === true;
+      if (isPublished) {
+        publishedPages.push(page);
+      } else if (slug) {
+        unpublishedSlugs.add(slug);
+      }
+    }
 
     const articles: Article[] = [];
-
-    for (const page of response.results as any[]) {
+    for (const page of publishedPages) {
       const props = page.properties;
       const tags = (props.Tag?.multi_select || []).map((t: any) => t.name);
       const tagColors = tags.map((t: string) => getTagColor(t));
@@ -468,9 +486,12 @@ export async function getArticles(): Promise<Article[]> {
       }
       return a;
     });
-    // Add static articles not in Notion
+    // Backfill static articles only if Notion has no record at all for that slug.
+    // Slugs that exist in Notion but are unpublished must stay hidden.
     const notionSlugs = new Set(articles.map(a => a.slug));
-    const extraStatic = STATIC_ARTICLES.filter(a => !notionSlugs.has(a.slug));
+    const extraStatic = STATIC_ARTICLES.filter(
+      a => !notionSlugs.has(a.slug) && !unpublishedSlugs.has(a.slug)
+    );
     const merged = [...mergedArticles, ...extraStatic];
     merged.sort((a, b) => b.date.localeCompare(a.date));
     return merged;
