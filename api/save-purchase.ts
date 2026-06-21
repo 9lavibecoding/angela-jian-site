@@ -64,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     user_id: user.id,
     email: user.email,
     trade_no,
-    amount: 699,
+    amount: 199,
     expires_at: expiresAt.toISOString(),
   });
 
