@@ -8,8 +8,14 @@ import { join } from 'node:path';
 const IMG_DIRS = ['public/images/notion', 'dist/images/notion'];
 
 async function downloadImage(url: string): Promise<string> {
-  // External images (non-Notion) don't need downloading
-  if (!url.includes('prod-files-secure.s3') && !url.includes('s3.us-west-2.amazonaws.com')) {
+  // Download images whose URLs expire (TTL): Notion S3 uploads and LinkedIn
+  // DMS images carried over from LinkedIn articles. Stable external images
+  // (e.g. Unsplash covers) are left remote.
+  const isExpiringUrl =
+    url.includes('prod-files-secure.s3') ||
+    url.includes('s3.us-west-2.amazonaws.com') ||
+    url.includes('media.licdn.com/dms');
+  if (!isExpiringUrl) {
     return url;
   }
 
