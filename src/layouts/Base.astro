@@ -71,6 +71,19 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   "description": "Angela Jian 的產品管理與 AI 產品思維部落格",
   "author": { "@type": "Person", "name": "Angela Jian 簡琬庭" }
 })} />
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "AI PM INSIDER",
+  "alternateName": "AIPM Insider",
+  "url": Astro.site?.toString(),
+  "logo": new URL('/og-cover.png', Astro.site).toString(),
+  "description": "AI 產品經理與 iPAS AI 應用規劃師的學習資源平台，提供備考課程、題庫與 AI 產品實戰內容。",
+  "founder": { "@type": "Person", "name": "Angela Jian 簡琬庭" },
+  "sameAs": [
+    "https://www.linkedin.com/in/angela-jian/"
+  ]
+})} />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
