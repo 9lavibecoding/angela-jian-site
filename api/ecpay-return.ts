@@ -1,20 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import crypto from 'crypto';
-
-function generateCheckMacValue(params: Record<string, string>, hashKey: string, hashIV: string): string {
-  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&');
-  const raw = `HashKey=${hashKey}&${sorted}&HashIV=${hashIV}`;
-  const encoded = encodeURIComponent(raw)
-    .toLowerCase()
-    .replace(/%2d/g, '-').replace(/%5f/g, '_').replace(/%2e/g, '.')
-    .replace(/%21/g, '!').replace(/%2a/g, '*').replace(/%28/g, '(')
-    .replace(/%29/g, ')').replace(/%20/g, '+');
-  return crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
-}
-
-function generateToken(tradeNo: string, secret: string): string {
-  return crypto.createHmac('sha256', secret).update(tradeNo).digest('hex').substring(0, 32);
-}
+import { generateCheckMacValue, generateUserToken } from './lib/ecpay';
 
 // 綠界 OrderResultURL 接收端
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -40,7 +25,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  const token = verified ? generateToken(tradeNo, hashKey) : '';
+  // CustomField1 = create-order 寫入的付款人 user_id，已隨 body 一起通過上面的 CheckMacValue 驗證，可信。
+  const payerUserId = body.CustomField1 || '';
+  const token = verified ? generateUserToken(tradeNo, payerUserId, hashKey) : '';
   const appUrl = `/exam/app?trade_no=${tradeNo}` + (token ? `&token=${token}` : '');
 
   // 付款成功：顯示訂單編號提醒頁，然後自動跳轉

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
+import { generateCheckMacValue } from './lib/ecpay';
 
 async function linePush(userId: string, text: string): Promise<void> {
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN;
@@ -10,22 +10,6 @@ async function linePush(userId: string, text: string): Promise<void> {
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify({ to: userId, messages: [{ type: 'text', text }] }),
   });
-}
-
-function generateCheckMacValue(params: Record<string, string>, hashKey: string, hashIV: string): string {
-  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&');
-  const raw = `HashKey=${hashKey}&${sorted}&HashIV=${hashIV}`;
-  const encoded = encodeURIComponent(raw)
-    .toLowerCase()
-    .replace(/%2d/g, '-')
-    .replace(/%5f/g, '_')
-    .replace(/%2e/g, '.')
-    .replace(/%21/g, '!')
-    .replace(/%2a/g, '*')
-    .replace(/%28/g, '(')
-    .replace(/%29/g, ')')
-    .replace(/%20/g, '+');
-  return crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
 }
 
 // 綠界 server-to-server 付款結果通知

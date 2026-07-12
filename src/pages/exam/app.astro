@@ -480,9 +480,18 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     var btn = this;
     btn.disabled = true;
     btn.textContent = '導向付款頁面...';
+    if (!currentSession) {
+      alert('請先登入再購買');
+      btn.disabled = false;
+      btn.textContent = '立即購買';
+      return;
+    }
     fetch('/api/create-order', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + currentSession.access_token
+      },
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -573,7 +582,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + currentSession.access_token
         },
-        body: JSON.stringify({ trade_no: tradeNo })
+        body: JSON.stringify({ trade_no: tradeNo, token: token })
       });
       window.history.replaceState({}, '', '/exam/app');
     } catch (e) {

@@ -1,35 +1,9 @@
 ---
-// Import all question files at build time
-import q1 from '../../data/exam/L11-001-050.json';
-import q2 from '../../data/exam/L11-051-100.json';
-import q3 from '../../data/exam/L11-101-200.json';
-import q4 from '../../data/exam/L11-201-300.json';
-import q5 from '../../data/exam/L11-251-300.json';
-import q6 from '../../data/exam/L12-301-450.json';
-import q7 from '../../data/exam/L12-451-600.json';
-import q8 from '../../data/exam/MIX-601-750.json';
-import q9 from '../../data/exam/MIX-751-870.json';
-import q10 from '../../data/exam/L11-871-971.json';
-import q11 from '../../data/exam/MIX-972-1101.json';
-import q12 from '../../data/exam/EXTRA-1102-1113.json';
-
-const seen = new Set<number>();
-const allQuestions: any[] = [];
-for (const arr of [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12]) {
-  for (const q of arr) {
-    if (!seen.has(q.id)) {
-      seen.add(q.id);
-      allQuestions.push(q);
-    }
-  }
-}
-allQuestions.sort((a, b) => a.id - b.id);
-
-const chapters = {
-  L11: { name: '基礎 AI 概念', questions: allQuestions.filter(q => q.chapter === 'L11') },
-  L12: { name: '生成式 AI 應用', questions: allQuestions.filter(q => q.chapter === 'L12') },
-  MIX: { name: '綜合模擬', questions: allQuestions.filter(q => q.chapter === 'MIX') },
-};
+// 付費內容保護：本頁不在 build 時嵌入任何題目資料。
+// 頁面為靜態殼，載入後由前端帶 Supabase JWT 呼叫 /api/get-questions，
+// 伺服器端驗證購買紀錄後才回傳題目，避免 view-source 外洩付費內容。
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <html lang="zh-Hant">
@@ -38,7 +12,7 @@ const chapters = {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<title>iPAS AI 題庫 — 1000 題完整版（列印版）</title>
+<title>iPAS AI 題庫 — 完整版（列印版）</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,9 +71,9 @@ const chapters = {
   .answers-hidden .q-answer { display: none; }
 
   /* Gate */
-  .gate { display: flex; align-items: center; justify-content: center; min-height: 60vh; text-align: center; }
+  .gate { display: flex; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 2rem; }
   .gate p { color: #78716C; }
-  .gate a { color: #C5A55A; }
+  .gate a { color: #C5A55A; font-weight: 600; }
 
   /* 浮水印 */
   .watermark {
@@ -150,10 +124,10 @@ const chapters = {
   <p>驗證購買狀態中...</p>
 </div>
 
-<!-- Print content (hidden until verified) -->
+<!-- Print content shell (題目由前端動態載入，build 產物不含任何題目資料) -->
 <div id="printContent" style="display:none">
   <div class="print-bar">
-    <span class="print-bar-title">iPAS AI 題庫 — 1000 題</span>
+    <span class="print-bar-title">iPAS AI 題庫</span>
     <div class="print-bar-actions">
       <button class="toggle-answers" id="toggleAnswers">隱藏答案</button>
       <button class="print-btn" onclick="window.print()">列印 / 存為 PDF</button>
@@ -163,58 +137,165 @@ const chapters = {
 
   <div class="content" id="questionsBody">
     <h1 class="page-title">iPAS 初級人工智慧應用師 題庫</h1>
-    <p class="page-sub">共 {allQuestions.length} 題 — L11 基礎 AI 概念 / L12 生成式 AI 應用 / 綜合模擬</p>
-
-    {Object.entries(chapters).map(([code, ch]) => (
-      <div>
-        <div class="chapter-title">{code} — {ch.name}（{ch.questions.length} 題）</div>
-        {ch.questions.map((q: any) => (
-          <div class="question">
-            <div class="q-header">
-              <span class="q-num">#{q.id}</span>
-              <span class={`q-diff ${q.difficulty}`}>
-                {q.difficulty === 'easy' ? '簡單' : q.difficulty === 'medium' ? '中等' : '困難'}
-              </span>
-            </div>
-            <p class="q-text">{q.question}</p>
-            <ul class="q-options">
-              {q.options.map((opt: string) => <li>{opt}</li>)}
-            </ul>
-            <div class="q-answer">
-              <strong>答案：{q.answer}</strong>
-              <p>{q.explanation}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    ))}
+    <p class="page-sub" id="pageSub">L11 基礎 AI 概念 / L12 生成式 AI 應用 / 綜合模擬</p>
+    <div id="chaptersContainer"></div>
   </div>
 </div>
 
-<script is:inline>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" is:inline></script>
+<script is:inline define:vars={{ supabaseUrl, supabaseAnonKey }}>
 (function() {
   var gate = document.getElementById('gate');
   var content = document.getElementById('printContent');
   var watermark = document.getElementById('watermark');
   var watermarkEmail = document.getElementById('watermarkEmail');
+  var pageSub = document.getElementById('pageSub');
+  var chaptersContainer = document.getElementById('chaptersContainer');
 
-  var purchased = localStorage.getItem('ipas_exam_purchased');
-  if (purchased) {
+  var CHAPTER_ORDER = ['L11', 'L12', 'MIX'];
+  var CHAPTER_NAMES = { L11: '基礎 AI 概念', L12: '生成式 AI 應用', MIX: '綜合模擬' };
+  var DIFF_LABELS = { easy: '簡單', medium: '中等', hard: '困難' };
+
+  var _sb = null;
+  function getSB() {
+    if (!_sb) {
+      _sb = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    }
+    return _sb;
+  }
+
+  function showGate(html) {
+    gate.innerHTML = html;
+    gate.style.display = 'flex';
+    content.style.display = 'none';
+    watermark.style.display = 'none';
+  }
+
+  // 安全建立 DOM（用 textContent，避免題目字串被當 HTML 解析）
+  function renderQuestions(questions, email) {
+    // 依章節分組
+    var groups = {};
+    CHAPTER_ORDER.forEach(function(c) { groups[c] = []; });
+    questions.forEach(function(q) {
+      if (!groups[q.chapter]) groups[q.chapter] = [];
+      groups[q.chapter].push(q);
+    });
+
+    chaptersContainer.innerHTML = '';
+    pageSub.textContent = '共 ' + questions.length + ' 題 — L11 基礎 AI 概念 / L12 生成式 AI 應用 / 綜合模擬';
+
+    CHAPTER_ORDER.forEach(function(code) {
+      var list = groups[code] || [];
+      if (list.length === 0) return;
+      var wrap = document.createElement('div');
+
+      var title = document.createElement('div');
+      title.className = 'chapter-title';
+      title.textContent = code + ' — ' + (CHAPTER_NAMES[code] || '') + '（' + list.length + ' 題）';
+      wrap.appendChild(title);
+
+      list.forEach(function(q) {
+        var qDiv = document.createElement('div');
+        qDiv.className = 'question';
+
+        var header = document.createElement('div');
+        header.className = 'q-header';
+        var num = document.createElement('span');
+        num.className = 'q-num';
+        num.textContent = '#' + q.id;
+        var diff = document.createElement('span');
+        diff.className = 'q-diff ' + q.difficulty;
+        diff.textContent = DIFF_LABELS[q.difficulty] || q.difficulty || '';
+        header.appendChild(num);
+        header.appendChild(diff);
+        qDiv.appendChild(header);
+
+        var text = document.createElement('p');
+        text.className = 'q-text';
+        text.textContent = q.question;
+        qDiv.appendChild(text);
+
+        var ul = document.createElement('ul');
+        ul.className = 'q-options';
+        (q.options || []).forEach(function(opt) {
+          var li = document.createElement('li');
+          li.textContent = opt;
+          ul.appendChild(li);
+        });
+        qDiv.appendChild(ul);
+
+        var ans = document.createElement('div');
+        ans.className = 'q-answer';
+        var strong = document.createElement('strong');
+        strong.textContent = '答案：' + q.answer;
+        ans.appendChild(strong);
+        if (q.explanation) {
+          var exp = document.createElement('p');
+          exp.textContent = q.explanation;
+          ans.appendChild(exp);
+        }
+        qDiv.appendChild(ans);
+
+        wrap.appendChild(qDiv);
+      });
+
+      chaptersContainer.appendChild(wrap);
+    });
+
+    if (email) watermarkEmail.textContent = email;
     gate.style.display = 'none';
     content.style.display = 'block';
     watermark.style.display = 'flex';
+  }
 
-    // 嘗試從 localStorage 取得用戶 email 作為浮水印
+  async function init() {
+    if (!window.supabase) {
+      showGate('<p>載入失敗，請重新整理頁面。</p>');
+      return;
+    }
+    var sb = getSB();
+    var sessionRes = await sb.auth.getSession();
+    var session = sessionRes && sessionRes.data ? sessionRes.data.session : null;
+
+    if (!session) {
+      showGate('<p>請先登入以檢視題庫。<br><a href="/exam/app">前往登入</a></p>');
+      return;
+    }
+
+    var email = session.user && session.user.email;
+
     try {
-      var sbKey = Object.keys(localStorage).find(function(k) { return k.startsWith('sb-') && k.endsWith('-auth-token'); });
-      if (sbKey) {
-        var session = JSON.parse(localStorage.getItem(sbKey));
-        var email = session && session.user && session.user.email;
-        if (email) watermarkEmail.textContent = email;
+      var res = await fetch('/api/get-questions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.access_token
+        },
+        body: JSON.stringify({})
+      });
+      var data = await res.json();
+
+      if (res.status === 403 && data.expired) {
+        showGate('<p>使用期限已到期。<a href="/exam/">前往續購</a></p>');
+        return;
       }
-    } catch(e) {}
-  } else {
-    gate.innerHTML = '<p>尚未購買題庫。<a href="/exam/">前往購買</a></p>';
+      if (res.status === 403) {
+        showGate('<p>尚未購買題庫。<a href="/exam/">前往購買</a></p>');
+        return;
+      }
+      if (res.status === 401) {
+        showGate('<p>登入已失效，請重新登入。<br><a href="/exam/app">前往登入</a></p>');
+        return;
+      }
+      if (!res.ok || !data.questions || data.questions.length === 0) {
+        showGate('<p>題目載入失敗，請稍後再試或<a href="/exam/app">返回題庫</a>。</p>');
+        return;
+      }
+
+      renderQuestions(data.questions, email);
+    } catch (e) {
+      showGate('<p>網路錯誤，請稍後再試或<a href="/exam/app">返回題庫</a>。</p>');
+    }
   }
 
   // Toggle answers
@@ -224,6 +305,8 @@ const chapters = {
     body.classList.toggle('answers-hidden');
     btn.textContent = body.classList.contains('answers-hidden') ? '顯示答案' : '隱藏答案';
   });
+
+  init();
 })();
 </script>
 

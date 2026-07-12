@@ -1,25 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import crypto from 'crypto';
-
-function generateCheckMacValue(params: Record<string, string>, hashKey: string, hashIV: string): string {
-  // 1. 按 key 排序
-  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&');
-  // 2. 前後加 HashKey / HashIV
-  const raw = `HashKey=${hashKey}&${sorted}&HashIV=${hashIV}`;
-  // 3. URL encode → 小寫
-  const encoded = encodeURIComponent(raw)
-    .toLowerCase()
-    .replace(/%2d/g, '-')
-    .replace(/%5f/g, '_')
-    .replace(/%2e/g, '.')
-    .replace(/%21/g, '!')
-    .replace(/%2a/g, '*')
-    .replace(/%28/g, '(')
-    .replace(/%29/g, ')')
-    .replace(/%20/g, '+');
-  // 4. SHA256 → 大寫
-  return crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
-}
+import { createClient } from '@supabase/supabase-js';
+import { generateCheckMacValue } from './lib/ecpay';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const allowedOrigins = ['https://aipm-insider.com', 'https://aipm-insider.vercel.app'];
@@ -28,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -40,6 +21,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!merchantId || !hashKey || !hashIV) {
     return res.status(500).json({ error: '伺服器設定錯誤' });
+  }
+
+  // 要求登入：把付款綁定到當前 user，寫入綠界 CustomField1（經 CheckMacValue 簽章、
+  // QueryTradeInfo 原樣回傳），供 ecpay-return / save-purchase 驗證付款人身分。
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const anonKey = process.env.SUPABASE_ANON_KEY;
+  if (!supabaseUrl || !anonKey) {
+    return res.status(500).json({ error: '伺服器設定錯誤' });
+  }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: '請先登入' });
+  }
+  const jwt = authHeader.replace('Bearer ', '');
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: `Bearer ${jwt}` } },
+  });
+  const { data: { user }, error: authError } = await userClient.auth.getUser(jwt);
+  if (authError || !user) {
+    return res.status(401).json({ error: '登入驗證失敗' });
   }
 
   const baseUrl = req.headers.origin || 'https://aipm-insider.com';
@@ -61,6 +62,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ChoosePayment: 'ALL',
     EncryptType: '1',
     NeedExtraPaidInfo: 'N',
+    CustomField1: user.id, // 付款人 user_id（UUID，36 字，未逾綠界 CustomField 50 字上限）
   };
 
   params.CheckMacValue = generateCheckMacValue(params, hashKey, hashIV);

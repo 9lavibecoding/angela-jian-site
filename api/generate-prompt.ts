@@ -1,25 +1,109 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Simple in-memory rate limiting
-const requestLog: number[] = [];
-const RATE_LIMIT = 50;
+// ---------------------------------------------------------------------------
+// Abuse mitigation (best-effort, single-file, no external deps)
+//
+// NOTE: Vercel serverless runs multiple isolated instances and cold-starts
+// reset process memory, so these in-memory counters are NOT a hard guarantee.
+// They exist to blunt single-instance burst abuse (e.g. a curl loop hitting a
+// warm instance) and to cap total spend per warm instance. For a real
+// distributed guarantee, move counters to Upstash/Vercel KV or gate with
+// Cloudflare Turnstile (see残餘風險 notes in review).
+// ---------------------------------------------------------------------------
+
 const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
-function isRateLimited(): boolean {
-  const now = Date.now();
-  // Remove entries older than 1 hour
-  while (requestLog.length > 0 && requestLog[0] < now - RATE_WINDOW_MS) {
-    requestLog.shift();
+// Global circuit breaker: total successful calls per warm instance per window.
+const GLOBAL_LIMIT = 50;
+const globalLog: number[] = [];
+
+// Per-IP limit: caps a single client hammering one warm instance.
+const PER_IP_LIMIT = 10;
+const ipLog = new Map<string, number[]>();
+// Guard against unbounded Map growth from many distinct IPs.
+const IP_MAP_SWEEP_THRESHOLD = 5000;
+
+// Input / output cost controls.
+const MAX_CONTEXT_LENGTH = 5000; // max user-supplied characters
+const MAX_OUTPUT_TOKENS = 2048; // cap Gemini output cost per call
+
+function pruneGlobal(now: number): void {
+  while (globalLog.length > 0 && globalLog[0] < now - RATE_WINDOW_MS) {
+    globalLog.shift();
   }
-  return requestLog.length >= RATE_LIMIT;
 }
 
-function getRemainingRequests(): number {
-  const now = Date.now();
-  while (requestLog.length > 0 && requestLog[0] < now - RATE_WINDOW_MS) {
-    requestLog.shift();
+function isGlobalRateLimited(now: number): boolean {
+  pruneGlobal(now);
+  return globalLog.length >= GLOBAL_LIMIT;
+}
+
+function getRemainingRequests(now: number): number {
+  pruneGlobal(now);
+  return Math.max(0, GLOBAL_LIMIT - globalLog.length);
+}
+
+function getClientIp(req: VercelRequest): string {
+  const xff = req.headers['x-forwarded-for'];
+  const raw = Array.isArray(xff) ? xff[0] : xff;
+  if (typeof raw === 'string' && raw.length > 0) {
+    // x-forwarded-for is a comma-separated chain; the first entry is the client.
+    return raw.split(',')[0].trim();
   }
-  return Math.max(0, RATE_LIMIT - requestLog.length);
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+function pruneIpLog(ip: string, now: number): number[] {
+  const log = ipLog.get(ip);
+  if (!log) return [];
+  const fresh = log.filter((t) => t >= now - RATE_WINDOW_MS);
+  if (fresh.length === 0) {
+    ipLog.delete(ip);
+  } else {
+    ipLog.set(ip, fresh);
+  }
+  return fresh;
+}
+
+function isIpRateLimited(ip: string, now: number): boolean {
+  return pruneIpLog(ip, now).length >= PER_IP_LIMIT;
+}
+
+function recordSuccess(ip: string, now: number): void {
+  globalLog.push(now);
+  const fresh = pruneIpLog(ip, now);
+  fresh.push(now);
+  ipLog.set(ip, fresh);
+
+  // Opportunistic sweep: drop stale IP buckets if the map grows too large.
+  if (ipLog.size > IP_MAP_SWEEP_THRESHOLD) {
+    for (const [key, ts] of ipLog) {
+      if (ts.length === 0 || ts[ts.length - 1] < now - RATE_WINDOW_MS) {
+        ipLog.delete(key);
+      }
+    }
+  }
+}
+
+// Requests must originate from one of our own pages. This blocks naive
+// curl/script abuse that omits or spoofs a mismatched Origin/Referer. It is
+// not tamper-proof (headers can be forged) but raises the bar.
+const ALLOWED_ORIGINS = [
+  'https://aipm-insider.com',
+  'https://aipm-insider.vercel.app',
+];
+
+function isAllowedSource(req: VercelRequest): boolean {
+  const origin = req.headers.origin;
+  if (typeof origin === 'string' && origin.length > 0) {
+    return ALLOWED_ORIGINS.includes(origin);
+  }
+  // Some browsers omit Origin on same-origin POST; fall back to Referer.
+  const referer = req.headers.referer;
+  if (typeof referer === 'string' && referer.length > 0) {
+    return ALLOWED_ORIGINS.some((allowed) => referer.startsWith(allowed + '/'));
+  }
+  return false;
 }
 
 const SCENE_LABELS: Record<string, string> = {
@@ -44,9 +128,8 @@ Prompt 必須包含：
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
-  const allowedOrigins = ['https://aipm-insider.com', 'https://aipm-insider.vercel.app'];
   const origin = req.headers.origin || '';
-  if (allowedOrigins.includes(origin)) {
+  if (ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -60,10 +143,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Rate limiting
-  if (isRateLimited()) {
+  // Reject requests that don't come from one of our own pages.
+  if (!isAllowedSource(req)) {
+    return res.status(403).json({ error: '請求來源不被允許' });
+  }
+
+  const now = Date.now();
+
+  // Per-IP limit first (targets single-client abuse), then global breaker.
+  const ip = getClientIp(req);
+  if (isIpRateLimited(ip, now)) {
     return res.status(429).json({
-      error: '已達到每小時請求上限（50 次），請稍後再試。',
+      error: '請求過於頻繁，請稍後再試。',
+      remaining: 0,
+    });
+  }
+
+  if (isGlobalRateLimited(now)) {
+    return res.status(429).json({
+      error: '目前使用量較高，請稍後再試。',
       remaining: 0,
     });
   }
@@ -78,8 +176,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: '請提供具體情境描述' });
   }
 
-  if (context.length > 5000) {
-    return res.status(400).json({ error: '情境描述過長，請控制在 5000 字以內' });
+  if (context.length > MAX_CONTEXT_LENGTH) {
+    return res
+      .status(400)
+      .json({ error: `情境描述過長，請控制在 ${MAX_CONTEXT_LENGTH} 字以內` });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -107,7 +207,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           },
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 2048,
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
           },
         }),
       }
@@ -127,12 +227,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(502).json({ error: 'AI 回應格式異常，請稍後再試。' });
     }
 
-    // Record the successful request for rate limiting
-    requestLog.push(Date.now());
+    // Record the successful request for rate limiting (global + per-IP).
+    recordSuccess(ip, now);
 
     return res.status(200).json({
       prompt: text,
-      remaining: getRemainingRequests(),
+      remaining: getRemainingRequests(now),
     });
   } catch (err) {
     console.error('Gemini fetch error:', err);
