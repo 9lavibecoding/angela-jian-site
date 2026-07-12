@@ -155,15 +155,179 @@ const totalLessons = lessons.length;
     </div>
   </section>
 
-  <!-- Pillar Guide: authoritative exam overview for SEO / AI Overviews -->
+  <!-- Course Content -->
+  <section id="lessons" class="relative pb-20 md:pb-28 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10">
+
+      {sortedStages.map(([stageName, stageLessons], stageIdx) => (
+        <div class="mb-10 md:mb-14">
+          <!-- Stage Header -->
+          <div class="flex items-center gap-4 mb-5 md:mb-6">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl gold-gradient flex items-center justify-center shrink-0">
+              <span class="text-white font-heading font-bold text-sm md:text-base">{stageIdx + 1}</span>
+            </div>
+            <div>
+              <h2 class="font-heading font-bold text-lg md:text-2xl text-brand-light-text">{stageName}</h2>
+              <p class="text-xs md:text-sm text-brand-light-subtle font-body">{stageLessons.length} 篇</p>
+            </div>
+          </div>
+
+          <!-- Lesson Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {stageLessons.map((lesson) => (
+              <a href={`/ipas/${lesson.slug}`}
+                 class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:border-brand-accent-dark/30 hover:shadow-md transition-all duration-300 no-underline">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="w-7 h-7 rounded-lg bg-brand-accent-dark/10 flex items-center justify-center text-xs font-heading font-bold text-brand-accent-dark shrink-0">
+                    {String(lesson.order).padStart(2, '0')}
+                  </span>
+                </div>
+                <h3 class="font-heading font-semibold text-sm md:text-base leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors mb-2">
+                  {lesson.title}
+                </h3>
+                <p class="text-xs text-brand-light-subtle leading-relaxed line-clamp-2">
+                  {lesson.summary}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+    </div>
+  </section>
+
+  <!-- How to prepare (internal links / topic cluster) -->
   <section class="relative pb-16 md:pb-20 overflow-hidden bg-white">
     <div class="site-container px-6 relative z-10 max-w-4xl">
+      <div class="p-6 md:p-8 rounded-2xl border border-brand-light-border bg-brand-accent-dark/[0.03]">
+        <h2 class="font-heading font-bold text-xl md:text-3xl text-brand-light-text mb-4">iPAS AI 應用規劃師怎麼準備？</h2>
+        <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mb-5">
+          準備時間依個人基礎而異，建議兩步走：先建立觀念，再用題目驗收熟練度。
+        </p>
+        <ol class="space-y-3 text-sm md:text-base text-brand-light-subtle font-body">
+          <li class="flex gap-3">
+            <span class="w-6 h-6 rounded-lg gold-gradient text-white text-xs font-heading font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+            <span>讀完上方 <a href="#lessons" class="text-brand-accent-dark font-medium underline">{totalLessons} 篇免費白話教學</a>，用生活化比喻與圖解掌握「人工智慧基礎概論」與「生成式 AI 應用與規劃」兩大科目的核心觀念。</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="w-6 h-6 rounded-lg gold-gradient text-white text-xs font-heading font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+            <span>用 <a href="/exam/" class="text-brand-accent-dark font-medium underline">完整衝刺題庫</a>做章節練習與計時模擬考，針對答錯的章節反覆加強，直到穩定達到及格標準。</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visible FAQ (mirrors FAQPage schema above) -->
+  <section class="relative pb-20 md:pb-28 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10 max-w-4xl">
+      <h2 class="font-heading font-bold text-2xl md:text-4xl text-brand-light-text mb-8 md:mb-10">常見問題 FAQ</h2>
+      <div class="divide-y divide-brand-light-border border-t border-b border-brand-light-border">
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師是什麼？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">iPAS AI 應用規劃師是經濟部推動的「產業人才能力鑑定」（iPAS）證照之一，分為初級與中級。初級考試涵蓋 AI 基礎概論與生成式 AI 應用規劃兩大科目，適合想進入 AI 領域的非技術背景人士。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師考什麼？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級考試分兩科：（1）人工智慧基礎概論，涵蓋 AI 定義與分類、AI 治理、資料處理與分析、機器學習、鑑別式與生成式 AI；（2）生成式 AI 應用與規劃，涵蓋 No Code／Low Code、生成式 AI 工具應用、導入評估規劃與風險管理。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>沒有技術背景可以考 iPAS AI 應用規劃師嗎？報名有什麼資格限制？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">官方簡章未設學歷、科系門檻，非技術背景也可報考。初級考的是 AI 概念理解與應用規劃能力，不需要程式基礎；中級的科目2、科目3含程式相關題型，較適合有技術基礎者。本站用生活化比喻與圖解，讓零基礎的人也能理解複雜的技術概念。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師初級及格標準是什麼？考試題型如何？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">每科為電腦化測驗，單選題 50 題、滿分 100 分，初級每科作答 75 分鐘。及格標準：同時報考同級全部科目者，須平均達 70 分且每科不低於 60 分；非同時報考者，每科皆須達 70 分。單科成績達 70 分可自應考日起保留 3 年度。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師報名費用多少？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級原價每科 1,200 元、中級原價每科 1,500 元。115～116 年度享優惠價：初級每科 400 元、中級每科 500 元，117 年起恢復原價。實際費用以官方最新簡章為準。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師一年考幾次？什麼時候考？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">115 年度（2026）初級規劃 4 個梯次：3/21、5/16、8/15、11/7（皆為週六）；中級規劃 2 個梯次：5/23、11/14（週六）。名額為初級每梯次 5,000 人、中級每梯次 3,000 人。各年度日期與名額以官方最新簡章為準。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師證書效期多久？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級證書永久有效、不需換發；中級證書效期 5 年，屆滿前 3 個月可申請換證，需完成 AI 技術訓練滿 48 小時（工作年資每年可折抵 8 小時）。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>iPAS AI 應用規劃師要準備多久？怎麼準備？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">準備時間依個人基礎而異。建議先讀完本站 50 篇免費白話教學文章，建立 AI 基礎概論與生成式 AI 應用兩大科目的觀念，再用完整題庫做章節練習與計時模擬考驗收熟練度，針對答錯章節加強，直到穩定達到及格標準。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>這個課程是免費的嗎？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">是的，50 篇教學文章全部免費閱讀，包含 3 套模擬考題（共 80 題）和考前速查表。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>生成式 AI 和鑑別式 AI 有什麼差別？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">鑑別式 AI 的任務是分類與預測，學習的是 P(Y|X) 條件機率，例如判斷圖片是貓還是狗；生成式 AI 的任務是創造新內容，學習的是資料分布 P(X)，例如 ChatGPT 生成文章、DALL-E 生成圖片。兩者可整合應用，如 GAN 中生成器負責生成、鑑別器負責判斷。</p>
+        </details>
+
+        <details class="group py-4 md:py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
+            <span>什麼是 RAG（檢索增強生成）？</span>
+            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
+          </summary>
+          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">RAG（Retrieval-Augmented Generation）是一種解決 AI 幻覺問題的技術。它先從知識庫中檢索相關文件，再將檢索結果注入 LLM 的 prompt 中生成回答，就像開卷考試而非閉卷考試，大幅降低 AI 胡說八道的機率。</p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillar Guide: authoritative exam overview for SEO / AI Overviews (placed at the very bottom, below course list and FAQ) -->
+  <section id="exam-info" class="relative pb-16 md:pb-20 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10 max-w-4xl">
+
+      <h2 class="font-heading font-bold text-2xl md:text-4xl text-brand-light-text mb-8 md:mb-10">iPAS AI 應用規劃師 考試資訊</h2>
 
       <!-- Definition -->
       <div class="mb-12 md:mb-16">
         <h2 class="font-heading font-bold text-xl md:text-3xl text-brand-light-text mb-4">iPAS AI 應用規劃師是什麼？</h2>
         <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed">
-          iPAS AI 應用規劃師是經濟部推動的「產業人才能力鑑定」（iPAS）證照之一，目前開放<strong class="text-brand-light-text font-semibold">初級</strong>與<strong class="text-brand-light-text font-semibold">中級</strong>兩個級別（高級 Lv3 官方僅列於規劃，尚未開放報名）。它為想投入 AI 應用領域的人，提供一張可驗證的能力證明——初級著重 AI 概念理解與應用規劃，中級則進一步涵蓋大數據處理或機器學習等技術題型。
+          iPAS AI 應用規劃師是經濟部推動的「產業人才能力鑑定」（iPAS）證照之一，目前開放<strong class="text-brand-light-text font-semibold">初級</strong>與<strong class="text-brand-light-text font-semibold">中級</strong>兩個級別（高級 Lv3 官方僅列於規劃，尚未開放報名）。它為想投入 AI 應用領域的人，提供一張可驗證的能力證明，初級著重 AI 概念理解與應用規劃，中級則進一步涵蓋大數據處理或機器學習等技術題型。
         </p>
       </div>
 
@@ -277,171 +441,13 @@ const totalLessons = lessons.length;
       </div>
 
       <!-- Eligibility -->
-      <div class="mb-12 md:mb-16">
+      <div class="mb-4">
         <h2 class="font-heading font-bold text-xl md:text-3xl text-brand-light-text mb-4">報名資格與級別規劃</h2>
         <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed">
           iPAS AI 應用規劃師的官方簡章<strong class="text-brand-light-text font-semibold">未設學歷、科系門檻</strong>，不限背景皆可報考。想跨入 AI 領域的非技術人士，可先從初級著手；有技術基礎、需要進一步證明數據分析或機器學習能力者，再挑戰中級。高級（Lv3）目前<strong class="text-brand-light-text font-semibold">仍在官方規劃中，尚未開放報名</strong>。
         </p>
       </div>
 
-      <!-- How to prepare (internal links / topic cluster) -->
-      <div class="mb-4 p-6 md:p-8 rounded-2xl border border-brand-light-border bg-brand-accent-dark/[0.03]">
-        <h2 class="font-heading font-bold text-xl md:text-3xl text-brand-light-text mb-4">iPAS AI 應用規劃師怎麼準備？</h2>
-        <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mb-5">
-          準備時間依個人基礎而異，建議兩步走：先建立觀念，再用題目驗收熟練度。
-        </p>
-        <ol class="space-y-3 text-sm md:text-base text-brand-light-subtle font-body">
-          <li class="flex gap-3">
-            <span class="w-6 h-6 rounded-lg gold-gradient text-white text-xs font-heading font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-            <span>讀完下方 <a href="#lessons" class="text-brand-accent-dark font-medium underline">{totalLessons} 篇免費白話教學</a>，用生活化比喻與圖解掌握「人工智慧基礎概論」與「生成式 AI 應用與規劃」兩大科目的核心觀念。</span>
-          </li>
-          <li class="flex gap-3">
-            <span class="w-6 h-6 rounded-lg gold-gradient text-white text-xs font-heading font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-            <span>用 <a href="/exam/" class="text-brand-accent-dark font-medium underline">完整衝刺題庫</a>做章節練習與計時模擬考，針對答錯的章節反覆加強，直到穩定達到及格標準。</span>
-          </li>
-        </ol>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Course Content -->
-  <section id="lessons" class="relative pb-20 md:pb-28 overflow-hidden bg-white">
-    <div class="site-container px-6 relative z-10">
-
-      {sortedStages.map(([stageName, stageLessons], stageIdx) => (
-        <div class="mb-10 md:mb-14">
-          <!-- Stage Header -->
-          <div class="flex items-center gap-4 mb-5 md:mb-6">
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl gold-gradient flex items-center justify-center shrink-0">
-              <span class="text-white font-heading font-bold text-sm md:text-base">{stageIdx + 1}</span>
-            </div>
-            <div>
-              <h2 class="font-heading font-bold text-lg md:text-2xl text-brand-light-text">{stageName}</h2>
-              <p class="text-xs md:text-sm text-brand-light-subtle font-body">{stageLessons.length} 篇</p>
-            </div>
-          </div>
-
-          <!-- Lesson Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {stageLessons.map((lesson) => (
-              <a href={`/ipas/${lesson.slug}`}
-                 class="group block p-5 md:p-6 bg-white border border-brand-light-border rounded-xl hover:border-brand-accent-dark/30 hover:shadow-md transition-all duration-300 no-underline">
-                <div class="flex items-center gap-3 mb-3">
-                  <span class="w-7 h-7 rounded-lg bg-brand-accent-dark/10 flex items-center justify-center text-xs font-heading font-bold text-brand-accent-dark shrink-0">
-                    {String(lesson.order).padStart(2, '0')}
-                  </span>
-                </div>
-                <h3 class="font-heading font-semibold text-sm md:text-base leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors mb-2">
-                  {lesson.title}
-                </h3>
-                <p class="text-xs text-brand-light-subtle leading-relaxed line-clamp-2">
-                  {lesson.summary}
-                </p>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-
-    </div>
-  </section>
-
-  <!-- Visible FAQ (mirrors FAQPage schema above) -->
-  <section class="relative pb-20 md:pb-28 overflow-hidden bg-white">
-    <div class="site-container px-6 relative z-10 max-w-4xl">
-      <h2 class="font-heading font-bold text-2xl md:text-4xl text-brand-light-text mb-8 md:mb-10">常見問題 FAQ</h2>
-      <div class="divide-y divide-brand-light-border border-t border-b border-brand-light-border">
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師是什麼？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">iPAS AI 應用規劃師是經濟部推動的「產業人才能力鑑定」（iPAS）證照之一，分為初級與中級。初級考試涵蓋 AI 基礎概論與生成式 AI 應用規劃兩大科目，適合想進入 AI 領域的非技術背景人士。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師考什麼？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級考試分兩科：（1）人工智慧基礎概論，涵蓋 AI 定義與分類、AI 治理、資料處理與分析、機器學習、鑑別式與生成式 AI；（2）生成式 AI 應用與規劃，涵蓋 No Code／Low Code、生成式 AI 工具應用、導入評估規劃與風險管理。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>沒有技術背景可以考 iPAS AI 應用規劃師嗎？報名有什麼資格限制？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">官方簡章未設學歷、科系門檻，非技術背景也可報考。初級考的是 AI 概念理解與應用規劃能力，不需要程式基礎；中級的科目2、科目3含程式相關題型，較適合有技術基礎者。本站用生活化比喻與圖解，讓零基礎的人也能理解複雜的技術概念。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師初級及格標準是什麼？考試題型如何？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">每科為電腦化測驗，單選題 50 題、滿分 100 分，初級每科作答 75 分鐘。及格標準：同時報考同級全部科目者，須平均達 70 分且每科不低於 60 分；非同時報考者，每科皆須達 70 分。單科成績達 70 分可自應考日起保留 3 年度。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師報名費用多少？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級原價每科 1,200 元、中級原價每科 1,500 元。115～116 年度享優惠價：初級每科 400 元、中級每科 500 元，117 年起恢復原價。實際費用以官方最新簡章為準。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師一年考幾次？什麼時候考？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">115 年度（2026）初級規劃 4 個梯次：3/21、5/16、8/15、11/7（皆為週六）；中級規劃 2 個梯次：5/23、11/14（週六）。名額為初級每梯次 5,000 人、中級每梯次 3,000 人。各年度日期與名額以官方最新簡章為準。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師證書效期多久？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">初級證書永久有效、不需換發；中級證書效期 5 年，屆滿前 3 個月可申請換證，需完成 AI 技術訓練滿 48 小時（工作年資每年可折抵 8 小時）。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>iPAS AI 應用規劃師要準備多久？怎麼準備？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">準備時間依個人基礎而異。建議先讀完本站 50 篇免費白話教學文章，建立 AI 基礎概論與生成式 AI 應用兩大科目的觀念，再用完整題庫做章節練習與計時模擬考驗收熟練度，針對答錯章節加強，直到穩定達到及格標準。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>這個課程是免費的嗎？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">是的，50 篇教學文章全部免費閱讀，包含 3 套模擬考題（共 80 題）和考前速查表。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>生成式 AI 和鑑別式 AI 有什麼差別？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">鑑別式 AI 的任務是分類與預測，學習的是 P(Y|X) 條件機率，例如判斷圖片是貓還是狗；生成式 AI 的任務是創造新內容，學習的是資料分布 P(X)，例如 ChatGPT 生成文章、DALL-E 生成圖片。兩者可整合應用，如 GAN 中生成器負責生成、鑑別器負責判斷。</p>
-        </details>
-
-        <details class="group py-4 md:py-5">
-          <summary class="flex items-center justify-between cursor-pointer list-none font-heading font-semibold text-base md:text-lg text-brand-light-text">
-            <span>什麼是 RAG（檢索增強生成）？</span>
-            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-brand-accent-dark text-xl shrink-0 ml-4 transition-transform group-open:rotate-180"></iconify-icon>
-          </summary>
-          <p class="text-sm md:text-base text-brand-light-subtle font-body leading-relaxed mt-3">RAG（Retrieval-Augmented Generation）是一種解決 AI 幻覺問題的技術。它先從知識庫中檢索相關文件，再將檢索結果注入 LLM 的 prompt 中生成回答，就像開卷考試而非閉卷考試，大幅降低 AI 胡說八道的機率。</p>
-        </details>
-
-      </div>
     </div>
   </section>
 
