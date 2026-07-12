@@ -27,3 +27,9 @@ public/images/notion/
 .idea/
 .vercel
 .gstack/
+
+# social card generated output
+social-cards/output/
+
+# local article drafts (uploaded to Notion via script)
+drafts/
