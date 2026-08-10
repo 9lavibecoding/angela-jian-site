@@ -21,6 +21,13 @@ function generateCheckMacValue(params: Record<string, string>, hashKey: string, 
   return crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
 }
 
+// 一對一諮詢商品白名單。金額為暫定佔位數字，正式定價後在這裡改。
+const CONSULTING_PRODUCTS: Record<string, { amount: string; itemName: string; tradeDesc: string; prefix: string }> = {
+  consult_training: { amount: '3000', itemName: '企業內訓／顧問諮詢', tradeDesc: 'AI PM Insider Consulting - Training', prefix: 'CTRN' },
+  consult_resume: { amount: '1500', itemName: '履歷／作品集健檢', tradeDesc: 'AI PM Insider Consulting - Resume', prefix: 'CRES' },
+  consult_career: { amount: '2000', itemName: '職涯諮詢／轉職陪跑', tradeDesc: 'AI PM Insider Consulting - Career', prefix: 'CCAR' },
+};
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const allowedOrigins = ['https://aipm-insider.com', 'https://aipm-insider.vercel.app'];
   const origin = req.headers.origin || '';
@@ -42,20 +49,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: '伺服器設定錯誤' });
   }
 
+  const productKey = (req.body && req.body.product) || 'exam';
+  const consultingProduct = productKey !== 'exam' ? CONSULTING_PRODUCTS[productKey] : undefined;
+  if (productKey !== 'exam' && !consultingProduct) {
+    return res.status(400).json({ error: '不明的商品代碼' });
+  }
+
   const baseUrl = req.headers.origin || 'https://aipm-insider.com';
   const now = new Date();
   const pad = (n: number) => n.toString().padStart(2, '0');
   const tradeDate = `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  const tradeNo = `IPAS${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+  const tradePrefix = consultingProduct ? consultingProduct.prefix : 'IPAS';
+  const tradeNo = `${tradePrefix}${Date.now().toString(36).toUpperCase()}${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
   const params: Record<string, string> = {
     MerchantID: merchantId,
     MerchantTradeNo: tradeNo,
     MerchantTradeDate: tradeDate,
     PaymentType: 'aio',
-    TotalAmount: '199',
-    TradeDesc: 'iPAS AI Exam Bank',
-    ItemName: 'iPAS AI 題庫 1000題完整版',
+    TotalAmount: consultingProduct ? consultingProduct.amount : '199',
+    TradeDesc: consultingProduct ? consultingProduct.tradeDesc : 'iPAS AI Exam Bank',
+    ItemName: consultingProduct ? consultingProduct.itemName : 'iPAS AI 題庫 1000題完整版',
     ReturnURL: `${baseUrl}/api/ecpay-notify`,
     OrderResultURL: `${baseUrl}/api/ecpay-return?trade_no=${tradeNo}`,
     ChoosePayment: 'ALL',

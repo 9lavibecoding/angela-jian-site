@@ -42,6 +42,25 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
         </div>
       </div>
 
+      <!-- Search box -->
+      <div class="relative mb-4 md:mb-5 max-w-xl">
+        <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-brand-light-subtle pointer-events-none"></iconify-icon>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="搜尋文章標題或摘要..."
+          class="w-full pl-12 pr-10 py-3 text-sm font-body rounded-full border border-brand-light-border bg-white text-brand-light-text placeholder:text-brand-light-subtle focus:outline-none focus:border-brand-accent-dark transition-colors"
+        />
+        <button
+          id="searchClear"
+          type="button"
+          aria-label="清除搜尋"
+          class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-brand-light-subtle hover:text-brand-light-text transition-colors p-1"
+        >
+          <iconify-icon icon="solar:close-circle-bold" class="text-xl"></iconify-icon>
+        </button>
+      </div>
+
       <!-- Tag filter buttons -->
       <div class="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10" id="tagFilters">
         <button
@@ -61,7 +80,8 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
         {articles.map((article) => (
           <a href={`/articles/${article.slug}`}
              class="article-item group block py-5 md:py-7 first:pt-0 hover:pl-2 transition-all duration-300"
-             data-article-tags={article.tags.join(',')}>
+             data-article-tags={article.tags.join(',')}
+             data-article-search={`${article.title} ${article.summary || ''}`.toLowerCase()}>
             <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8">
 
               {/* Thumbnail — Notion image or fallback icon */}
@@ -126,37 +146,59 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
     const buttons = document.querySelectorAll<HTMLButtonElement>('#tagFilters .tag-btn');
     const items = document.querySelectorAll<HTMLElement>('#articleList .article-item');
     const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement | null;
+    const searchClear = document.getElementById('searchClear');
+
+    let activeTag = 'all';
+    let searchTerm = '';
+
+    function applyFilters() {
+      let visibleCount = 0;
+      items.forEach(item => {
+        const itemTags = (item.dataset.articleTags || '').split(',');
+        const searchText = item.dataset.articleSearch || '';
+        const tagMatch = activeTag === 'all' || itemTags.includes(activeTag);
+        const searchMatch = !searchTerm || searchText.includes(searchTerm);
+        if (tagMatch && searchMatch) {
+          item.style.display = '';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
+    }
 
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const tag = btn.dataset.tag;
-
-        // Update active button styles
+        activeTag = btn.dataset.tag || 'all';
         buttons.forEach(b => {
           b.classList.remove('active-tag');
           b.classList.add('border-brand-light-border', 'text-brand-light-subtle');
         });
         btn.classList.add('active-tag');
         btn.classList.remove('border-brand-light-border', 'text-brand-light-subtle');
-
-        // Filter items
-        let visibleCount = 0;
-        items.forEach(item => {
-          const itemTags = (item.dataset.articleTags || '').split(',');
-          if (tag === 'all' || itemTags.includes(tag!)) {
-            item.style.display = '';
-            visibleCount++;
-          } else {
-            item.style.display = 'none';
-          }
-        });
-
-        // Show/hide empty state
-        if (emptyState) {
-          emptyState.classList.toggle('hidden', visibleCount > 0);
-        }
+        applyFilters();
       });
     });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchTerm = searchInput.value.trim().toLowerCase();
+        if (searchClear) searchClear.classList.toggle('hidden', searchTerm.length === 0);
+        applyFilters();
+      });
+    }
+
+    if (searchClear && searchInput) {
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchTerm = '';
+        searchClear.classList.add('hidden');
+        applyFilters();
+        searchInput.focus();
+      });
+    }
   });
 
 </script>

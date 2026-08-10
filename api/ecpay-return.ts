@@ -16,6 +16,14 @@ function generateToken(tradeNo: string, secret: string): string {
   return crypto.createHmac('sha256', secret).update(tradeNo).digest('hex').substring(0, 32);
 }
 
+// 一對一諮詢商品：依 MerchantTradeNo 前綴判斷是哪個服務。
+// schedulingUrl 目前是佔位值，Cal.com 連結到位後在這裡替換。
+const CONSULTING_INFO: Record<string, { label: string; schedulingUrl: string }> = {
+  CTRN: { label: '企業內訓／顧問諮詢', schedulingUrl: '#' },
+  CRES: { label: '履歷／作品集健檢', schedulingUrl: '#' },
+  CCAR: { label: '職涯諮詢／轉職陪跑', schedulingUrl: '#' },
+};
+
 // 綠界 OrderResultURL 接收端
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const hashKey = process.env.ECPAY_HASH_KEY || '';
@@ -42,16 +50,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const token = verified ? generateToken(tradeNo, hashKey) : '';
   const appUrl = `/exam/app?trade_no=${tradeNo}` + (token ? `&token=${token}` : '');
+  const consultingInfo = CONSULTING_INFO[tradeNo.substring(0, 4)];
 
   // 付款成功：顯示訂單編號提醒頁，然後自動跳轉
   // 付款失敗：直接跳回銷售頁
   if (!verified) {
+    const failRedirect = consultingInfo ? '/consulting' : '/exam/';
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(200).send(`<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>付款未完成</title></head>
 <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#FAF6EF;">
 <p>付款未完成，正在跳轉...</p>
-<script>window.location.replace("/exam/");</script>
+<script>window.location.replace("${failRedirect}");</script>
+</body></html>`);
+  }
+
+  if (consultingInfo) {
+    const hasScheduling = consultingInfo.schedulingUrl !== '#';
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.status(200).send(`<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>付款成功</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#FAF6EF;font-family:'Inter','Noto Sans TC',sans-serif;padding:1.5rem}
+.card{background:#fff;border-radius:1.25rem;border:1px solid #E0D5C5;padding:2.5rem;max-width:420px;width:100%;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.icon{font-size:3rem;margin-bottom:1rem}
+h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem}
+.sub{font-size:0.875rem;color:#78716C;margin-bottom:1.5rem;line-height:1.6}
+.btn{display:inline-block;padding:0.875rem 2.5rem;background:linear-gradient(135deg,#D4B86A,#C5A55A,#E8D48B,#C5A55A,#A8893E);color:#fff;font-weight:700;border-radius:999px;text-decoration:none;font-size:0.9rem;transition:opacity 0.2s}
+.btn:hover{opacity:0.9}
+</style></head>
+<body>
+<div class="card">
+  <div class="icon">&#x2705;</div>
+  <h1>付款成功！</h1>
+  <p class="sub">你已完成「${consultingInfo.label}」的付款。</p>
+  <p style="font-size:0.75rem;color:#78716C;margin-bottom:1.5rem;">訂單編號：${tradeNo}</p>
+  ${hasScheduling
+    ? `<p class="sub">接下來請選擇你方便的諮詢時間：</p><a class="btn" href="${consultingInfo.schedulingUrl}" target="_blank" rel="noopener noreferrer">選擇諮詢時間</a>`
+    : `<p class="sub">我們會盡快主動聯繫你，安排諮詢時間。</p><a class="btn" href="/consulting">回到諮詢頁面</a>`}
+</div>
 </body></html>`);
   }
 

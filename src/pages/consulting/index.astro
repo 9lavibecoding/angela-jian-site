@@ -1,0 +1,170 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// 定價確認後改成 true，即可開放線上付款（按鈕會接上 /api/create-order）。
+const PRICING_FINALIZED = false;
+
+const services = [
+  {
+    product: 'consult_training',
+    title: '企業內訓 / 顧問諮詢',
+    desc: '帶你的團隊動手玩 AI，從概念一路走到實際落地。',
+    bullets: [
+      '依團隊現況客製工作坊內容',
+      '涵蓋 AI 產品思維與導入策略',
+      '提供落地後的追蹤建議',
+    ],
+    price: 3000,
+  },
+  {
+    product: 'consult_resume',
+    title: '履歷 / 作品集健檢',
+    desc: '一起檢視你的履歷與作品集，找出最能打動面試官的說法。',
+    bullets: [
+      '逐項檢視履歷內容與呈現方式',
+      '針對 AI PM 職缺調整重點',
+      '給你具體可執行的修改方向',
+    ],
+    price: 1500,
+  },
+  {
+    product: 'consult_career',
+    title: '職涯諮詢 / 轉職陪跑',
+    desc: '從你的現況出發，一起規劃轉職 AI PM 的具體路徑。',
+    bullets: [
+      '盤點你現有的經驗與優勢',
+      '討論適合你的轉職節奏與準備方向',
+      '陪你走過面試準備的每一步',
+    ],
+    price: 2000,
+  },
+];
+---
+
+<Base title="與我聊聊 — 一對一諮詢 | AI PM INSIDER" description="企業內訓與顧問諮詢、履歷作品集健檢、職涯諮詢與轉職陪跑，找 Angela Jian 一對一聊聊，把問題想清楚。">
+
+<main class="pt-28 pb-20 min-h-screen bg-white">
+  <div class="site-container px-6">
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Hero -->
+      <div class="text-center mb-14">
+        <div class="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden mx-auto mb-6 shadow-lg">
+          <img src="/angela-photo.jpg" alt="Angela Jian" class="w-full h-full object-cover">
+        </div>
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 text-brand-accent-dark text-sm font-body font-semibold mb-6">
+          <iconify-icon icon="solar:chat-round-dots-bold"></iconify-icon>
+          一對一諮詢
+        </div>
+        <h1 class="font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-text mb-5 leading-tight">
+          與我聊聊，<br class="hidden md:block">
+          <span class="gold-text">一起把問題想清楚</span>
+        </h1>
+        <p class="font-body text-brand-subtle text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+          無論你是想把 AI 帶進團隊、想確認履歷方向對不對，還是正在思考要不要轉職 AI PM，我都很樂意陪你一起釐清下一步。
+        </p>
+      </div>
+
+      <!-- Services -->
+      <div class="grid md:grid-cols-3 gap-5 mb-14">
+        {services.map((service) => (
+          <div class="flex flex-col bg-white border border-brand-light-border rounded-2xl p-6 md:p-7">
+            <h2 class="font-heading font-bold text-lg text-brand-text mb-1">{service.title}</h2>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="font-heading font-black text-xl text-brand-accent-dark">NT${service.price.toLocaleString()}</span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-50 text-brand-accent-dark text-[10px] font-body font-semibold">暫定價格</span>
+            </div>
+            <p class="font-body text-sm text-brand-subtle leading-relaxed mb-4">{service.desc}</p>
+            <ul class="space-y-2 font-body text-sm text-brand-subtle mb-6 flex-1">
+              {service.bullets.map((b) => (
+                <li class="flex items-start gap-2">
+                  <iconify-icon icon="solar:check-circle-bold" class="text-brand-accent text-base mt-0.5 shrink-0"></iconify-icon>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            {PRICING_FINALIZED ? (
+              <button
+                class="buy-btn mag-btn w-full px-6 py-3 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide hover:opacity-90 transition-opacity"
+                data-product={service.product}
+              >
+                <span>立即預約</span>
+              </button>
+            ) : (
+              <span
+                class="mag-btn w-full px-6 py-3 bg-brand-light-border text-brand-subtle font-heading font-semibold rounded-full text-sm tracking-wide text-center opacity-70"
+                title="價格確認中，尚未開放線上預約"
+              >
+                <span>即將開放預約</span>
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <!-- Note -->
+      <div class="text-center rounded-2xl bg-[#F9FAFB] border border-gray-100 p-8 md:p-10">
+        <p class="font-body text-sm text-brand-subtle leading-relaxed mb-2">
+          以上為暫定報價，正式定案後即開放線上預約付款。
+        </p>
+        <p class="font-body text-sm text-brand-subtle leading-relaxed">
+          想先簡單聊聊？也歡迎來信
+          <a href="mailto:aipm.insider@gmail.com" class="text-brand-accent hover:underline">aipm.insider@gmail.com</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+{PRICING_FINALIZED && (
+  <script is:inline>
+  (function() {
+    function handleBuy() {
+      var btn = this;
+      var product = btn.dataset.product;
+      btn.disabled = true;
+      btn.innerHTML = '<span>導向付款頁面...</span>';
+
+      fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product: product }),
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.params && data.actionUrl) {
+          var form = document.createElement('form');
+          form.method = 'POST';
+          form.action = data.actionUrl;
+          form.style.display = 'none';
+          Object.keys(data.params).forEach(function(key) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = data.params[key];
+            form.appendChild(input);
+          });
+          document.body.appendChild(form);
+          form.submit();
+        } else {
+          alert(data.error || '發生錯誤，請稍後再試');
+          btn.disabled = false;
+          btn.innerHTML = '<span>立即預約</span>';
+        }
+      })
+      .catch(function() {
+        alert('網路錯誤，請稍後再試');
+        btn.disabled = false;
+        btn.innerHTML = '<span>立即預約</span>';
+      });
+    }
+
+    document.querySelectorAll('.buy-btn').forEach(function(btn) {
+      btn.addEventListener('click', handleBuy);
+    });
+  })();
+  </script>
+)}
+
+</Base>

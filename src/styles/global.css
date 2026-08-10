@@ -199,3 +199,17 @@
   * { cursor: auto !important; }
   .article-content-light table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; table-layout: auto; }
 }
+
+/* 全站防複製：停用反白選取，但保留表單欄位可選取/輸入 */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+input, textarea, select, [contenteditable="true"], [contenteditable=""] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}

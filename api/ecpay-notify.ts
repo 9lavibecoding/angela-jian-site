@@ -28,6 +28,13 @@ function generateCheckMacValue(params: Record<string, string>, hashKey: string, 
   return crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
 }
 
+// 一對一諮詢商品：依 MerchantTradeNo 前綴判斷是哪個服務，供 LINE 通知文字使用。
+const CONSULTING_LABELS: Record<string, string> = {
+  CTRN: '企業內訓／顧問諮詢',
+  CRES: '履歷／作品集健檢',
+  CCAR: '職涯諮詢／轉職陪跑',
+};
+
 // 綠界 server-to-server 付款結果通知
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).send('Method not allowed');
@@ -59,17 +66,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // LINE 推播通知管理者
     const adminUserId = process.env.ADMIN_LINE_USER_ID;
+    const consultingLabel = CONSULTING_LABELS[String(body.MerchantTradeNo || '').substring(0, 4)];
     if (adminUserId) {
       try {
-        const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_SECRET_KEY;
-        let totalLine = '';
-        if (supabaseUrl && supabaseKey) {
-          const sb = createClient(supabaseUrl, supabaseKey);
-          const { count } = await sb.from('purchases').select('*', { count: 'exact', head: true });
-          totalLine = `\n累計第 ${(count ?? 0) + 1} 位購買者`;
+        if (consultingLabel) {
+          await linePush(adminUserId, `🎉 新的諮詢預約付款！\n服務：${consultingLabel}\n訂單 ${body.MerchantTradeNo}`);
+        } else {
+          const supabaseUrl = process.env.SUPABASE_URL;
+          const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+          let totalLine = '';
+          if (supabaseUrl && supabaseKey) {
+            const sb = createClient(supabaseUrl, supabaseKey);
+            const { count } = await sb.from('purchases').select('*', { count: 'exact', head: true });
+            totalLine = `\n累計第 ${(count ?? 0) + 1} 位購買者`;
+          }
+          await linePush(adminUserId, `🎉 新購買！\n訂單 ${body.MerchantTradeNo}${totalLine}`);
         }
-        await linePush(adminUserId, `🎉 新購買！\n訂單 ${body.MerchantTradeNo}${totalLine}`);
       } catch (e) {
         console.error('LINE push notification error:', e);
       }
