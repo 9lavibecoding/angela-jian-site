@@ -54,6 +54,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // 未設定時仍允許執行，避免保活因缺少設定而靜默失效。
   const cronSecret = process.env.CRON_SECRET;
   if (cronSecret && req.headers.authorization !== `Bearer ${cronSecret}`) {
+    // Vercel 會在排程請求上帶 x-vercel-cron 標頭。有這個標頭卻驗不過，代表 CRON_SECRET
+    // 設定有誤、保活其實沒在跑，屬於必須通知的靜默失效；沒有這個標頭則只是外部呼叫，
+    // 安靜擋掉即可，避免有人反覆打這支端點就把通知灌爆。
+    if (req.headers['x-vercel-cron']) {
+      console.error('keepalive: 排程請求金鑰驗證失敗，保活未執行');
+      await notifyFailure(
+        '排程請求的 CRON_SECRET 驗證失敗，保活未實際執行。' +
+          '請確認 Vercel 的 CRON_SECRET 環境變數設定正確並重新部署。'
+      );
+      return res.status(401).json({ ok: false, error: 'Cron secret mismatch' });
+    }
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
