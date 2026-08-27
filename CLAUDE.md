@@ -63,6 +63,25 @@ npm run preview  # 預覽建置結果
 - Row Level Security（RLS）政策直接影響使用者的購買權限與題庫存取
 - 修改資料庫結構或 RLS 規則前，確認不影響已購買用戶
 
+### Supabase 免費方案會自動暫停（2026-08-27 實際發生過）
+
+免費方案的專案若**一週內資料庫活動不足就會被自動暫停**。暫停後 API 主機名會直接從 DNS
+消失（`DNS_PROBE_FINISHED_NXDOMAIN`），Google 登入與題庫權限會全部失效。這不是程式的
+bug，改 code 沒有用，只能到 Supabase Dashboard 按 Restore。暫停後一年內都可還原，資料不會遺失。
+
+**已建立的防護（勿刪）：**
+- `vercel.json` 定義 Cron 排程，每天 UTC 02:00（台灣 10:00 前後，免費方案有 ±59 分鐘誤差）
+  呼叫 `api/keepalive.ts`
+- `api/keepalive.ts` 對 `purchases`、`questions` 做真實查詢（單純 ping 網址不算資料庫活動，
+  官方要求的是「每天幾個資料庫請求」），失敗時 LINE 通知管理者
+- 環境變數 `CRON_SECRET` 用於驗證排程來源。**驗證失敗時的處理分兩種**：帶有 `x-vercel-cron`
+  標頭卻驗不過 → 視為設定錯誤並發 LINE 告警（因為代表保活其實沒在跑）；沒有該標頭的外部
+  呼叫 → 安靜回 401，避免通知被灌爆
+- 修改 `CRON_SECRET` 後**必須重新部署**才會生效（環境變數只對新部署生效）
+
+restore 後 PostgREST 的 schema cache 可能延遲數十秒才恢復，期間查詢會回 `PGRST205
+Could not find the table`。這是正常現象，等一下即可，不要急著判斷資料表被刪掉。
+
 ---
 
 ## 資料品質規則（付費內容）
@@ -140,11 +159,20 @@ ECPAY_TEST_MODE=true   # 開發時必須為 true
 # Google Gemini
 GEMINI_API_KEY=
 
+# Vercel Cron（保活用，僅 production 需要）
+CRON_SECRET=
+
 # LINE Bot
 LINE_CHANNEL_SECRET=
 LINE_CHANNEL_ACCESS_TOKEN=
 ADMIN_LINE_USER_ID=
 ```
+
+> 實際狀況（2026-08-27 實查）：本機 `.env` **只有** Notion / Supabase / ECPay / Gemini 的變數，
+> LINE 三個變數與 `CRON_SECRET` 只存在於 Vercel production。要在本機測 LINE 相關功能，用
+> `vercel env pull <路徑> --environment=production` 拉下來，並且**務必拉到專案目錄外**：
+> `.gitignore` 只擋 `.env` 與 `.env.production`，不擋 `.env.local` 之類的檔名，拉錯位置會有
+> 把正式憑證提交進 repo 的風險。用完立刻刪除。
 
 ---
 
@@ -152,6 +180,8 @@ ADMIN_LINE_USER_ID=
 
 ```
 api/                    # Vercel Serverless Functions（付款、LINE Bot、題庫 API）
+  keepalive.ts          # Supabase 每日保活，由 vercel.json 的 Cron 觸發（勿刪）
+vercel.json             # Vercel Cron 排程設定（目前只有保活一條）
 src/
   pages/                # 頁面路由
     index.astro         # 首頁
