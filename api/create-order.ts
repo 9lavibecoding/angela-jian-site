@@ -49,6 +49,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: '伺服器設定錯誤' });
   }
 
+  // 買家 email：用於後續聯繫與補發權限。綠界 CustomField1 上限 50 字。
+  // 刻意設計成「格式不對就略過」而非退回錯誤 —— 收不到 email 是小事，擋住成交是大事。
+  const rawEmail = (req.body && typeof req.body.email === 'string') ? req.body.email.trim() : '';
+  const buyerEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawEmail) && rawEmail.length <= 50 ? rawEmail : '';
+  if (rawEmail && !buyerEmail) {
+    console.warn('create-order: email 格式不符或過長，本筆訂單不帶入買家資訊');
+  }
+
   const productKey = (req.body && req.body.product) || 'exam';
   const consultingProduct = productKey !== 'exam' ? CONSULTING_PRODUCTS[productKey] : undefined;
   if (productKey !== 'exam' && !consultingProduct) {
@@ -76,6 +84,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     EncryptType: '1',
     NeedExtraPaidInfo: 'N',
   };
+
+  // 帶著訂單一路傳到 ecpay-notify，讓成交通知能直接顯示買家 email
+  if (buyerEmail) {
+    params.CustomField1 = buyerEmail;
+  }
 
   params.CheckMacValue = generateCheckMacValue(params, hashKey, hashIV);
 

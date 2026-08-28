@@ -247,9 +247,37 @@ import Base from '../../layouts/Base.astro';
 
     </div>
   </div>
+<!-- 結帳前先收 email：在客人登入前，這是唯一能聯繫到他、必要時補發權限的管道 -->
+<div id="emailModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50 p-4">
+  <div class="bg-white rounded-2xl border border-brand-light-border p-6 md:p-8 max-w-sm w-full">
+    <h3 class="font-heading font-bold text-lg text-brand-text mb-2">留下你的 Email</h3>
+    <p class="font-body text-sm text-brand-subtle mb-5 leading-relaxed">付款完成後會用這個信箱寄送開通連結。萬一登入遇到狀況，也能靠它幫你補發權限。</p>
+    <input id="emailInput" type="email" inputmode="email" autocomplete="email" maxlength="50" placeholder="you@example.com"
+      class="w-full px-4 py-3 rounded-xl border border-brand-light-border bg-white font-body text-sm text-brand-text placeholder:text-brand-subtle/50 focus:outline-none focus:border-brand-accent" />
+    <p id="emailError" class="hidden font-body text-xs text-red-500 mt-2"></p>
+    <button id="emailSubmit" class="mag-btn w-full px-8 py-3 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide hover:opacity-90 transition-opacity mt-4 mb-3">
+      <span>前往付款</span>
+    </button>
+    <button id="emailCancel" class="w-full font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">取消</button>
+  </div>
+</div>
 </main>
 
 <script is:inline>
+// FAQ 摺疊（獨立 IIFE：不受下方購買邏輯的 early return 影響）
+(function() {
+  document.querySelectorAll('.faq-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var content = this.nextElementSibling;
+      var arrow = this.querySelector('.faq-arrow');
+      var isHidden = content.classList.contains('hidden');
+      content.classList.toggle('hidden');
+      arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+  });
+})();
+
+// 購買流程
 (function() {
   // 檢查是否已購買
   var purchased = localStorage.getItem('ipas_exam_purchased');
@@ -264,15 +292,54 @@ import Base from '../../layouts/Base.astro';
     return;
   }
 
-  // 購買按鈕
-  function handleBuy() {
-    var btn = this;
+  // 購買按鈕：先開對話框收 email，再送出訂單
+  var modal = document.getElementById('emailModal');
+  var emailInput = document.getElementById('emailInput');
+  var emailError = document.getElementById('emailError');
+  var pendingBtn = null;
+
+  function showError(msg) {
+    emailError.textContent = msg;
+    emailError.classList.remove('hidden');
+  }
+
+  function openModal() {
+    pendingBtn = this;
+    emailError.classList.add('hidden');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(function() { emailInput.focus(); }, 50);
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    pendingBtn = null;
+  }
+
+  function submitEmail() {
+    var email = emailInput.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('請輸入正確的 Email 格式');
+      return;
+    }
+    if (email.length > 50) {
+      showError('Email 長度請控制在 50 字以內');
+      return;
+    }
+    closeModal();
+    startCheckout(email);
+  }
+
+  function startCheckout(email) {
+    var btn = pendingBtn || document.getElementById('buyBtn');
     btn.disabled = true;
     btn.innerHTML = '<span>導向付款頁面...</span>';
 
     fetch('/api/create-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email }),
     })
     .then(function(res) { return res.json(); })
     .then(function(data) {
@@ -303,19 +370,17 @@ import Base from '../../layouts/Base.astro';
     });
   }
 
-  document.getElementById('buyBtn').addEventListener('click', handleBuy);
-  document.getElementById('buyBtn2').addEventListener('click', handleBuy);
-
-  // FAQ 摺疊
-  document.querySelectorAll('.faq-toggle').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var content = this.nextElementSibling;
-      var arrow = this.querySelector('.faq-arrow');
-      var isHidden = content.classList.contains('hidden');
-      content.classList.toggle('hidden');
-      arrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-    });
+  document.getElementById('emailSubmit').addEventListener('click', submitEmail);
+  document.getElementById('emailCancel').addEventListener('click', closeModal);
+  emailInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); submitEmail(); }
   });
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) closeModal();
+  });
+
+  document.getElementById('buyBtn').addEventListener('click', openModal);
+  document.getElementById('buyBtn2').addEventListener('click', openModal);
 })();
 </script>
 

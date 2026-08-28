@@ -531,8 +531,10 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   });
 
   // 載入題目從 API
+  var lastLoadExpired = false;
   async function loadQuestions() {
     if (!currentSession) return false;
+    lastLoadExpired = false;
     gateMsg.textContent = '載入題目中...';
     try {
       var res = await fetch('/api/get-questions', {
@@ -545,6 +547,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       });
       var data = await res.json();
       if (data.expired) {
+        lastLoadExpired = true;
         showExpired();
         return false;
       }
@@ -573,11 +576,32 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + currentSession.access_token
         },
-        body: JSON.stringify({ trade_no: tradeNo })
+        body: JSON.stringify({ trade_no: tradeNo, token: token })
       });
       window.history.replaceState({}, '', '/exam/app');
     } catch (e) {
       console.error('Save purchase error:', e);
+    }
+  }
+
+  // 付款後沒完成登入的補救：用登入的 email 比對已付款但未開通的訂單。
+  // 客人關掉分頁、換裝置、或付款當下登入失敗時，靠這步拿回權限。
+  async function claimByEmailIfNeeded() {
+    if (!currentSession) return false;
+    gateMsg.textContent = '確認付款紀錄中...';
+    try {
+      var res = await fetch('/api/claim-purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token
+        }
+      });
+      var data = await res.json();
+      return !!data.ok;
+    } catch (e) {
+      console.error('Claim purchase error:', e);
+      return false;
     }
   }
 
@@ -602,10 +626,17 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
     // 嘗試載入題目（API 會檢查購買紀錄）
     var loaded = await loadQuestions();
+
+    // 已到期是另一回事（showExpired 已顯示），不要再走認領流程蓋掉畫面
+    if (!loaded && !lastLoadExpired) {
+      var claimed = await claimByEmailIfNeeded();
+      if (claimed) loaded = await loadQuestions();
+    }
+
     if (loaded) {
       localStorage.setItem(PURCHASE_KEY, 'true');
       showApp();
-    } else {
+    } else if (!lastLoadExpired) {
       showNoPurchase();
     }
   }
