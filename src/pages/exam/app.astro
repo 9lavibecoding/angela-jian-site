@@ -39,6 +39,19 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           </button>
           <p class="font-body text-[11px] text-brand-subtle">綠界安全付款（信用卡 / ATM / 超商）</p>
         </div>
+
+        <!-- ATM／超商付款完成後不會把客人導回網站，必須提供一條自助開通的路徑 -->
+        <div class="bg-white rounded-2xl border border-brand-light-border p-5 mb-4">
+          <p class="font-heading font-semibold text-sm text-brand-text mb-1">已完成 ATM / 超商付款？</p>
+          <p class="font-body text-xs text-brand-subtle mb-3 leading-relaxed">輸入付款時取得的訂單編號，即可立即開通。</p>
+          <input id="claimTradeNo" type="text" placeholder="例如 IPASMTCM6VHOY8R3"
+            class="w-full px-3 py-2.5 rounded-lg border border-brand-light-border font-body text-sm text-brand-text placeholder:text-brand-subtle/40 focus:outline-none focus:border-brand-accent mb-2" />
+          <p id="claimMsg" class="hidden font-body text-xs mb-2"></p>
+          <button id="claimBtn" class="w-full py-2.5 rounded-lg border border-brand-accent text-brand-accent font-heading font-semibold text-sm hover:bg-brand-accent hover:text-white transition-colors">
+            開通題庫
+          </button>
+        </div>
+
         <div class="flex items-center justify-center gap-3">
           <a href="/exam/" class="font-body text-xs text-brand-subtle hover:text-brand-accent transition-colors underline">返回上一頁</a>
           <span class="text-brand-subtle/30">|</span>
@@ -581,6 +594,55 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       return false;
     }
   }
+
+  // ATM／超商自助開通：付款完成後綠界不會把客人導回網站，所以無法靠 token 開通。
+  // save-purchase 在沒有 token 時會直接向綠界查證這筆訂單是否真的付款成功，
+  // 因此這裡只送訂單編號即可，偽造的編號查不到付款紀錄會被擋下。
+  document.getElementById('claimBtn').addEventListener('click', async function() {
+    var btn = this;
+    var input = document.getElementById('claimTradeNo');
+    var msg = document.getElementById('claimMsg');
+    var tradeNo = (input.value || '').trim().toUpperCase();
+
+    function say(text, ok) {
+      msg.textContent = text;
+      msg.className = 'font-body text-xs mb-2 ' + (ok ? 'text-green-600' : 'text-red-500');
+    }
+
+    if (!tradeNo) { say('請輸入訂單編號', false); return; }
+    if (!currentSession) { say('請先登入後再開通', false); return; }
+
+    btn.disabled = true;
+    btn.textContent = '確認付款中...';
+    try {
+      var res = await fetch('/api/save-purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentSession.access_token
+        },
+        body: JSON.stringify({ trade_no: tradeNo })
+      });
+      var data = await res.json();
+      if (data && data.ok) {
+        say('開通成功，載入題庫中...', true);
+        var loaded = await loadQuestions();
+        if (loaded) {
+          localStorage.setItem(PURCHASE_KEY, 'true');
+          showApp();
+          return;
+        }
+        say('開通成功，請重新整理頁面', true);
+      } else {
+        say(data.error || '開通失敗，請確認訂單編號是否正確', false);
+      }
+    } catch (e) {
+      console.error('Claim by trade_no error:', e);
+      say('網路錯誤，請稍後再試', false);
+    }
+    btn.disabled = false;
+    btn.textContent = '開通題庫';
+  });
 
   // 付款回來後儲存購買紀錄
   async function savePurchaseIfNeeded() {
