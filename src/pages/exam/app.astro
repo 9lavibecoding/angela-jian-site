@@ -423,6 +423,9 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   var LETTERS = ['A','B','C','D'];
   var STORAGE_KEY = 'ipas_exam_data';
   var PURCHASE_KEY = 'ipas_exam_purchased';
+  // Google OAuth 跳轉不會帶回原網址的查詢參數，開通用的 trade_no/token 會在跳轉中遺失，
+  // 因此登入前先存一份在本機，回來後再取用。
+  var PENDING_ORDER_KEY = 'ipas_pending_order';
 
   // ==================== SUPABASE AUTH ====================
   var gateScreen = document.getElementById('gateScreen');
@@ -465,7 +468,24 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   document.getElementById('googleLoginBtn').addEventListener('click', async function() {
     gateMsg.textContent = '正在跳轉到 Google 登入...';
     var sb = getSB();
-    var redirectUrl = window.location.origin + '/exam/app';
+
+    // 第一層：把查詢參數帶進返回網址
+    var redirectUrl = window.location.origin + '/exam/app' + window.location.search;
+
+    // 第二層：另存一份到本機。萬一參數仍在跳轉中遺失，開通照樣成立。
+    try {
+      var cur = new URLSearchParams(window.location.search);
+      var curTrade = cur.get('trade_no');
+      var curToken = cur.get('token');
+      if (curTrade && curToken) {
+        localStorage.setItem(PENDING_ORDER_KEY, JSON.stringify({
+          trade_no: curTrade, token: curToken, at: Date.now()
+        }));
+      }
+    } catch (e) {
+      console.error('Stash pending order error:', e);
+    }
+
     var { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: redirectUrl }
@@ -567,10 +587,25 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     var params = new URLSearchParams(window.location.search);
     var tradeNo = params.get('trade_no');
     var token = params.get('token');
+
+    // 網址上沒有就退回本機暫存（走過 Google 登入跳轉的情況）
+    if (!tradeNo || !token) {
+      try {
+        var saved = JSON.parse(localStorage.getItem(PENDING_ORDER_KEY) || 'null');
+        // 只採用 24 小時內的暫存，避免很久以前的殘留值被誤用
+        if (saved && saved.trade_no && saved.token && (Date.now() - (saved.at || 0)) < 86400000) {
+          tradeNo = saved.trade_no;
+          token = saved.token;
+        }
+      } catch (e) {
+        console.error('Read pending order error:', e);
+      }
+    }
+
     if (!tradeNo || !token || !currentSession) return;
 
     try {
-      await fetch('/api/save-purchase', {
+      var res = await fetch('/api/save-purchase', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -578,6 +613,11 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         },
         body: JSON.stringify({ trade_no: tradeNo, token: token })
       });
+      var data = await res.json();
+      // 只有確定成功才清掉暫存，否則保留讓下次載入還能再試
+      if (data && data.ok) {
+        try { localStorage.removeItem(PENDING_ORDER_KEY); } catch (e) {}
+      }
       window.history.replaceState({}, '', '/exam/app');
     } catch (e) {
       console.error('Save purchase error:', e);
