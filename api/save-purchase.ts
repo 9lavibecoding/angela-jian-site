@@ -173,5 +173,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: '儲存失敗' });
   }
 
+  // 標記對應的待認領訂單。這條路徑（補發連結／訂單編號自助開通）原本不會回頭
+  // 標記，導致後台看起來像是還沒處理。失敗只影響後台檢視，權限已經發出去了，
+  // 不該因此讓客人看到錯誤。
+  const { error: markError } = await adminClient
+    .from('pending_purchases')
+    .update({ claimed_at: new Date().toISOString(), claimed_by: user.id })
+    .eq('trade_no', trade_no)
+    .is('claimed_at', null);
+  if (markError) {
+    console.error('save-purchase: 標記待認領訂單失敗:', markError.message);
+  }
+
   return res.status(200).json({ ok: true });
 }
