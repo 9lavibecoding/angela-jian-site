@@ -91,6 +91,55 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 
 ---
 
+## 訂單與權限資料模型（2026-08-31 建立）
+
+**收到錢**與**發出權限**是兩件事，各自有一張表。這個分法來自 2026-08-27～31 的事故：
+客人付了款卻拿不到題庫，而當時系統完全查不出「誰付了錢但還沒開通」。
+
+| 表 | 意義 | 寫入時機 |
+|---|---|---|
+| `pending_purchases` | 綠界確認收款的訂單 | `api/ecpay-notify.ts` 收到 server-to-server 回呼時，**與客人是否登入無關** |
+| `purchases` | 已開通的題庫權限 | 客人登入並完成開通時（`api/save-purchase.ts` 或 `api/claim-purchase.ts`） |
+
+要查「誰付了錢卻還沒開通」，把兩張表 left join，看 `pending_purchases.claimed_at` 是否為 null。
+**營收統計一律查 `pending_purchases`**，那張表只有真實付款，沒有測試資料。
+
+### 權限如何判定（`api/get-questions.ts`）
+
+1. `purchases` 有該 `user_id` 的紀錄 → 否則「尚未購買」
+2. 只看**最新一筆**（`order by created_at desc limit 1`）
+3. 該筆 `expires_at` 為 **NULL 代表永不過期**；有值且已過去才算到期
+
+> 寫「有效使用者」查詢時務必包含 `expires_at is null`，只寫 `expires_at > now()` 會漏掉永久權限的帳號。
+
+### 開通的三條路徑
+
+1. **信用卡**：綠界導回 `ecpay-return`，發 HMAC token → 前端帶 token 呼叫 `save-purchase`
+2. **email 自動認領**：客人以結帳時填的 email 所屬的 Google 帳號登入 → `claim-purchase` 比對 `pending_purchases`
+3. **訂單編號自助開通**：題庫頁輸入訂單編號 → `save-purchase` 未帶 token 時會直接向綠界 QueryTradeInfo 查證
+
+> ATM／超商是非同步付款，付款完成時**瀏覽器不會被導回網站**，只有路徑 2、3 可用。
+> `ecpay-return` 在取號階段（`RtnCode=2`，有 `vAccount`／`PaymentNo`／`Barcode1`）
+> **絕對不可發出 HMAC token** —— 當下客人還沒付錢，發了等同免費開通。
+
+### 不要動的資料
+
+- `purchases` 裡 3 筆 `TEST-ADMIN-1/2/3` **不是測試垃圾**，分別綁在
+  `an9lajian@gmail.com`、`angela.jian@invos.com.tw`、`liliangelina20051212@gmail.com`
+  三個自有帳號上。刪掉會讓後兩個帳號失去題庫權限。統計時用
+  `trade_no not like 'TEST-ADMIN%'` 排除即可。
+- `purchases.trade_no` 有 unique index，用來防止同一筆訂單被多個帳號認領（race condition
+  的資料庫層保險）。建表 SQL 見 `sql/2026-08-28-pending-purchases.sql`。
+
+### 目前的已知缺口
+
+- **系統沒有任何寄信功能**，客人付款後收不到確認信或開通連結，只能自己回到網站。
+  補法是設定自訂 SMTP（如 Resend）。
+- **只支援 Google 登入**。Supabase 的 Email OTP 需要先設自訂 SMTP，否則官方會
+  **拒絕寄信給非團隊成員**，對真實客人一律失敗。
+
+---
+
 ## 文章寫作規範（文章專欄）
 
 撰寫或修改文章專欄內容時：
