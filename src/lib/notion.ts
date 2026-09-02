@@ -422,8 +422,35 @@ async function blocksToHtml(blockId: string): Promise<string> {
   return html;
 }
 
+// ---- Build 期間的 Notion 查詢快取 ----
+// 產頁時 getArticles() / getIPASLessons() 會被重複呼叫（每篇文章與課程頁各兩次），
+// 沒有快取時一次 build 會對 Notion API 打出數百個請求，觸發 429 限流讓 build 失敗。
+// 快取的是 Promise 本身而不是結果，才能把併發中的重複呼叫一併去重。
+// isCacheable 為 false 的結果（也就是 fallback）不留在快取裡，後續呼叫仍可重試。
+function cached<T>(
+  fn: () => Promise<T>,
+  isCacheable: (result: T) => boolean
+): () => Promise<T> {
+  let inflight: Promise<T> | null = null;
+  return () => {
+    if (!inflight) {
+      inflight = fn().then(
+        result => {
+          if (!isCacheable(result)) inflight = null;
+          return result;
+        },
+        err => {
+          inflight = null;
+          throw err;
+        }
+      );
+    }
+    return inflight;
+  };
+}
+
 // ---- 從 Notion 取得文章 ----
-export async function getArticles(): Promise<Article[]> {
+async function fetchArticlesFromNotion(): Promise<Article[]> {
   if (!import.meta.env.NOTION_SECRET || !import.meta.env.NOTION_DATABASE_ID) {
     return STATIC_ARTICLES;
   }
@@ -507,6 +534,12 @@ export async function getArticles(): Promise<Article[]> {
   }
 }
 
+// 只有真的從 Notion 取到資料才進快取；退回 STATIC_ARTICLES 代表這次抓失敗，不快取。
+export const getArticles = cached(
+  fetchArticlesFromNotion,
+  result => result !== STATIC_ARTICLES
+);
+
 // ---- 取得單篇文章 ----
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const articles = await getArticles();
@@ -529,7 +562,7 @@ export interface IPASLesson {
 
 const ipasDbId = import.meta.env.NOTION_IPAS_DATABASE_ID;
 
-export async function getIPASLessons(): Promise<IPASLesson[]> {
+async function fetchIPASLessonsFromNotion(): Promise<IPASLesson[]> {
   if (!import.meta.env.NOTION_SECRET || !ipasDbId) return [];
 
   try {
@@ -568,11 +601,17 @@ export async function getIPASLessons(): Promise<IPASLesson[]> {
   }
 }
 
+// 空陣列代表沒設定環境變數或這次抓失敗，兩種都不快取。
+export const getIPASLessons = cached(
+  fetchIPASLessonsFromNotion,
+  result => result.length > 0
+);
+
 export async function getIPASLessonBySlug(slug: string): Promise<IPASLesson | null> {
   const lessons = await getIPASLessons();
   const lesson = lessons.find(l => l.slug === slug);
   if (!lesson) return null;
-  // 取得內容（只在需要時才取）
-  lesson.content = await blocksToHtml(lesson.id);
-  return lesson;
+  // 取得內容（只在需要時才取）。lessons 現在是共用快取，
+  // 回傳複本以免把 content 寫進快取物件裡。
+  return { ...lesson, content: await blocksToHtml(lesson.id) };
 }
