@@ -54,6 +54,52 @@ async function downloadImage(url: string): Promise<string> {
 const notion = new Client({ auth: import.meta.env.NOTION_SECRET });
 const databaseId = import.meta.env.NOTION_DATABASE_ID;
 
+// ---- Notion 請求重試（429 限流退避）----
+// 2026-09-02 事故：一次 production build 中 Notion 對連續 11 個課程頁回 429，
+// 當時 blocksToHtmlAndImage() 的 catch 把錯誤吞成空字串，於是 build 成功、
+// Vercel 顯示 Ready，線上卻是 11 篇有標題沒內文的空白頁，完全沒有告警。
+// 這層負責在限流／伺服器暫時性錯誤時退避重試；重試用盡才把錯誤往上拋，
+// 由 NotionContentError 讓 build 直接失敗（SSG 失敗 = 保留舊版，比上線空白頁好）。
+class NotionContentError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'NotionContentError';
+  }
+}
+
+const RETRYABLE_NOTION_CODES = new Set([
+  'rate_limited',
+  'service_unavailable',
+  'internal_server_error',
+  'gateway_timeout',
+]);
+
+async function withRetry<T>(label: string, fn: () => Promise<T>, maxAttempts = 5): Promise<T> {
+  let lastErr: any;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await fn();
+    } catch (e: any) {
+      lastErr = e;
+      if (!RETRYABLE_NOTION_CODES.has(e?.code)) throw e;
+      if (attempt === maxAttempts) break;
+      // 有 Retry-After 就聽它的，否則指數退避（0.5s、1s、2s、4s）加上抖動，
+      // 避免同時被限流的多個頁面在同一刻一起重試。
+      const headers = e?.headers;
+      const retryAfterRaw = typeof headers?.get === 'function'
+        ? headers.get('retry-after')
+        : headers?.['retry-after'];
+      const retryAfter = Number(retryAfterRaw);
+      const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
+        ? retryAfter * 1000
+        : Math.min(500 * 2 ** (attempt - 1), 8000) + Math.floor(Math.random() * 250);
+      console.warn(`Notion ${e.code}：${label}，${waitMs}ms 後重試（第 ${attempt}/${maxAttempts - 1} 次）`);
+      await new Promise(resolve => setTimeout(resolve, waitMs));
+    }
+  }
+  throw lastErr;
+}
+
 export interface Article {
   title: string;
   slug: string;
@@ -298,11 +344,13 @@ async function getAllBlocks(blockId: string): Promise<any[]> {
   const allBlocks: any[] = [];
   let cursor: string | undefined;
   do {
-    const response = await notion.blocks.children.list({
-      block_id: blockId,
-      page_size: 100,
-      start_cursor: cursor,
-    });
+    const response = await withRetry(`blocks.children.list(${blockId})`, () =>
+      notion.blocks.children.list({
+        block_id: blockId,
+        page_size: 100,
+        start_cursor: cursor,
+      })
+    );
     allBlocks.push(...response.results);
     cursor = response.has_more ? response.next_cursor ?? undefined : undefined;
   } while (cursor);
@@ -412,8 +460,11 @@ async function blocksToHtmlAndImage(blockId: string): Promise<{ html: string; fi
       }
     }
     return { html: html.replaceAll('——', '，'), firstImage };
-  } catch {
-    return { html: '', firstImage: '' };
+  } catch (e: any) {
+    // 不可以回傳空字串。回傳空字串會讓 build 成功但頁面內文全空（2026-09-02 事故）。
+    throw new NotionContentError(
+      `Notion 內容抓取失敗（block ${blockId}）：${e?.code ?? e?.message ?? e}`
+    );
   }
 }
 
@@ -461,12 +512,14 @@ async function fetchArticlesFromNotion(): Promise<Article[]> {
     const allPages: any[] = [];
     let cursor: string | undefined;
     do {
-      const response = await notion.databases.query({
-        database_id: databaseId,
-        sorts: [{ property: 'Date', direction: 'descending' }],
-        start_cursor: cursor,
-        page_size: 100,
-      });
+      const response = await withRetry('databases.query(articles)', () =>
+        notion.databases.query({
+          database_id: databaseId,
+          sorts: [{ property: 'Date', direction: 'descending' }],
+          start_cursor: cursor,
+          page_size: 100,
+        })
+      );
       allPages.push(...response.results);
       cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined;
     } while (cursor);
@@ -529,6 +582,9 @@ async function fetchArticlesFromNotion(): Promise<Article[]> {
     merged.sort((a, b) => b.date.localeCompare(a.date));
     return merged;
   } catch (e) {
+    // 內容抓取失敗（重試用盡）必須讓 build 紅燈，不能靜默退回靜態資料，
+    // 否則線上會少掉整批 Notion 文章而沒有任何人發現。
+    if (e instanceof NotionContentError) throw e;
     console.warn('Notion fetch failed, using static data:', e);
     return STATIC_ARTICLES;
   }
@@ -569,12 +625,14 @@ async function fetchIPASLessonsFromNotion(): Promise<IPASLesson[]> {
     const allPages: any[] = [];
     let cursor: string | undefined;
     do {
-      const response = await notion.databases.query({
-        database_id: ipasDbId,
-        sorts: [{ property: 'Order', direction: 'ascending' }],
-        start_cursor: cursor,
-        page_size: 100,
-      });
+      const response = await withRetry('databases.query(ipas)', () =>
+        notion.databases.query({
+          database_id: ipasDbId,
+          sorts: [{ property: 'Order', direction: 'ascending' }],
+          start_cursor: cursor,
+          page_size: 100,
+        })
+      );
       allPages.push(...response.results);
       cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined;
     } while (cursor);
@@ -595,9 +653,11 @@ async function fetchIPASLessonsFromNotion(): Promise<IPASLesson[]> {
       });
     }
     return lessons.sort((a, b) => a.order - b.order);
-  } catch (e) {
-    console.warn('iPAS Notion fetch failed:', e);
-    return [];
+  } catch (e: any) {
+    // 回空陣列會讓整個 /ipas 課程區靜默消失，一樣要讓 build 紅燈。
+    throw new NotionContentError(
+      `iPAS 課程列表抓取失敗：${e?.code ?? e?.message ?? e}`
+    );
   }
 }
 
@@ -613,5 +673,11 @@ export async function getIPASLessonBySlug(slug: string): Promise<IPASLesson | nu
   if (!lesson) return null;
   // 取得內容（只在需要時才取）。lessons 現在是共用快取，
   // 回傳複本以免把 content 寫進快取物件裡。
-  return { ...lesson, content: await blocksToHtml(lesson.id) };
+  const content = await blocksToHtml(lesson.id);
+  if (!content.trim()) {
+    throw new NotionContentError(
+      `課程內文為空：${slug}（Notion page ${lesson.id}）。請確認該頁在 Notion 有內容。`
+    );
+  }
+  return { ...lesson, content };
 }
