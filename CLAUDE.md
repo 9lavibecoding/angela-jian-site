@@ -55,16 +55,46 @@ npm run preview  # 預覽建置結果
 - Notion 圖片 URL 有 TTL，**不可直接存進資料或寫死在程式碼中**
 - 必須透過 `src/lib/notion.ts` 的 `downloadImage()` 處理，才能在建置時下載到本地
 
-### Notion API 會限流，整個 build 會掛掉（2026-09-01 實際發生過）
+### Notion API 會限流，而且有兩種壞法（2026-09-01、2026-09-02 各發生過一次）
 
-一次 build 要產出每篇文章與每堂 iPAS 課程的頁面，`getArticles()` / `getIPASLessons()` 因此被
-重複呼叫數百次，觸發 Notion 的 `429 rate_limited`。症狀是 build log 先出現 `rate_limited`，
-接著 `Error: Lesson not found: <slug>`，最後 `Command "npm run build" exited with 1`。
-2026-09-01 連續兩次 production 部署都因此失敗，線上站停在舊版兩天沒被發現。
+一次 build 要產出每篇文章與每堂 iPAS 課程的頁面，對 Notion 打出數百個請求，很容易踩到
+`429 rate_limited`。限流造成過兩種完全不同的災情：
 
-**已建立的防護（勿刪）**：`src/lib/notion.ts` 的 `cached()` 把這兩個查詢的 **Promise** 快取起來
-（快取的是 Promise 而不是結果，才能把併發中的重複呼叫一併去重）。抓失敗的結果不留在快取裡，
-後續呼叫仍可重試。加上快取後建置時間從 6～7 分鐘降到 3 分鐘。
+**壞法一：build 直接掛掉（2026-09-01）**
+`getArticles()` / `getIPASLessons()` 被重複呼叫數百次。症狀是 build log 先出現
+`rate_limited`，接著 `Error: Lesson not found: <slug>`，最後
+`Command "npm run build" exited with 1`。連續兩次 production 部署失敗，線上站停在舊版
+兩天沒被發現。
+
+**壞法二：build 成功但頁面空白（2026-09-02，更難發現）**
+每頁抓 blocks 的請求被限流，而當時 `blocksToHtmlAndImage()` 的 catch 把錯誤吞成空字串。
+於是 build exit 0、Vercel 顯示 Ready、部署「成功」，線上卻是第 28～38 篇連續 11 篇
+有標題沒內文的空白頁，完全沒有告警。build log 裡的 11 次 `rate_limited` 與那 11 篇一一對應。
+
+**已建立的防護（三層，勿刪）：**
+
+1. `cached()` 把 `getArticles()` / `getIPASLessons()` 的 **Promise** 快取起來（快取的是
+   Promise 而不是結果，才能把併發中的重複呼叫一併去重）。抓失敗的結果不留在快取裡，
+   後續呼叫仍可重試。加上快取後建置時間從 6～7 分鐘降到 3 分鐘。
+2. `withRetry()` 包住全部三個 Notion API 呼叫（`blocks.children.list` 與兩個
+   `databases.query`）。遇到 `rate_limited` 等暫時性錯誤退避重試最多 4 次：有 `Retry-After`
+   標頭就照它等，否則 0.5／1／2／4 秒指數退避加隨機抖動；非限流錯誤立即拋出不重試。
+   2026-09-02 修復後的第一次部署就實際觸發 4 次重試（Notion 指定等 1s／7s／10s）並全部救回。
+3. **抓不到內容一律讓 build 失敗，不准回傳空值。** `blocksToHtmlAndImage()`、
+   `fetchIPASLessonsFromNotion()`、`getIPASLessonBySlug()` 在失敗或拿到空內容時拋
+   `NotionContentError`；`fetchArticlesFromNotion()` 遇到內容抓取失敗也往上拋，
+   不退回 `STATIC_ARTICLES`。
+
+> **不要把第 3 層改回吞錯或回傳空值。** 這是 SSG：build 失敗只代表線上保留舊版，
+> 永遠優於部署成功卻上線空白頁。看到 `NotionContentError` 就是 Notion 那頭有問題，
+> 重跑部署即可，不要改 code 繞過。
+
+部署後想確認沒有空白頁，掃一遍線上課程頁的大小即可（2026-09-02 實測健康值為
+25.6 KB～45.5 KB；空白頁少掉約 7 KB 以上的內文，會明顯掉到 20 KB 以下）：
+
+```bash
+for s in $(ls dist/ipas | grep -v index.html); do echo "$(curl -s https://aipm-insider.com/ipas/$s | wc -c) $s"; done | sort -n | head
+```
 
 ### ECPay 金流
 - 修改 ECPay 相關程式碼前，確認 `.env` 的 `ECPAY_TEST_MODE=true`，避免誤觸正式金流
