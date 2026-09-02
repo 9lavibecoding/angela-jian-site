@@ -8,7 +8,7 @@
 
 Angela Jian 的個人品牌網站，面向想轉型 AI 產品經理的學習者。
 - 網址：https://aipm-insider.com
-- GitHub：9lavibecoding/angela-jian-site（Vercel 部署）
+- GitHub：9lavibecoding/angela-jian-site（**未接 Vercel 自動部署，push 不會上線**，見「部署流程」）
 - 主要功能：iPAS 備考課程（50 堂 + 速查表）、付費題庫（1000 題，NT$699）、AI 工具、作品集、文章專欄
 - **現役專案路徑：`~/angela-jian-site`**。`~/Desktop/angela-jian-site` 為舊版，請勿在上面開發。
 
@@ -54,6 +54,17 @@ npm run preview  # 預覽建置結果
 ### Notion 圖片
 - Notion 圖片 URL 有 TTL，**不可直接存進資料或寫死在程式碼中**
 - 必須透過 `src/lib/notion.ts` 的 `downloadImage()` 處理，才能在建置時下載到本地
+
+### Notion API 會限流，整個 build 會掛掉（2026-09-01 實際發生過）
+
+一次 build 要產出每篇文章與每堂 iPAS 課程的頁面，`getArticles()` / `getIPASLessons()` 因此被
+重複呼叫數百次，觸發 Notion 的 `429 rate_limited`。症狀是 build log 先出現 `rate_limited`，
+接著 `Error: Lesson not found: <slug>`，最後 `Command "npm run build" exited with 1`。
+2026-09-01 連續兩次 production 部署都因此失敗，線上站停在舊版兩天沒被發現。
+
+**已建立的防護（勿刪）**：`src/lib/notion.ts` 的 `cached()` 把這兩個查詢的 **Promise** 快取起來
+（快取的是 Promise 而不是結果，才能把併發中的重複呼叫一併去重）。抓失敗的結果不留在快取裡，
+後續呼叫仍可重試。加上快取後建置時間從 6～7 分鐘降到 3 分鐘。
 
 ### ECPay 金流
 - 修改 ECPay 相關程式碼前，確認 `.env` 的 `ECPAY_TEST_MODE=true`，避免誤觸正式金流
@@ -177,10 +188,27 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 
 ## 部署流程
 
-- **禁止直接 `vercel --prod` 部署**，必須先在本機 `npm run dev` 測試確認沒問題
+### git push 不會部署（2026-09-02 實查）
+
+Vercel 專案 `angela-jian-site-2ii1` **沒有接 GitHub 整合**。程式碼推上 `origin/main` 之後
+Vercel 不會有任何動作，正式站不會更新。歷來所有部署都是本機用 CLI `vercel --prod` 推的。
+
+> 這條先前寫成「部署交由用戶自行 git push」，導致 push 完誤以為已上線，實際線上跑的是
+> 兩天前的舊版。要確認有沒有真的部署，看 `vercel ls` 最上面那筆的 Age 與 Status。
+
+### 規則
+
+- **上線一律 `vercel --prod --yes`**，或到 Vercel Dashboard 點 Redeploy
+- **部署屬對外動作，執行前先問過用戶**。唯一例外是「新增文章 SOP」，該情境已授權直接執行
+- 部署前必須先本機 `npm run dev` 測過、`npm run build` 通過，不要拿正式部署當測試
 - 改 API 檔案（`api/*.ts`）也要先本機測過再部署，避免來回部署浪費時間
+- 在對話中執行部署時，**把輸出導到檔案再過濾**，不要讓 build log 灌進 context：
+  ```bash
+  vercel --prod --yes > /tmp/deploy.log 2>&1; echo "EXIT=$?"
+  ```
 - 設定 Vercel 環境變數時，使用 `printf` 而非 `echo`，避免帶入尾部換行符
-- 部署交由用戶自行 `git push` 或在 Vercel Dashboard 操作，不要在對話中執行（build log 會消耗大量 token）
+- 目前沒有 `.vercelignore`，且 `.gitignore` 未排除 `social-cards/`（約 59MB），
+  每次 `vercel --prod` 都會把它整包上傳。不影響建置，只是變慢
 
 ---
 
