@@ -9,7 +9,7 @@
 Angela Jian 的個人品牌網站，面向想轉型 AI 產品經理的學習者。
 - 網址：https://aipm-insider.com
 - GitHub：9lavibecoding/angela-jian-site（**未接 Vercel 自動部署，push 不會上線**，見「部署流程」）
-- 主要功能：iPAS 備考課程（50 堂 + 速查表）、付費題庫（1000 題，NT$699）、AI 工具、作品集、文章專欄
+- 主要功能：iPAS 備考課程（50 堂 + 速查表）、付費題庫（1000 題，NT$199；2026-09-03 核對 `api/create-order.ts` 與購買頁一致）、AI 工具、作品集、文章專欄
 - **現役專案路徑：`~/angela-jian-site`**。`~/Desktop/angela-jian-site` 為舊版，請勿在上面開發。
 
 ---
@@ -216,6 +216,47 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 
 ---
 
+## 部署前檢查（2026-09-03 建立）
+
+四層檢查腳本在 `scripts/`，共用 `scripts/lib/check.mjs` 輸出格式，任何一條失敗就 exit 1。
+**閘門綁在部署，不是 push** —— push 上 GitHub 不會觸發任何部署（見下方「部署流程」），
+所以在 push 前跑完整測試擋不到真正的風險。
+
+| 指令 | 何時跑 | 內容 | 耗時 |
+|---|---|---|---|
+| `npm run check` | 每次 commit 前 | 金流開關、憑證外洩、價格一致性、題庫資料完整性 | < 1 秒 |
+| `npm run check:revenue` | 動到 `api/`、`src/pages/exam/` 時 | 把真正的 handler import 進來實跑，斷言金流行為 | ~3 秒 |
+| `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、購買頁完整性、noindex、sitemap | < 1 秒 |
+| `npm run preflight` | **`vercel --prod` 之前** | 上面三層 + build，一次跑完 | ~3 分鐘 |
+| `npm run check:live` | `vercel --prod` 之後 | 線上購買頁、價格、空白頁抽查、Supabase 存活 | ~10 秒 |
+
+### 幾個實作上的關鍵決定
+
+- **`check:revenue` 是實跑，不是讀原始碼猜。** Node 25 已預設支援直接 import TypeScript，
+  所以腳本直接 `import handler from '../api/ecpay-return.ts'`，餵假的 req/res 執行。
+  沒有引入 vitest 或任何測試框架，零新依賴。
+- **最重要的那條斷言是「取號階段不得發 token」。** 已用反例驗證過：把 `ecpay-return.ts:49`
+  的 `verified = macValid && rtnCode === '1'` 改成 `verified = macValid`（模擬「有人忘了檢查
+  RtnCode」），ATM／超商／條碼三條斷言會同時失敗。
+  順帶查明這個 invariant 其實有**三道防線**：`:56` 取號早退、`:114` `verified` 三元、
+  `:120` `!verified` 直接回失敗頁不帶 `appUrl`。單獨拆掉任一道，另外兩道還擋著。
+- **空白頁要靠段落數抓，不是靠檔案大小。** 實測把 `01-ai-definition` 的內文全部拿掉，
+  檔案仍有 24.4 KB（其餘都是導覽列與 CSS），**大小門檻抓不到**，是 `</p>` 計數抓到的。
+  下方「部署後掃線上頁面大小」那條指令對這類頁會漏判，`check:build` 才是可靠的那個。
+- **`save-purchase` 與 `get-questions` 只能測到 401 分支。** 兩者在讀 body 之前就先呼叫
+  Supabase 驗 token（`save-purchase.ts:106`、`get-questions.ts:35`），沒有真實 session
+  就跑不到權限判定。因此 `expires_at` 為 NULL＝永久有效那條改用靜態守衛盯住判斷式本身。
+
+### 測不到的部分（別誤以為有覆蓋）
+
+- **ATM／超商的非同步付款回呼**：綠界 server-to-server 打 `ecpay-notify`，本機模擬不了，
+  只能靠線上真實訂單驗證
+- **Google 登入到題庫解鎖的完整流程**：需要真人瀏覽器與真實 OAuth
+- **客人付款後的靜默流失**：系統目前沒有寄信功能，客人沒自己回到網站就拿不到題庫。
+  這是產品缺口，不是測試能補的
+
+---
+
 ## 部署流程
 
 ### git push 不會部署（2026-09-02 實查）
@@ -297,7 +338,7 @@ src/
     exam/               # 題庫（購買頁 / 練習 App / PDF）
     portfolio/          # 作品集
   content/ipas/         # iPAS 課程 Markdown 內容（51 篇）
-  data/exam/            # 1000 題 JSON 題庫（12 個檔案）
+  data/exam/            # 1000 題 JSON 題庫（10 個檔案）
   lib/
     notion.ts           # Notion API + 圖片下載工具
     supabase.ts         # Supabase 用戶端初始化

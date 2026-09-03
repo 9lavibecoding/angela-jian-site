@@ -9,7 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "node scripts/check-precommit.mjs",
+    "check:revenue": "node scripts/check-revenue.mjs",
+    "check:build": "node scripts/check-build.mjs",
+    "check:live": "node scripts/check-live.mjs",
+    "preflight": "npm run check && npm run build && npm run check:build && npm run check:revenue"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
