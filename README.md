@@ -62,7 +62,7 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 | `npm run preview` | 本機預覽建置結果 | — |
 | `npm run check` | 提交前檢查：金流開關、憑證外洩、價格一致性、題庫資料 | < 1 秒 |
 | `npm run check:revenue` | 營收路徑實跑：綠界導回與建立訂單、Supabase 存活 | ~3 秒 |
-| `npm run check:build` | 建置產物檢查：空白頁掃描、購買頁完整性、noindex、sitemap | < 1 秒 |
+| `npm run check:build` | 建置產物檢查：空白頁掃描、付費內容外洩、購買頁完整性、noindex、sitemap | < 1 秒 |
 | `npm run preflight` | **部署前閘門**：上面三項 + 完整 build | ~4 分鐘 |
 | `npm run check:live` | 部署後線上煙霧測試 | ~10 秒 |
 
@@ -73,14 +73,14 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 
 ## 品質閘門
 
-`scripts/` 底下四支檢查腳本，共 71 條斷言，任何一條失敗就以 exit code 1 結束。
+`scripts/` 底下四支檢查腳本，共 78 條斷言，任何一條失敗就以 exit code 1 結束。
 不依賴任何測試框架 —— 利用 Node 內建的 TypeScript 型別剝離（本機實測 Node v25），
 直接 import `api/*.ts` 的 handler，餵假的 `req`／`res` 實際執行，斷言它真正吐出來的回應。
 
 | 層 | 腳本 | 何時跑 | 斷言數 |
 |---|------|--------|--------|
 | L0 | `check-precommit.mjs` | 每次 commit 前 | 17 |
-| L1 | `check-build.mjs` | `npm run build` 之後 | 22 |
+| L1 | `check-build.mjs` | `npm run build` 之後 | 29 |
 | L2 | `check-revenue.mjs` | 動到 `api/` 或 `src/pages/exam/` 時 | 20 |
 | L3 | `check-live.mjs` | `vercel --prod` 之後 | 12 |
 
@@ -91,6 +91,8 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 - **價格一致性** — 實際向綠界請款的金額、寫入資料庫的金額、購買頁顯示的價格、
   JSON-LD 結構化資料的價格，四處必須相同
 - **付費內容完整性** — 1000 題逐題驗證答案對應到實際選項、有解析、章節合法、無重複 id
+- **付費內容不得外洩** — 從題庫抽樣，拿真實題目與解析文字去比對建置產物，
+  確認題庫頁與列印頁都沒有把付費內容打包進公開 HTML
 - **空白頁偵測** — 以段落數而非檔案大小判斷。實測顯示一頁的內文可能只佔檔案 5%，
   單看大小抓不到「有標題沒內文」的頁面
 - **憑證外洩** — 掃描所有 git 追蹤中的檔案，攔截帶值的金鑰與被誤加入的 `.env`

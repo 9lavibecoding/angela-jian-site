@@ -226,7 +226,7 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 |---|---|---|---|
 | `npm run check` | 每次 commit 前 | 金流開關、憑證外洩、價格一致性、題庫資料完整性 | < 1 秒 |
 | `npm run check:revenue` | 動到 `api/`、`src/pages/exam/` 時 | 把真正的 handler import 進來實跑，斷言金流行為 | ~3 秒 |
-| `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、購買頁完整性、noindex、sitemap | < 1 秒 |
+| `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、付費內容外洩、購買頁完整性、noindex、sitemap | < 1 秒 |
 | `npm run preflight` | **`vercel --prod` 之前** | 上面三層 + build，一次跑完 | ~3 分鐘 |
 | `npm run check:live` | `vercel --prod` 之後 | 線上購買頁、價格、空白頁抽查、Supabase 存活 | ~10 秒 |
 
@@ -246,6 +246,24 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 - **`save-purchase` 與 `get-questions` 只能測到 401 分支。** 兩者在讀 body 之前就先呼叫
   Supabase 驗 token（`save-purchase.ts:106`、`get-questions.ts:35`），沒有真實 session
   就跑不到權限判定。因此 `expires_at` 為 NULL＝永久有效那條改用靜態守衛盯住判斷式本身。
+
+### exam/print 曾把 1000 題連答案打包進公開 HTML（2026-09-04 修補）
+
+`src/pages/exam/print.astro` 原本在 build 時 import 全部題庫 JSON 並渲染進 HTML，
+前端只用 `display:none` 把它遮起來。**未登入直接 `curl https://aipm-insider.com/exam/print`
+就能拿到 2.1 MB 的完整明文**，包含 1000 題與 1000 條答案解析，等於整個付費商品。
+`noindex` 擋得住 Google，擋不住任何人檢視原始碼。
+
+修補方式：該頁改為靜態殼，不在 build 時嵌入任何題目。頁面載入後由前端帶 Supabase JWT
+呼叫 `/api/get-questions`，伺服器驗過 `purchases` 才回題目。產物從 1.2 MB 降到 8 KB。
+
+> 修補其實早在 2026-07-12 就寫好放在 `fix/paywall-security` 分支，只是從未合併上線。
+> 該分支另外兩項（save-purchase 要求 HMAC／QueryTradeInfo、generate-prompt 限流）
+> main 已用別的寫法修好，所以**不要整支合併**，會把較新的金流寫法覆蓋回七月版本。
+
+**已建立的防護（勿刪）：** `check:build` 從題庫 JSON 抽 3 題，拿題目與解析的前 24 字
+去比對 `dist/exam/print/index.html` 與 `dist/exam/app/index.html`，出現就擋。
+用真實內容比對而非檢查 markup，換成什麼標籤都躲不掉。體積上限 200 KB 為第二道。
 
 ### 測不到的部分（別誤以為有覆蓋）
 

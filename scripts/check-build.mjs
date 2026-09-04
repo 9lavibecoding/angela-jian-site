@@ -83,6 +83,38 @@ if (!fs.existsSync(examFile)) {
   assert(/立即購買|前往購買|開始購買/.test(html), '購買頁有購買 CTA');
 }
 
+// ── 付費內容不得內嵌於公開 HTML ────────────────────────────────
+// 2026-09-04：exam/print 原本在 build 時把 1000 題連答案一起寫進 HTML，
+// 前端只用 display:none 遮住，未登入 curl 一次就能全部拿走。
+// 這裡用「真實題目文字」比對，比檢查 markup 更強：不管換成什麼標籤都躲不掉。
+section('付費內容外洩');
+{
+  const sample = [];
+  const examDir = 'src/data/exam';
+  for (const f of fs.readdirSync(examDir).filter((x) => x.endsWith('.json')).slice(0, 3)) {
+    const arr = JSON.parse(fs.readFileSync(path.join(examDir, f), 'utf8'));
+    if (arr.length) sample.push(arr[Math.floor(arr.length / 2)]);
+  }
+  assert(sample.length > 0, '取得抽樣題目供比對', `${sample.length} 題`);
+
+  for (const [name, rel] of [['PDF 列印頁', 'exam/print/index.html'], ['題庫練習頁', 'exam/app/index.html']]) {
+    const f = path.join(DIST, rel);
+    if (!fs.existsSync(f)) { fail(`${name}存在`, rel); continue; }
+    const html = fs.readFileSync(f, 'utf8');
+    const size = Buffer.byteLength(html);
+
+    const leaked = sample.filter((q) => html.includes(String(q.question).slice(0, 24)));
+    assert(leaked.length === 0, `${name}未內嵌題目文字`,
+      leaked.length ? `第 ${leaked.map((q) => q.id).join(', ')} 題的題目出現在公開 HTML 裡` : '');
+
+    const leakedAns = sample.filter((q) => q.explanation && html.includes(String(q.explanation).slice(0, 24)));
+    assert(leakedAns.length === 0, `${name}未內嵌答案解析`,
+      leakedAns.length ? `第 ${leakedAns.map((q) => q.id).join(', ')} 題的解析出現在公開 HTML 裡` : '');
+
+    assert(size < 200000, `${name}體積正常（< 200 KB）`, `${(size / 1000).toFixed(0)} KB${size >= 200000 ? '，過大通常代表題庫被打包進去了' : ''}`);
+  }
+}
+
 for (const [name, rel] of [['題庫練習頁', 'exam/app/index.html'], ['PDF 列印頁', 'exam/print/index.html']]) {
   const f = path.join(DIST, rel);
   if (!fs.existsSync(f)) { fail(`${name}存在`, rel); continue; }
