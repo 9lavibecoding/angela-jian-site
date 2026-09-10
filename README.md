@@ -5,7 +5,7 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 **網站：** https://aipm-insider.com
 
 以 Astro 靜態產生（SSG），內容來自 Notion 與 Markdown，付費題庫走綠界金流與 Supabase 權限控管。
-建置後共 80 個頁面。
+建置後共 76 個頁面。
 
 ---
 
@@ -14,17 +14,31 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 ### 內容與教學
 - **文章專欄** — 從 Notion 資料庫同步，建置時抓取並下載圖片到本地
 - **iPAS 備考攻略** — 50 堂免費課程，涵蓋 AI 基礎到生成式 AI
-- **AI 證照指南** — 五大 AI 證照完整比較（iPAS、Microsoft、Google、PMP）
-- **作品集** — 4 個 AI 產品實戰案例
+- **AI 證照指南** — 五張 AI 證照逐項比較（iPAS、Microsoft AI PM、Google AI Essentials、
+  Google Cloud Digital Leader、AWS AI Practitioner）
+- **一對一諮詢** — `/consulting` 服務方案頁；首頁 `#portfolio` 區塊現在是
+  「我能幫你什麼」四張服務卡，導向諮詢與 iPAS
 
 ### 互動工具
-- **AI Prompt 產生器** — 透過 Google Gemini API 即時產生 PM 場景 Prompt
 - **iPAS 衝刺題庫** — 1000 題互動練習系統
   - 章節分類篩選（L11 基礎 AI / L12 生成式 AI / MIX 綜合模擬）
   - 答題記錄與統計
   - 3 回計時模擬考（每回 60 分鐘）
   - 每題附詳解
   - PDF 題庫永久下載
+  - 題目與詳解不寫進靜態產物：練習頁與列印頁都是靜態殼，載入後帶 Supabase JWT
+    呼叫 `/api/get-questions`，伺服器驗過購買權限才回傳題目
+
+### 已下架（2026-09-10）
+
+`/portfolio` 底下四頁（AI Prompt 模板產生器、競品分析儀表板、AI PM 能力評估、
+Human-in-the-loop 記帳）與其後端 `api/generate-prompt.ts` 一併移除。
+首頁的作品集區塊早已改成「我能幫你什麼」服務卡，這四頁沒有任何站內入口，
+只有 sitemap 還在把它們送給 Google。連帶的變動：
+
+- `astro.config.mjs` 的 sitemap filter 加上 `/portfolio`，作為日後的保險
+- Gemini 已無任何呼叫點，`GEMINI_API_KEY` 可從 Vercel 環境變數移除
+- 四個舊網址現在會回 404。內容仍在 git 歷史裡，要復原就 revert
 
 ### 電商與付款
 - 綠界 ECPay 金流整合（信用卡 / ATM / 超商付款）
@@ -44,7 +58,6 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 | 驗證 | Supabase Auth（Google OAuth） |
 | 資料庫 | Supabase（PostgreSQL） |
 | 金流 | 綠界 ECPay |
-| AI 服務 | Google Gemini API |
 | 通知 | LINE Bot API |
 | 排程 | Vercel Cron（Supabase 每日保活） |
 | 動畫 / 圖示 | GSAP、Iconify（皆由 CDN 載入，非 npm 依賴） |
@@ -53,6 +66,17 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 ---
 
 ## 開發指令
+
+環境需求：Node `>=22.12.0`（`package.json` 的 `engines`）。
+`check:revenue` 直接 import `api/*.ts` 執行，需要 Node 內建的 TypeScript 型別剝離
+（本機實測 v25.8.0）；版本太舊會在這一關失敗，其餘指令不受影響。
+
+```bash
+npm install
+cp .env.example .env   # 注意：範例檔目前只列了 Notion 與 LINE 的變數，
+                       # 其餘依下方「環境變數」一節自行補齊
+npm run dev
+```
 
 | 指令 | 說明 | 耗時 |
 |------|------|------|
@@ -73,14 +97,14 @@ Angela Jian 的個人品牌網站，專為想轉型 AI 產品經理的 PM 與非
 
 ## 品質閘門
 
-`scripts/` 底下四支檢查腳本，共 78 條斷言，任何一條失敗就以 exit code 1 結束。
+`scripts/` 底下四支檢查腳本，共 79 條斷言（2026-09-10 實跑計數），任何一條失敗就以 exit code 1 結束。
 不依賴任何測試框架 —— 利用 Node 內建的 TypeScript 型別剝離（本機實測 Node v25），
 直接 import `api/*.ts` 的 handler，餵假的 `req`／`res` 實際執行，斷言它真正吐出來的回應。
 
 | 層 | 腳本 | 何時跑 | 斷言數 |
 |---|------|--------|--------|
 | L0 | `check-precommit.mjs` | 每次 commit 前 | 17 |
-| L1 | `check-build.mjs` | `npm run build` 之後 | 29 |
+| L1 | `check-build.mjs` | `npm run build` 之後 | 30 |
 | L2 | `check-revenue.mjs` | 動到 `api/` 或 `src/pages/exam/` 時 | 20 |
 | L3 | `check-live.mjs` | `vercel --prod` 之後 | 12 |
 
@@ -137,16 +161,20 @@ npm run check:live         # 確認線上真的更新了
 │   ├── save-purchase.ts        # 開通題庫權限
 │   ├── claim-purchase.ts       # 以結帳信箱自動認領訂單
 │   ├── get-questions.ts        # 題目 API（需驗證）
-│   ├── generate-prompt.ts      # Gemini Prompt 產生
 │   ├── keepalive.ts            # Supabase 每日保活（由 Cron 觸發）
-│   └── line-webhook.ts         # LINE Bot Webhook
+│   ├── line-webhook.ts         # LINE Bot Webhook
+│   └── lib/line.ts             # LINE 推播共用函式
 │
 ├── scripts/
 │   ├── check-precommit.mjs     # L0 提交前檢查
 │   ├── check-build.mjs         # L1 建置產物檢查
 │   ├── check-revenue.mjs       # L2 營收路徑實跑
 │   ├── check-live.mjs          # L3 線上煙霧測試
-│   └── lib/check.mjs           # 檢查腳本共用輸出格式
+│   ├── lib/check.mjs           # 檢查腳本共用輸出格式
+│   ├── set-article-covers.mjs  # 一次性維運：批次補文章封面
+│   ├── setup-line-richmenu.mjs # 一次性維運：建立 LINE 圖文選單
+│   ├── setup-supabase.mjs      # 一次性維運：建表與 RLS
+│   └── upload-ipas-to-notion.mjs # 一次性維運：課程內容上傳 Notion
 │
 ├── src/
 │   ├── pages/                  # 頁面路由
@@ -154,9 +182,11 @@ npm run check:live         # 確認線上真的更新了
 │   │   ├── articles/           # 文章列表與內頁（來自 Notion）
 │   │   ├── ipas/               # iPAS 課程列表與內頁
 │   │   ├── exam/               # 題庫（購買頁 / 練習 App / PDF 列印頁）
-│   │   ├── portfolio/          # 作品集（4 個案例）
+│   │   ├── portfolio/          # 舊作品集（4 頁，站內已無連結，見上方說明）
 │   │   ├── consulting/         # 一對一諮詢
-│   │   └── ai-certifications.astro
+│   │   ├── ai-certifications.astro
+│   │   ├── terms.astro         # 服務條款
+│   │   └── 404.astro
 │   │
 │   ├── layouts/Base.astro      # 主版面（導覽列、頁尾、GA）
 │   ├── content/ipas/           # iPAS 課程 Markdown（51 篇，產出 50 個課程頁）
@@ -188,9 +218,6 @@ ECPAY_MERCHANT_ID=
 ECPAY_HASH_KEY=
 ECPAY_HASH_IV=
 ECPAY_TEST_MODE=true          # 開發時必須為 true
-
-# Google Gemini
-GEMINI_API_KEY=
 
 # LINE Bot（僅 production）
 LINE_CHANNEL_SECRET=

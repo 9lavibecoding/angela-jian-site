@@ -9,7 +9,7 @@
 Angela Jian 的個人品牌網站，面向想轉型 AI 產品經理的學習者。
 - 網址：https://aipm-insider.com
 - GitHub：9lavibecoding/angela-jian-site（**未接 Vercel 自動部署，push 不會上線**，見「部署流程」）
-- 主要功能：iPAS 備考課程（50 堂 + 速查表）、付費題庫（1000 題，NT$199；2026-09-03 核對 `api/create-order.ts` 與購買頁一致）、AI 工具、作品集、文章專欄
+- 主要功能：iPAS 備考課程（50 堂 + 速查表）、付費題庫（1000 題，NT$199；2026-09-03 核對 `api/create-order.ts` 與購買頁一致）、文章專欄（AI Prompt 產生器與作品集頁已於 2026-09-10 下架）
 - **現役專案路徑：`~/angela-jian-site`**。`~/Desktop/angela-jian-site` 為舊版，請勿在上面開發。
 
 ---
@@ -23,7 +23,6 @@ Angela Jian 的個人品牌網站，面向想轉型 AI 產品經理的學習者�
 | 內容管理 | Notion API |
 | 驗證 / 資料庫 | Supabase（Google OAuth + PostgreSQL） |
 | 金流 | 綠界 ECPay |
-| AI 服務 | Google Gemini API |
 | 通知 | LINE Bot API |
 | 部署 | Vercel（Serverless Functions） |
 
@@ -258,7 +257,8 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 呼叫 `/api/get-questions`，伺服器驗過 `purchases` 才回題目。產物從 1.2 MB 降到 8 KB。
 
 > 修補其實早在 2026-07-12 就寫好放在 `fix/paywall-security` 分支，只是從未合併上線。
-> 該分支另外兩項（save-purchase 要求 HMAC／QueryTradeInfo、generate-prompt 限流）
+> 該分支另外兩項（save-purchase 要求 HMAC／QueryTradeInfo、generate-prompt 限流；
+> 後者已隨 2026-09-10 下架該 API 而不再適用）
 > main 已用別的寫法修好，所以**不要整支合併**，會把較新的金流寫法覆蓋回七月版本。
 
 **已建立的防護（勿刪）：** `check:build` 從題庫 JSON 抽 3 題，拿題目與解析的前 24 字
@@ -322,9 +322,6 @@ ECPAY_HASH_KEY=
 ECPAY_HASH_IV=
 ECPAY_TEST_MODE=true   # 開發時必須為 true
 
-# Google Gemini
-GEMINI_API_KEY=
-
 # Vercel Cron（保活用，僅 production 需要）
 CRON_SECRET=
 
@@ -334,7 +331,7 @@ LINE_CHANNEL_ACCESS_TOKEN=
 ADMIN_LINE_USER_ID=
 ```
 
-> 實際狀況（2026-08-27 實查）：本機 `.env` **只有** Notion / Supabase / ECPay / Gemini 的變數，
+> 實際狀況（2026-08-27 實查）：本機 `.env` **只有** Notion / Supabase / ECPay / Gemini 的變數（Gemini 已無用，2026-09-10 下架 API），
 > LINE 三個變數與 `CRON_SECRET` 只存在於 Vercel production。要在本機測 LINE 相關功能，用
 > `vercel env pull <路徑> --environment=production` 拉下來，並且**務必拉到專案目錄外**：
 > `.gitignore` 只擋 `.env` 與 `.env.production`，不擋 `.env.local` 之類的檔名，拉錯位置會有
@@ -354,7 +351,6 @@ src/
     articles/           # 文章（來自 Notion）
     ipas/               # iPAS 課程（50 堂）
     exam/               # 題庫（購買頁 / 練習 App / PDF）
-    portfolio/          # 作品集
   content/ipas/         # iPAS 課程 Markdown 內容（51 篇）
   data/exam/            # 1000 題 JSON 題庫（10 個檔案）
   lib/
