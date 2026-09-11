@@ -196,9 +196,23 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 用戶在 Notion 新增文章後，會說「我加了文章」，此時 Claude 負責：
 1. **補齊欄位**：讀文章內文後，補上沒填的 `Slug`（英文-連字號）、`Tag`（用資料庫既有選項）、`Summary`（依寫作規範）、`Image`
 2. **驗證封面圖連結**：用 `curl -o /dev/null -w "%{http_code}"` 確認 Image URL 回 200（Unsplash 圖會被移除變 404 破圖，務必先驗）
-3. **本機 `npm run build`** 確認兩件事：新文章頁有產生、排版正常
-4. **部署上線**：此情境已授權 Claude 直接 `vercel --prod --yes`（屬「新增文章」例外，見下方部署流程）
-5. 部署後 `curl` 線上 URL 確認 200、列表頁含新文章
+3. **`npm run deploy:preview`**：一行跑完 preflight（含 build）→ `vercel --yes` 部署 preview
+   → 自動抓出 preview 網址 → 掃描全部 `articles/` 與 `ipas/` 頁面（約 3 分鐘 + 7 秒掃描）
+4. **人工看 preview 網址**：新文章頁排版正常、封面圖沒破、列表頁有出現這篇
+5. **上線**：`npm run deploy:prod`（= `vercel --prod --yes` + `check:live`）
+6. 部署後 `curl` 線上 URL 確認 200、列表頁含新文章
+
+> 第 3、5 步**都**在預先授權範圍內（屬「新增文章」例外，見下方部署流程），
+> Claude 不需要為這兩次部署個別詢問。第 3 步掃出 ✗ 就**停在 preview 不要上線**，
+> 重跑一次即可，那通常是 Notion 限流不是 code 有問題。
+
+> **為什麼非得部署 preview 才算數**：第 3 步 preflight 裡的 `check:build` 掃的是**本機 `dist/`**，
+> 但 Vercel 上會**重跑一次自己的 build**，各自去打 Notion。本機 build 成功不代表 Vercel 那次也成功
+> —— 2026-09-02 就發生過 build exit 0、Vercel 顯示 Ready、線上卻是 11 篇空白頁。
+> `deploy:preview` 是唯一能在上線前檢查到 **Vercel 產物**的關卡。
+
+> preview 已經部署過、只想重掃一次時，用 `PREVIEW_URL=<網址> node scripts/deploy-preview.mjs`
+> 跳過部署直接掃，不必再花三分鐘重新部署。
 
 > Notion 文章關鍵欄位：`Title`、`Slug`、`Tag`、`Date`、`Summary`、`Image`、`Published`（要打勾）、` ExternalURL`（注意屬性名有前導空格）。
 > 內文標題：Notion H1→`<h1>`、H2→`<h2>`、H3→`<h3>`，樣式定義在 `src/styles/global.css` 的 `.article-content-light`（在 `@layer components` 內）。
@@ -226,8 +240,17 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 | `npm run check` | 每次 commit 前 | 金流開關、憑證外洩、價格一致性、題庫資料完整性 | < 1 秒 |
 | `npm run check:revenue` | 動到 `api/`、`src/pages/exam/` 時 | 把真正的 handler import 進來實跑，斷言金流行為 | ~3 秒 |
 | `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、付費內容外洩、購買頁完整性、noindex、sitemap | < 1 秒 |
-| `npm run preflight` | **`vercel --prod` 之前** | 上面三層 + build，一次跑完 | ~3 分鐘 |
-| `npm run check:live` | `vercel --prod` 之後 | 線上購買頁、價格、空白頁抽查、Supabase 存活 | ~10 秒 |
+| `npm run preflight` | 被 `deploy:preview` 包住，通常不必單獨跑 | 上面三層 + build，一次跑完 | ~3 分鐘 |
+| `npm run deploy:preview` | **上線前的唯一入口** | preflight + 部署 preview + 掃描 **Vercel 產物**全部頁面 | ~3 分鐘 |
+| `npm run deploy:prod` | preview 確認無誤後 | `vercel --prod --yes` + `check:live` | ~2 分鐘 |
+| `npm run check:live` | 被 `deploy:prod` 包住 | 線上購買頁、價格、空白頁抽查、Supabase 存活 | ~10 秒 |
+
+> **`check:build` 與 `deploy:preview` 掃的不是同一份東西**：前者掃本機 `dist/`，後者掃 Vercel
+> 實際建出來的產物。Vercel 會重跑一次自己的 build 並各自去打 Notion，所以只有後者擋得住
+> 「本機好好的、Vercel 那次被限流」這種災情（2026-09-02 的 11 篇空白頁就是這樣上線的）。
+> `deploy:preview` 的掃描範圍是全部 `articles/` + `ipas/`（實測 66 頁，掃描階段數秒內完成，
+> 三分鐘的耗時幾乎都在 preflight 的 build 與 Vercel 部署本身），
+> 門檻與 `check:build` 一致（每頁至少 5 個 `</p>`、articles 16 KB／ipas 22 KB）。
 
 ### 幾個實作上的關鍵決定
 
@@ -285,16 +308,55 @@ Vercel 不會有任何動作，正式站不會更新。歷來所有部署都是�
 > 這條先前寫成「部署交由用戶自行 git push」，導致 push 完誤以為已上線，實際線上跑的是
 > 兩天前的舊版。要確認有沒有真的部署，看 `vercel ls` 最上面那筆的 Age 與 Status。
 
+### 兩段式部署：先 preview 再 production（2026-09-10 建立）
+
+`vercel --yes`（**不加 `--prod`**）會產生 preview 部署，給一個獨立網址，正式站完全不動。
+**這就是 stage，不需要另外建專案。** 標準流程：
+
+```bash
+npm run deploy:preview   # preflight + 部署 preview + 掃描 Vercel 產物，印出 preview 網址
+npm run deploy:prod      # 人工看過 preview 後才跑：上線 + check:live
+```
+
+重掃既有的 preview 不必重新部署：`PREVIEW_URL=<網址> node scripts/deploy-preview.mjs`。
+
+環境變數的作用域決定了 preview 有多安全（2026-09-10 `vercel env ls` 實查）：
+
+| 變數 | 作用域 | 對 preview 的意義 |
+|---|---|---|
+| `ECPAY_MERCHANT_ID`／`HASH_KEY`／`HASH_IV` | 僅 Production | preview 拿不到金流憑證，`create-order` 會失敗而非打到正式金流 |
+| `ECPAY_TEST_MODE=true` | Preview、Development | 2026-09-10 補上的第二道保險，防止日後把憑證加進 Preview 時忘了關正式金流 |
+| `LINE_*`、`CRON_SECRET` | 僅 Production | preview 不會發 LINE 通知，也不會跑保活 |
+| `SUPABASE_*` 六個 | 三環境同一組值 | ⚠️ **preview 直接讀寫正式資料庫** |
+
+> **preview 會寫進正式資料庫**，這是目前最大的落差。新增資料表時請加一個 `env` 欄位
+> （`'prod'`／`'preview'`）標記來源，統計時排除，比照 `purchases` 用 `trade_no not like 'TEST-ADMIN%'`
+> 排除自有帳號的既有作法。
+
+> 沒有獨立的 stage Supabase 專案是**刻意的決定**：免費方案一週無活動就自動暫停（2026-08-27 踩過），
+> stage 用得比 prod 更少會一直處於暫停狀態，每次測試都要先去 Restore，結果就是沒人用 staging。
+> 共用資料庫加來源標記是成本低很多的替代方案。
+
+> **CLI 陷阱**：`vercel env add <name> preview` 在 CLI 50.31.1 非互動模式下會要求指定 git branch，
+> 但它自己建議的「加到所有 Preview 分支」指令會無限回圈，而指定 `main` 會被拒
+> （`Cannot set Production Branch "main" for a Preview Environment Variable`）。
+> 解法是直接打 REST API：`POST /v10/projects/{projectId}/env`，body 帶 `target: ["preview"]`
+> 且**不帶** `gitBranch`，即代表所有 preview 分支。
+
 ### 規則
 
-- **上線一律 `vercel --prod --yes`**，或到 Vercel Dashboard 點 Redeploy
-- **部署屬對外動作，執行前先問過用戶**。唯一例外是「新增文章 SOP」，該情境已授權直接執行
+- **上線前先跑 `npm run deploy:preview`**，人工看過 preview 網址、掃描全綠，才 `npm run deploy:prod`
+  （見上方兩段式部署）。緊急時也可到 Vercel Dashboard 點 Redeploy，但那會跳過掃描
+- **部署屬對外動作，執行前先問過用戶**。唯一例外是「新增文章 SOP」，該情境已授權直接執行，
+  且授權涵蓋 preview 與 production 兩次部署
 - 部署前必須先本機 `npm run dev` 測過、`npm run build` 通過，不要拿正式部署當測試
 - 改 API 檔案（`api/*.ts`）也要先本機測過再部署，避免來回部署浪費時間
 - 在對話中執行部署時，**把輸出導到檔案再過濾**，不要讓 build log 灌進 context：
   ```bash
-  vercel --prod --yes > /tmp/deploy.log 2>&1; echo "EXIT=$?"
+  npm run deploy:preview > /tmp/deploy.log 2>&1; echo "EXIT=$?"; tail -25 /tmp/deploy.log
+  npm run deploy:prod    > /tmp/deploy.log 2>&1; echo "EXIT=$?"; tail -25 /tmp/deploy.log
   ```
+  （`tail -25` 剛好是檢查結果的長度，build log 不會灌進來）
 - 設定 Vercel 環境變數時，使用 `printf` 而非 `echo`，避免帶入尾部換行符
 - 目前沒有 `.vercelignore`，且 `.gitignore` 未排除 `social-cards/`（約 59MB），
   每次 `vercel --prod` 都會把它整包上傳。不影響建置，只是變慢
@@ -332,7 +394,9 @@ ADMIN_LINE_USER_ID=
 ```
 
 > 實際狀況（2026-08-27 實查）：本機 `.env` **只有** Notion / Supabase / ECPay / Gemini 的變數（Gemini 已無用，2026-09-10 下架 API），
-> LINE 三個變數與 `CRON_SECRET` 只存在於 Vercel production。要在本機測 LINE 相關功能，用
+> LINE 三個變數與 `CRON_SECRET` 只存在於 Vercel production；`ECPAY_TEST_MODE` 在 Vercel 只掛在
+> Preview 與 Development（值為 `true`），**Production 刻意不設**，因為 `process.env.ECPAY_TEST_MODE === 'true'`
+> 在 undefined 時即為正式金流，正是 production 要的行為。要在本機測 LINE 相關功能，用
 > `vercel env pull <路徑> --environment=production` 拉下來，並且**務必拉到專案目錄外**：
 > `.gitignore` 只擋 `.env` 與 `.env.production`，不擋 `.env.local` 之類的檔名，拉錯位置會有
 > 把正式憑證提交進 repo 的風險。用完立刻刪除。

@@ -14,7 +14,9 @@
     "check:revenue": "node scripts/check-revenue.mjs",
     "check:build": "node scripts/check-build.mjs",
     "check:live": "node scripts/check-live.mjs",
-    "preflight": "npm run check && npm run build && npm run check:build && npm run check:revenue"
+    "preflight": "npm run check && npm run build && npm run check:build && npm run check:revenue",
+    "deploy:preview": "npm run preflight && node scripts/deploy-preview.mjs",
+    "deploy:prod": "vercel --prod --yes && npm run check:live"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
