@@ -298,6 +298,12 @@ import Base from '../../layouts/Base.astro';
   var emailInput = document.getElementById('emailInput');
   var emailError = document.getElementById('emailError');
   var pendingBtn = null;
+  // GA：記住是哪顆購買按鈕開的 modal（closeModal 會清掉 pendingBtn，所以另存）
+  var buyLocation = 'exam_page';
+
+  function track(name, params) {
+    if (window.aipmTrack) window.aipmTrack(name, params);
+  }
 
   function showError(msg) {
     emailError.textContent = msg;
@@ -306,6 +312,8 @@ import Base from '../../layouts/Base.astro';
 
   function openModal() {
     pendingBtn = this;
+    buyLocation = this && this.id === 'buyBtn2' ? 'exam_page_bottom' : 'exam_page_top';
+    track('click_buy', { location: buyLocation });
     emailError.classList.add('hidden');
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -345,6 +353,14 @@ import Base from '../../layouts/Base.astro';
     .then(function(res) { return res.json(); })
     .then(function(data) {
       if (data.params && data.actionUrl) {
+        // 金額與品名取自 create-order 實際送給綠界的參數
+        var amount = Number(data.params.TotalAmount);
+        track('begin_checkout', {
+          currency: 'TWD',
+          value: amount,
+          items: [{ item_id: 'ipas_exam', item_name: data.params.ItemName, price: amount, quantity: 1 }],
+          location: buyLocation,
+        });
         var form = document.createElement('form');
         form.method = 'POST';
         form.action = data.actionUrl;

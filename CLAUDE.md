@@ -238,8 +238,8 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 | 指令 | 何時跑 | 內容 | 耗時 |
 |---|---|---|---|
 | `npm run check` | 每次 commit 前 | 金流開關、憑證外洩、價格一致性、題庫資料完整性 | < 1 秒 |
-| `npm run check:revenue` | 動到 `api/`、`src/pages/exam/` 時 | 把真正的 handler import 進來實跑，斷言金流行為 | ~3 秒 |
-| `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、付費內容外洩、購買頁完整性、noindex、sitemap | < 1 秒 |
+| `npm run check:revenue` | 動到 `api/`、`src/pages/exam/` 時 | 把真正的 handler import 進來實跑，斷言金流行為；也涵蓋電子報 API（`api/subscribe.ts`：405／honeypot／格式錯誤走 default export；限流、搶位、Kit 同步、LINE 節流用 `createHandler` 注入記憶體假 Supabase 實跑） | ~3 秒 |
+| `npm run check:build` | `npm run build` 之後 | 掃 dist：空白頁、付費內容外洩、購買頁完整性、noindex、sitemap、電子報表單依 `NEWSLETTER_ENABLED` 開關檢查（開：`data-newsletter-form` 必須存在；關：dist 與 sitemap 都不得出現）、前端不得出現 `api.kit.com`、每個 html 都載入 GA 並定義 `aipmTrack` | < 1 秒 |
 | `npm run preflight` | 被 `deploy:preview` 包住，通常不必單獨跑 | 上面三層 + build，一次跑完 | ~3 分鐘 |
 | `npm run deploy:preview` | **上線前的唯一入口** | preflight + 部署 preview + 掃描 **Vercel 產物**全部頁面 | ~3 分鐘 |
 | `npm run deploy:prod` | preview 確認無誤後 | `vercel --prod --yes` + `check:live` | ~2 分鐘 |
@@ -251,6 +251,15 @@ Could not find the table`。這是正常現象，等一下即可，不要急著�
 > `deploy:preview` 的掃描範圍是全部 `articles/` + `ipas/`（實測 66 頁，掃描階段數秒內完成，
 > 三分鐘的耗時幾乎都在 preflight 的 build 與 Vercel 部署本身），
 > 門檻與 `check:build` 一致（每頁至少 5 個 `</p>`、articles 16 KB／ipas 22 KB）。
+
+> ⚠️ **preview 有 Vercel 登入保護（2026-10-11 實查）**：`deploy-preview.mjs` 用一般 `fetch` 抓頁面，
+> 會被 302 導到 Vercel 登入頁，66 頁拿到的全是同一份約 332 KB、2 個 `</p>` 的
+> `<title>Login – Vercel</title>`，於是**每頁都判成空白頁、整支 exit 1**。這不是網站壞了。
+> 辨認方式：所有頁面大小一模一樣。在腳本修好之前，改用 `vercel curl`（CLI 50.31.1 起有，自動處理保護）手動掃：
+> ```bash
+> npx vercel curl /ipas/01-ai-definition/ --deployment <preview 網址> -- -s | grep -c "</p>"
+> ```
+> 對 `dist/ipas`、`dist/articles` 每個 slug 跑一次，套同樣門檻。
 
 ### 幾個實作上的關鍵決定
 
@@ -391,7 +400,41 @@ CRON_SECRET=
 LINE_CHANNEL_SECRET=
 LINE_CHANNEL_ACCESS_TOKEN=
 ADMIN_LINE_USER_ID=
+
+# Kit 電子報（僅 Production；api/subscribe.ts 只在 VERCEL_ENV=production 且兩者皆有值時同步 Kit）
+KIT_API_KEY=
+KIT_FORM_ID=
 ```
+
+> `KIT_API_KEY`、`KIT_FORM_ID` **只設在 Vercel Production**，不要加進 Preview：preview 共用正式資料庫，
+> 若也打 Kit 會對真人寄確認信。`npm run check` 會把被追蹤檔案裡 `KIT_API_KEY` 後接等號與值的賦值視為外洩。
+> 名單建表 SQL 見 `sql/2026-09-14-newsletter-subscribers.sql`，統計訂閱數一律 `where env = 'prod'`。
+
+### 電子報目前是關閉的（`NEWSLETTER_ENABLED = false`，2026-10-12）
+
+Kit 服務尚未申請。沒有 Kit 時表單照樣顯示「請到信箱點確認連結」，卻不會寄任何信，
+等於對讀者做出做不到的承諾，所以用 `src/lib/newsletter.ts` 的開關整個藏起來（程式碼全部保留）：
+關閉時文章頁與列表頁不渲染 `<NewsletterSignup>`，`/newsletter`（`src/pages/newsletter/[...slug].astro`，
+`getStaticPaths` 回傳空陣列）不產出、回 404，sitemap 也排除。`api/subscribe.ts` 仍會部署，只是前端沒有入口。
+
+**開啟前依序做完**：(1) 申請 Kit，在 Vercel **Production** 設 `KIT_API_KEY`、`KIT_FORM_ID`；
+(2) 在正式資料庫跑 `sql/2026-09-14-newsletter-subscribers.sql`；(3) 把開關改 `true`，走 `deploy:preview` → `deploy:prod`。
+`src/pages/terms.astro` 第 6 節「電子報與個人資料」在關閉期間刻意保留（站主決定）。
+
+### 電子報 API 的行為（`api/subscribe.ts`，2026-09-14 建立）
+
+- **名單以 Supabase 為準**：先寫 `newsletter_subscribers`（email 衝突不覆寫），再視情況同步 Kit。
+- **全域限流**：upsert 前查當前 env 近 10 分鐘新列數，達 `RATE_LIMIT_MAX = 30` 回 429，不寫入、不呼叫 Kit。
+  個人部落格正常 10 分鐘不會有 30 個新訂閱，超過多半是有人拿表單批次寄確認信給不相干的人。
+- **Kit 最多呼叫一次**：呼叫前先原子搶位（`update ... set kit_sync_attempted_at = now() where email = ? and kit_sync_attempted_at is null`），
+  只有搶到的請求能呼叫 Kit。併發重送、失敗後重送都不會再打 Kit；搶位本身出錯也不打。
+- **Kit 失敗不自動重試**，LINE 告警在 10 分鐘內只推第一筆。手動補同步的查詢：
+  ```sql
+  select email, source, kit_sync_attempted_at from newsletter_subscribers
+  where env = 'prod' and kit_sync_attempted_at is not null and kit_synced_at is null;
+  ```
+  到 Kit 後台手動加入後，再把該列 `kit_synced_at` 設為 `now()`。
+- 新訂閱與重複訂閱回應相同，不透露 email 是否已在名單。
 
 > 實際狀況（2026-08-27 實查）：本機 `.env` **只有** Notion / Supabase / ECPay / Gemini 的變數（Gemini 已無用，2026-09-10 下架 API），
 > LINE 三個變數與 `CRON_SECRET` 只存在於 Vercel production；`ECPAY_TEST_MODE` 在 Vercel 只掛在
@@ -403,16 +446,48 @@ ADMIN_LINE_USER_ID=
 
 ---
 
+## GA4 埋點（2026-10-11 建立）
+
+GA4 代號 `G-XY1PQ9JQVG`。載入邏輯在 `src/lib/ga.ts` 的 `GA_INLINE`：**只有 hostname 是
+`aipm-insider.com`／`www.aipm-insider.com` 才載入 gtag.js 並送資料**；localhost 與 `*.vercel.app` preview
+不送，只把事件 `console.debug('[ga]', …)` 印出來，本機驗證時看 console 或 `window.dataLayer`。
+
+- 全站一律呼叫 `window.aipmTrack(name, params)`，內部錯誤全部吞掉，埋點絕不能弄壞頁面。不要在各頁直接寫 `gtag(...)`。
+- 沒用 Base layout 的頁面也要載入：`src/pages/exam/print.astro` 直接 import；`api/ecpay-return.ts`
+  回傳的 HTML 用**檔內副本**（api/*.ts 不 import 本地模組：Vercel 要 `.js`、Node 實跑 check:revenue 要 `.ts`）。
+  `check:build` 會比對副本與 `ga.ts` 是否一致，**改一份就要同步另一份**。
+- 插進 HTML `<script>` 的值（訂單編號、金額）一律經 `gaJson()`（JSON.stringify 並轉義 `<`）。
+
+| 事件 | 觸發位置 |
+|---|---|
+| `click_buy` → `begin_checkout` | 購買頁開 modal → create-order 回應後、送綠界表單前（exam/index、exam/app、consulting） |
+| `purchase`（`transaction_id`=訂單編號） | ecpay-return 成功頁，**以及** exam/app 開通成功。兩處同一個 transaction_id，GA 自動去重 |
+| `payment_failed`／`payment_pending` | ecpay-return 失敗頁（等事件送出再跳轉，最多 1 秒）／ATM、超商繳費資訊頁 |
+| `claim_access {method, result}` | exam/app 三條開通路徑。已登入但沒買的人每次進 App 都會記一筆 `email/fail`，不代表開通壞了 |
+| `login` | 按 Google 登入時記 sessionStorage 旗標，回來 30 分鐘內拿到 session 才送一次 |
+| `start_practice`、`start_mock`、`submit_mock {score,total,percent}`、`view_explanation` | exam/app。**刻意不記每一題作答** |
+| `page_view`（虛擬） | exam/app 內切換畫面（不換 URL 的 SPA） |
+| `generate_lead {source}`、`print_exam` | 電子報訂閱成功（開關關閉期間不會出現）、列印版 |
+
+文章外連不另外埋，GA4 加強型評估已自動記錄。GA 後台需設定：參照網址排除 `ecpay.com.tw`
+（否則付完款回站都被歸到綠界），並把 `purchase`、`generate_lead` 標為主要事件。
+`begin_checkout`／`login`／`claim_access`／`purchase` 本機與 preview 都測不到，只能上線後看 GA 即時報表。
+
+---
+
 ## 目錄結構快速對照
 
 ```
 api/                    # Vercel Serverless Functions（付款、LINE Bot、題庫 API）
   keepalive.ts          # Supabase 每日保活，由 vercel.json 的 Cron 觸發（勿刪）
+  subscribe.ts          # 電子報訂閱：寫 newsletter_subscribers，正式站同步 Kit
 vercel.json             # Vercel Cron 排程設定（目前只有保活一條）
 src/
+  components/           # 共用元件（NewsletterSignup.astro：電子報訂閱表單）
   pages/                # 頁面路由
     index.astro         # 首頁
     articles/           # 文章（來自 Notion）
+    newsletter/         # 電子報訂閱說明頁（[...slug].astro，受 NEWSLETTER_ENABLED 控制）
     ipas/               # iPAS 課程（50 堂）
     exam/               # 題庫（購買頁 / 練習 App / PDF）
   content/ipas/         # iPAS 課程 Markdown 內容（51 篇）
@@ -420,6 +495,9 @@ src/
   lib/
     notion.ts           # Notion API + 圖片下載工具
     supabase.ts         # Supabase 用戶端初始化
+    ga.ts               # GA4 載入與 window.aipmTrack（見「GA4 埋點」）
+    newsletter.ts       # NEWSLETTER_ENABLED 電子報開關
+    exam-product.ts     # build 時從 api/create-order.ts 取題庫價格與品名（GA 事件用）
   layouts/Base.astro    # 主版型（導覽列、頁尾、GA）
   styles/global.css     # Tailwind + 自訂全域樣式
 public/                 # 靜態資源（圖片、favicon）

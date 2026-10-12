@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import { NEWSLETTER_ENABLED } from './src/lib/newsletter.ts';
 
 export default defineConfig({
   site: 'https://aipm-insider.com',
@@ -12,7 +13,9 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/exam/app') &&
         !page.includes('/exam/print') &&
-        !page.includes('/portfolio'),
+        !page.includes('/portfolio') &&
+        // 電子報關閉時頁面本來就不產出，這條是保險
+        (NEWSLETTER_ENABLED || !page.includes('/newsletter')),
     }),
   ],
   vite: {

@@ -24,6 +24,28 @@ const CONSULTING_INFO: Record<string, { label: string; schedulingUrl: string }> 
   CCAR: { label: '職涯諮詢／轉職陪跑', schedulingUrl: '#' },
 };
 
+// ── GA4 埋點（只加在回傳的 HTML 裡，不影響任何驗證或分支邏輯）──────────────
+// 與 src/lib/ga.ts 的 GA_INLINE 為同一份字串。現有 api/*.ts 都不 import 本地模組，
+// 所以在這裡放一份；scripts/check-build.mjs 會比對兩份是否一致，改其中一份必須同步另一份。
+const GA_INLINE = "(function(){var ID='G-XY1PQ9JQVG';window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};var h=location.hostname;var prod=h==='aipm-insider.com'||h==='www.aipm-insider.com';if(prod){try{var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+ID;document.head.appendChild(s);window.gtag('js',new Date());window.gtag('config',ID);}catch(e){}}window.aipmTrack=function(name,params){try{params=params||{};if(!prod){console.debug('[ga]',name,params);}window.gtag('event',name,params);}catch(e){}};})();";
+const GA_HEAD = `<script>${GA_INLINE}</script>`;
+// 插進 <script> 的值一律 JSON.stringify，並把 < 轉義，避免 </script> 注入
+function gaJson(v: unknown): string {
+  return JSON.stringify(v).replace(/</g, '\\u003c');
+}
+function gaEvent(name: string, params: Record<string, unknown>): string {
+  return `<script>window.aipmTrack&&window.aipmTrack(${gaJson(name)},${gaJson(params)});</script>`;
+}
+// 與 api/create-order.ts 的商品代碼對應，讓 begin_checkout 與 purchase 的 item_id 一致
+const GA_ITEM_IDS: Record<string, string> = { CTRN: 'consult_training', CRES: 'consult_resume', CCAR: 'consult_career' };
+function gaPurchase(tradeNo: string, tradeAmt: unknown, itemName: string): string {
+  const value = Number(tradeAmt);
+  const item: Record<string, unknown> = { item_id: GA_ITEM_IDS[tradeNo.substring(0, 4)] || 'ipas_exam', item_name: itemName, quantity: 1 };
+  const params: Record<string, unknown> = { transaction_id: tradeNo, currency: 'TWD', items: [item] };
+  if (Number.isFinite(value) && value > 0) { params.value = value; item.price = value; }
+  return gaEvent('purchase', params);
+}
+
 // 綠界 OrderResultURL 接收端
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const hashKey = process.env.ECPAY_HASH_KEY || '';
@@ -67,6 +89,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).send(`<!DOCTYPE html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>繳費資訊</title>
+${GA_HEAD}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -108,6 +131,7 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem;text-alig
   <a class="btn" href="/exam/app">前往題庫頁面</a>
   <p class="note">請記下訂單編號 <b class="sel">${tradeNo}</b>，開通時可能會用到。<br>款項通常在轉帳後數分鐘內確認。</p>
 </div>
+${gaEvent('payment_pending', { payment_type: String(body.PaymentType || '') || (vAccount ? 'ATM' : paymentNo ? 'CVS' : 'BARCODE'), transaction_id: tradeNo })}
 </body></html>`);
   }
 
@@ -121,10 +145,16 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem;text-alig
     const failRedirect = consultingInfo ? '/consulting' : '/exam/';
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(200).send(`<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>付款未完成</title></head>
+<html><head><meta charset="utf-8"><title>付款未完成</title>
+${GA_HEAD}</head>
 <body style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;background:#FAF6EF;">
 <p>付款未完成，正在跳轉...</p>
-<script>window.location.replace("${failRedirect}");</script>
+<script>
+// 等 GA 的 payment_failed 送出（event_callback）再跳轉，最多等 1 秒；非正式站不會觸發 callback，靠逾時跳轉
+var gone=false;function go(){if(gone)return;gone=true;window.location.replace("${failRedirect}");}
+window.aipmTrack&&window.aipmTrack("payment_failed",Object.assign(${gaJson(tradeNo ? { transaction_id: tradeNo } : {})},{event_callback:go}));
+setTimeout(go,1000);
+</script>
 </body></html>`);
   }
 
@@ -134,6 +164,7 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem;text-alig
     return res.status(200).send(`<!DOCTYPE html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>付款成功</title>
+${GA_HEAD}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -155,6 +186,7 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem}
     ? `<p class="sub">接下來請選擇你方便的諮詢時間：</p><a class="btn" href="${consultingInfo.schedulingUrl}" target="_blank" rel="noopener noreferrer">選擇諮詢時間</a>`
     : `<p class="sub">我們會盡快主動聯繫你，安排諮詢時間。</p><a class="btn" href="/consulting">回到諮詢頁面</a>`}
 </div>
+${gaPurchase(tradeNo, body.TradeAmt, consultingInfo.label)}
 </body></html>`);
   }
 
@@ -162,6 +194,7 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem}
   return res.status(200).send(`<!DOCTYPE html>
 <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>付款成功</title>
+${GA_HEAD}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -192,5 +225,6 @@ h1{font-size:1.5rem;font-weight:700;color:#1a1814;margin-bottom:0.5rem}
 var s=15,el=document.getElementById('cd');
 var t=setInterval(function(){s--;if(s<=0){clearInterval(t);window.location.href="${appUrl}"}else{el.textContent=s+' 秒後自動跳轉...'}},1000);
 </script>
+${gaPurchase(tradeNo, body.TradeAmt, 'iPAS AI 題庫 1000題完整版')}
 </body></html>`);
 }

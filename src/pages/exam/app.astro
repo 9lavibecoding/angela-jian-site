@@ -1,8 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { EXAM_PRICE, EXAM_ITEM_NAME } from '../../lib/exam-product';
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+
+// GA purchase 的金額與品名：取自 api/create-order.ts（見 src/lib/exam-product.ts）
+const examPrice = EXAM_PRICE;
+const examItemName = EXAM_ITEM_NAME;
 ---
 
 <Base title="iPAS AI 題庫練習 — AI PM INSIDER" description="1000 道 iPAS 考題互動練習" noindex={true}>
@@ -430,8 +435,31 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" is:inline></script>
-<script is:inline define:vars={{ supabaseUrl, supabaseAnonKey }}>
+<script is:inline define:vars={{ supabaseUrl, supabaseAnonKey, examPrice, examItemName }}>
 (function() {
+  // ==================== GA 埋點（window.aipmTrack 定義於 src/lib/ga.ts） ====================
+  function track(name, params) {
+    if (window.aipmTrack) window.aipmTrack(name, params);
+  }
+  // 開通成功。拿得到訂單編號就送 purchase（與 api/ecpay-return.ts 成功頁同一個 transaction_id，GA 會去重）
+  function trackClaim(method, ok, tradeNo) {
+    track('claim_access', { method: method, result: ok ? 'success' : 'fail' });
+    if (ok && tradeNo) {
+      track('purchase', {
+        transaction_id: tradeNo,
+        currency: 'TWD',
+        value: examPrice,
+        items: [{ item_id: 'ipas_exam', item_name: examItemName, price: examPrice, quantity: 1 }],
+      });
+    }
+  }
+  // 單頁 App 的虛擬頁面瀏覽
+  function trackScreen(screen, title) {
+    track('page_view', { page_title: title, page_location: location.origin + '/exam/app/' + screen });
+  }
+  // 按下 Google 登入時立旗標，登入回來拿到 session 才送 login，避免每次載入已登入頁面都重送
+  var LOGIN_FLAG_KEY = 'aipm_ga_login_pending';
+
   var QUESTIONS = [];
   var LETTERS = ['A','B','C','D'];
   var STORAGE_KEY = 'ipas_exam_data';
@@ -481,6 +509,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   document.getElementById('googleLoginBtn').addEventListener('click', async function() {
     gateMsg.textContent = '正在跳轉到 Google 登入...';
     var sb = getSB();
+    try { sessionStorage.setItem(LOGIN_FLAG_KEY, String(Date.now())); } catch (e) {}
 
     // 第一層：把查詢參數帶進返回網址
     var redirectUrl = window.location.origin + '/exam/app' + window.location.search;
@@ -520,6 +549,13 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.params && data.actionUrl) {
+        var amount = Number(data.params.TotalAmount);
+        track('begin_checkout', {
+          currency: 'TWD',
+          value: amount,
+          items: [{ item_id: 'ipas_exam', item_name: data.params.ItemName, price: amount, quantity: 1 }],
+          location: 'exam_app',
+        });
         var form = document.createElement('form');
         form.method = 'POST';
         form.action = data.actionUrl;
@@ -624,6 +660,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         body: JSON.stringify({ trade_no: tradeNo })
       });
       var data = await res.json();
+      trackClaim('order_number', !!(data && data.ok), tradeNo);
       if (data && data.ok) {
         say('開通成功，載入題庫中...', true);
         var loaded = await loadQuestions();
@@ -638,6 +675,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       }
     } catch (e) {
       console.error('Claim by trade_no error:', e);
+      trackClaim('order_number', false);
       say('網路錯誤，請稍後再試', false);
     }
     btn.disabled = false;
@@ -676,6 +714,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         body: JSON.stringify({ trade_no: tradeNo, token: token })
       });
       var data = await res.json();
+      trackClaim('token', !!(data && data.ok), tradeNo);
       // 只有確定成功才清掉暫存，否則保留讓下次載入還能再試
       if (data && data.ok) {
         try { localStorage.removeItem(PENDING_ORDER_KEY); } catch (e) {}
@@ -683,6 +722,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       window.history.replaceState({}, '', '/exam/app');
     } catch (e) {
       console.error('Save purchase error:', e);
+      trackClaim('token', false);
     }
   }
 
@@ -700,9 +740,12 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         }
       });
       var data = await res.json();
+      // 只有新認領成功才會回 trade_no；「已有購買紀錄」沒有訂單編號，只送 claim_access
+      trackClaim('email', !!data.ok, data.ok ? data.trade_no : '');
       return !!data.ok;
     } catch (e) {
       console.error('Claim purchase error:', e);
+      trackClaim('email', false);
       return false;
     }
   }
@@ -720,6 +763,14 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     }
 
     currentSession = session;
+    try {
+      var loginAt = Number(sessionStorage.getItem(LOGIN_FLAG_KEY) || 0);
+      if (loginAt) {
+        sessionStorage.removeItem(LOGIN_FLAG_KEY);
+        // 30 分鐘內按過登入才算這次完成登入，避免中途放棄後很久的殘留旗標誤判
+        if (Date.now() - loginAt < 1800000) track('login', { method: 'google' });
+      }
+    } catch (e) {}
     loginSection.classList.add('hidden');
     gateMsg.textContent = '驗證購買狀態中...';
 
@@ -815,6 +866,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         this.classList.add('active');
         document.getElementById('tab-' + this.getAttribute('data-tab')).classList.remove('hidden');
         if (this.getAttribute('data-tab') === 'stats') refreshStats();
+        trackScreen('tab-' + this.getAttribute('data-tab'), '題庫練習 — ' + this.textContent.trim());
       });
     });
   }
@@ -875,6 +927,8 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     practiceAnswered = false;
     document.getElementById('chapterSelect').classList.add('hidden');
     document.getElementById('practiceQuiz').classList.remove('hidden');
+    track('start_practice', { chapter: ch });
+    trackScreen('practice/' + ch, '章節練習 ' + ch);
     renderPracticeQ();
   }
 
@@ -1015,6 +1069,10 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     });
     document.getElementById('mockReviewBtn').addEventListener('click', function() {
       document.getElementById('mockReviewList').classList.toggle('hidden');
+      // 只在展開時送，收合不送
+      if (!document.getElementById('mockReviewList').classList.contains('hidden')) {
+        track('view_explanation', { mode: 'mock_review' });
+      }
     });
   }
 
@@ -1035,6 +1093,8 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
     buildMockNav();
     startTimer();
+    track('start_mock', { question_count: mockQuestions.length });
+    trackScreen('mock/' + num, '模擬考卷 ' + ['','A','B','C'][num]);
     renderMockQ();
   }
 
@@ -1184,6 +1244,8 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     }
     var timeUsed = 3600 - mockTimeLeft;
     saveMockScore(mockNum, score, mockQuestions.length, timeUsed);
+    track('submit_mock', { score: score, total: mockQuestions.length, percent: Math.round((score / mockQuestions.length) * 100) });
+    trackScreen('mock/' + mockNum + '/result', '模擬考結果');
 
     document.getElementById('mockExam').classList.add('hidden');
     document.getElementById('mockResults').classList.remove('hidden');

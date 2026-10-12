@@ -1,0 +1,63 @@
+---
+import { NEWSLETTER_ENABLED } from '../../lib/newsletter';
+import Base from '../../layouts/Base.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import { getArticles } from '../../lib/notion';
+
+// 開關關閉時回傳空陣列，Astro 就不會產出 /newsletter（比 redirect 或空殼乾淨）。
+export function getStaticPaths() {
+  return NEWSLETTER_ENABLED ? [{ params: { slug: undefined } }] : [];
+}
+
+const latest = (await getArticles()).slice(0, 3);
+---
+
+<Base
+  title="訂閱新文章通知 | AI PM INSIDER"
+  description="AI PM INSIDER 的新文章通知信。每篇新文章上線時寄一封信，只寄文章通知，隨時可以取消訂閱。"
+>
+  <section class="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden bg-white">
+    <div class="site-container px-6 relative z-10">
+      <div class="max-w-2xl">
+
+        <div class="flex items-center gap-3 text-brand-light-subtle text-xs tracking-widest font-body uppercase mb-4 md:mb-6">
+          <div class="w-8 h-px bg-brand-accent-dark"></div>
+          <span>Newsletter</span>
+        </div>
+        <h1 class="font-heading font-bold text-3xl md:text-5xl text-brand-light-text mb-6 md:mb-8">
+          新文章<span class="text-brand-accent-dark">通知</span>
+        </h1>
+
+        <div class="font-body text-base text-brand-light-subtle leading-relaxed mb-8">
+          <p class="mb-4">這份電子報的內容很單純：網站文章專欄有新文章上線時，寄一封信告訴你標題與連結。</p>
+          <ul class="list-disc list-inside space-y-2">
+            <li>一篇新文章，一封信</li>
+            <li>只寄文章通知，不寄廣告或其他推銷內容</li>
+            <li>送出 email 後會先收到一封確認信，點連結後才算完成訂閱</li>
+            <li>每封信下方都有取消訂閱連結，隨時可以退訂</li>
+          </ul>
+        </div>
+
+        <NewsletterSignup variant="full" source="newsletter-page" />
+
+        {latest.length > 0 && (
+          <div class="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-brand-light-border">
+            <h2 class="font-heading font-bold text-xl md:text-2xl text-brand-light-text mb-6">最近的文章</h2>
+            <ul class="divide-y divide-brand-light-border">
+              {latest.map((a) => (
+                <li>
+                  <a href={`/articles/${a.slug}`} class="group block py-4">
+                    <div class="text-xs text-brand-light-subtle font-body mb-1">{a.date}</div>
+                    <div class="font-heading font-semibold text-base leading-snug text-brand-light-text group-hover:text-brand-accent-dark transition-colors">{a.title}</div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="/articles" class="inline-block mt-4 text-sm font-body text-brand-accent-dark hover:underline">看所有文章</a>
+          </div>
+        )}
+
+      </div>
+    </div>
+  </section>
+</Base>

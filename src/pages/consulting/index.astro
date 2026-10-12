@@ -134,6 +134,14 @@ const services = [
       .then(function(res) { return res.json(); })
       .then(function(data) {
         if (data.params && data.actionUrl) {
+          // 金額與品名取自 create-order 實際送給綠界的參數
+          var amount = Number(data.params.TotalAmount);
+          if (window.aipmTrack) window.aipmTrack('begin_checkout', {
+            currency: 'TWD',
+            value: amount,
+            items: [{ item_id: product, item_name: data.params.ItemName, price: amount, quantity: 1 }],
+            location: 'consulting_page',
+          });
           var form = document.createElement('form');
           form.method = 'POST';
           form.action = data.actionUrl;

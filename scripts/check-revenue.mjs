@@ -147,8 +147,178 @@ const gq = fs.readFileSync('api/get-questions.ts', 'utf8');
 assert(/if\s*\(\s*purchase\.expires_at\s*&&/.test(gq), 'get-questions 仍以 `expires_at &&` 判斷（NULL＝永久有效）', '改掉會讓永久權限帳號被誤擋');
 assert(/order\([^)]*created_at[^)]*\)/.test(gq) && /limit\(1\)/.test(gq), 'get-questions 仍取最新一筆 purchases');
 
-// ── 5. Supabase 存活 ───────────────────────────────────────────
-section('5. Supabase 存活（免費方案會自動暫停）');
+// ── 5. 電子報 API ──────────────────────────────────────────────
+// default export 只實跑不碰資料庫的分支（405、honeypot、格式錯誤）。
+// 會碰資料庫的流程（限流、搶位、Kit 同步、LINE 節流）改用 createHandler 注入記憶體內的假 Supabase
+// 與計數用的假 callKit／notifyLine 實跑，斷言的是真正的 handler 邏輯，不是複製品。
+section('5. 電子報 API（api/subscribe.ts）');
+{
+  const mod = await import('../api/subscribe.ts');
+  // 併發請求共用同一組靜音狀態：以計數器決定何時還原，避免交錯的 save/restore 把 console 永久吞掉
+  const realError = console.error;
+  let quietDepth = 0;
+  const quiet = (fn) => async (...a) => {
+    if (quietDepth++ === 0) { console.log = () => {}; console.error = () => {}; }
+    try { return await fn(...a); } finally { if (--quietDepth === 0) { console.log = realLog; console.error = realError; } }
+  };
+  const runWith = async (handler, req) => { const { res, out } = mockRes(); await quiet(handler)({ headers: {}, ...req }, res); return out; };
+
+  const subscribe = mod.default;
+  const get = await runWith(subscribe, { method: 'GET', body: {} });
+  assert(get.status === 405, '非 POST 回 405', `實際 ${get.status}`);
+
+  // honeypot 分支必須在建立 Supabase client 之前就返回；這裡刻意用不合法的 email，
+  // 若 honeypot 沒先擋，會走到格式檢查回 400
+  const bot = await runWith(subscribe, { method: 'POST', body: { email: 'not-an-email', website: 'http://spam.example', source: 'article-end' } });
+  assert(bot.status === 200 && bot.body?.ok === true, 'honeypot 有值時直接回 ok、不處理', `實際 ${bot.status} ${JSON.stringify(bot.body)}`);
+
+  for (const bad of ['', 'abc', 'a@b', 'a b@example.com', `${'x'.repeat(250)}@example.com`]) {
+    const r = await runWith(subscribe, { method: 'POST', body: { email: bad, website: '', source: 'article-end' } });
+    assert(r.status === 400 && r.body?.ok === false, `格式錯誤回 400（${bad.length > 20 ? `${bad.length} 字元` : JSON.stringify(bad)}）`, `實際 ${r.status}`);
+  }
+
+  assert(mod.normalizeEmail('  Foo@Example.COM ') === 'foo@example.com', 'normalizeEmail 會 trim + lowercase');
+  assert(mod.resolveSource('article-end') === 'article-end' && mod.resolveSource('evil') === 'unknown' && mod.resolveSource(undefined) === 'unknown', 'resolveSource 白名單外一律 unknown');
+
+  const base = { vercelEnv: 'production', hasKitCredentials: true, claimed: true };
+  assert(mod.shouldSyncKit(base) === true, 'production + 有 key + 搶到同步位 → 同步 Kit');
+  assert(mod.shouldSyncKit({ ...base, claimed: false }) === false, '沒搶到同步位不同步', '這條失守＝灌同一個 email 會一直重寄確認信');
+  assert(mod.shouldSyncKit({ ...base, vercelEnv: 'preview' }) === false, 'preview 即使有 key 也不同步', '這條失守＝preview 測試會寄確認信給真人');
+  assert(mod.shouldSyncKit({ ...base, vercelEnv: undefined }) === false, '本機（無 VERCEL_ENV）不同步');
+  assert(mod.shouldSyncKit({ ...base, hasKitCredentials: false }) === false, 'production 缺 key 不同步');
+
+  // ── 記憶體內的假 Supabase：只支援 subscribe.ts 用到的查詢鏈 ──
+  // 每個查詢在 await 時先讓出一次事件迴圈再執行，模擬網路往返，讓 Promise.all 的請求真的交錯；
+  // 單一查詢本身是原子的，對應 Postgres 單一 UPDATE／INSERT 的語意。
+  function fakeSupabase() {
+    const rows = [];
+    let nextId = 1;
+    const SOURCES = ['article-end', 'articles-list', 'newsletter-page', 'unknown'];
+    const client = {
+      rows,
+      from(table) {
+        if (table !== 'newsletter_subscribers') throw new Error(`未預期的資料表 ${table}`);
+        const q = { op: 'select', filters: [], head: false, wantRows: false };
+        const b = {
+          select(_cols, opts = {}) { if (q.op === 'select') { q.head = !!opts.head; } else { q.wantRows = true; } return b; },
+          upsert(row, opts) { q.op = 'upsert'; q.row = row; q.opts = opts; return b; },
+          update(patch) { q.op = 'update'; q.patch = patch; return b; },
+          eq(c, v) { q.filters.push((r) => r[c] === v); return b; },
+          neq(c, v) { q.filters.push((r) => r[c] !== v); return b; },
+          gt(c, v) { q.filters.push((r) => r[c] != null && r[c] > v); return b; },
+          is(c, v) { q.filters.push((r) => (v === null ? r[c] == null : r[c] === v)); return b; },
+          not(c, op, v) { if (op !== 'is' || v !== null) throw new Error('fake 只支援 not is null'); q.filters.push((r) => r[c] != null); return b; },
+          then(resolve, reject) {
+            return new Promise((r) => setTimeout(r, 0)).then(() => {
+              const match = rows.filter((r) => q.filters.every((f) => f(r)));
+              if (q.op === 'select') return { data: q.head ? null : match, count: match.length, error: null };
+              if (q.op === 'upsert') {
+                const { email, source, env } = q.row;
+                if (!SOURCES.includes(source) || !['prod', 'preview'].includes(env)) return { data: null, error: { message: 'check constraint' } };
+                if (rows.some((r) => r.email === email)) {
+                  if (q.opts?.ignoreDuplicates) return { data: [], error: null };
+                  return { data: null, error: { message: 'duplicate' } };
+                }
+                const row = { id: nextId++, email, source, env, kit_sync_attempted_at: null, kit_synced_at: null, created_at: new Date().toISOString() };
+                rows.push(row);
+                return { data: [{ id: row.id }], error: null };
+              }
+              if (q.op === 'update') {
+                match.forEach((r) => Object.assign(r, q.patch));
+                return { data: q.wantRows ? match.map((r) => ({ id: r.id })) : null, error: null };
+              }
+            }).then(resolve, reject);
+          },
+        };
+        return b;
+      },
+    };
+    return client;
+  }
+
+  const KEYS = { KIT_API_KEY: 'test-key', KIT_FORM_ID: '123' };
+  function harness({ vercelEnv = 'production', keys = KEYS, kitFails = false } = {}) {
+    const sb = fakeSupabase();
+    const calls = { kit: 0, line: 0 };
+    const handler = mod.createHandler({
+      getSupabase: () => sb,
+      callKit: async () => { calls.kit++; await new Promise((r) => setTimeout(r, 5)); if (kitFails) throw new Error('Kit HTTP 500'); },
+      notifyLine: async () => { calls.line++; },
+      getEnv: () => ({ VERCEL_ENV: vercelEnv, ...keys }),
+    });
+    const post = (body) => runWith(handler, { method: 'POST', body });
+    return { sb, calls, post };
+  }
+
+  // a. 同一新 email 同時送 5 次 → Kit 只呼叫 1 次，回應全部相同
+  {
+    const h = harness();
+    const outs = await Promise.all(Array.from({ length: 5 }, () => h.post({ email: 'race@example.com', website: '', source: 'article-end' })));
+    const same = outs.every((o) => o.status === 200 && JSON.stringify(o.body) === JSON.stringify(outs[0].body));
+    assert(h.calls.kit === 1, 'a. 同一 email 併發 5 次，Kit 只被呼叫 1 次', `實際 ${h.calls.kit} 次；失守＝同一人收到多封確認信`);
+    assert(same, 'a. 5 個回應都是 200 且內容相同', outs.map((o) => `${o.status}:${JSON.stringify(o.body)}`).join(' '));
+    assert(h.sb.rows.length === 1 && !!h.sb.rows[0].kit_synced_at, 'a. 只有 1 列且已標記 kit_synced_at', `rows=${h.sb.rows.length}`);
+  }
+
+  // b. Kit 失敗後同一 email 再送 → 不再呼叫 Kit
+  {
+    const h = harness({ kitFails: true });
+    await h.post({ email: 'retry@example.com', website: '', source: 'article-end' });
+    const again = await h.post({ email: 'retry@example.com', website: '', source: 'article-end' });
+    assert(h.calls.kit === 1 && again.status === 200, 'b. Kit 失敗後同一 email 重送，不再呼叫 Kit', `Kit 共 ${h.calls.kit} 次、重送回 ${again.status}`);
+    const r = h.sb.rows[0];
+    assert(!!r?.kit_sync_attempted_at && r.kit_synced_at == null, 'b. 失敗列保留 attempted、synced 為 null（可手動補）');
+  }
+
+  // c. preview 有 key → 不呼叫 Kit，但資料有寫入且 env=preview
+  {
+    const h = harness({ vercelEnv: 'preview' });
+    const out = await h.post({ email: 'preview@example.com', website: '', source: 'newsletter-page' });
+    assert(out.status === 200 && h.calls.kit === 0, 'c. preview 有 key 也不呼叫 Kit', `status ${out.status}、Kit ${h.calls.kit} 次`);
+    assert(h.sb.rows.length === 1 && h.sb.rows[0].env === 'preview' && h.sb.rows[0].kit_sync_attempted_at == null, 'c. preview 仍寫入名單且 env=preview');
+  }
+  {
+    const h = harness({ keys: {} });
+    await h.post({ email: 'nokey@example.com', website: '', source: 'article-end' });
+    assert(h.calls.kit === 0 && h.sb.rows.length === 1, 'c2. production 缺 key 只寫名單不呼叫 Kit');
+  }
+
+  // d. 10 分鐘內已有 30 列 → 429，不寫入、不呼叫 Kit
+  {
+    const h = harness();
+    const t = new Date().toISOString();
+    for (let i = 0; i < mod.RATE_LIMIT_MAX; i++) h.sb.rows.push({ id: 1000 + i, email: `flood${i}@example.com`, source: 'unknown', env: 'prod', kit_sync_attempted_at: null, kit_synced_at: null, created_at: t });
+    const out = await h.post({ email: 'late@example.com', website: '', source: 'article-end' });
+    assert(out.status === 429 && out.body?.message === '目前訂閱的人比較多，請稍後再試。', `d. 10 分鐘內已有 ${mod.RATE_LIMIT_MAX} 列時回 429`, `實際 ${out.status} ${JSON.stringify(out.body)}`);
+    assert(h.sb.rows.length === mod.RATE_LIMIT_MAX && h.calls.kit === 0, 'd. 限流時不寫入、不呼叫 Kit', `rows=${h.sb.rows.length}、Kit ${h.calls.kit} 次`);
+  }
+  {
+    const h = harness();
+    const t = new Date().toISOString();
+    for (let i = 0; i < mod.RATE_LIMIT_MAX; i++) h.sb.rows.push({ id: 1000 + i, email: `pv${i}@example.com`, source: 'unknown', env: 'preview', kit_sync_attempted_at: null, kit_synced_at: null, created_at: t });
+    const out = await h.post({ email: 'prod@example.com', website: '', source: 'article-end' });
+    assert(out.status === 200, 'd2. 限流只算當前 env（preview 的列不擋 prod）', `實際 ${out.status}`);
+  }
+
+  // e. body 為 null、陣列、字串、數字 → 400，不丟例外
+  for (const [label, body] of [['null', null], ['陣列', [1, 2]], ['字串', 'hello'], ['JSON 字串 null', 'null'], ['數字', 42]]) {
+    const h = harness();
+    let out, thrown = null;
+    try { out = await h.post(body); } catch (e) { thrown = e; }
+    assert(!thrown && out?.status === 400, `e. body 為${label}時回 400`, thrown ? `丟出例外：${thrown.message}` : `實際 ${out?.status}`);
+  }
+
+  // f. 兩個不同 email 連續 Kit 失敗 → LINE 只推 1 次
+  {
+    const h = harness({ kitFails: true });
+    await h.post({ email: 'fail1@example.com', website: '', source: 'article-end' });
+    await h.post({ email: 'fail2@example.com', website: '', source: 'article-end' });
+    assert(h.calls.kit === 2 && h.calls.line === 1, 'f. 10 分鐘內連續兩次 Kit 失敗，LINE 只通知 1 次', `Kit ${h.calls.kit} 次、LINE ${h.calls.line} 次；失守＝連續失敗洗版`);
+  }
+}
+
+// ── 6. Supabase 存活 ───────────────────────────────────────────
+section('6. Supabase 存活（免費方案會自動暫停）');
 const SB_URL = process.env.SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
 const SB_KEY = process.env.SUPABASE_SECRET_KEY;
 if (!SB_URL || !SB_KEY) {

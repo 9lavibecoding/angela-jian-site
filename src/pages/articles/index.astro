@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getArticles } from '../../lib/notion';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import { NEWSLETTER_ENABLED } from '../../lib/newsletter';
 
 const articles = await getArticles();
 
@@ -74,6 +76,13 @@ const uniqueTags = [...new Set(articles.flatMap(a => a.tags))];
           >{tag}</button>
         ))}
       </div>
+
+      <!-- Newsletter -->
+      {NEWSLETTER_ENABLED && (
+      <div class="mb-8 md:mb-10">
+        <NewsletterSignup variant="compact" source="articles-list" />
+      </div>
+      )}
 
       <!-- Article list -->
       <div class="divide-y divide-brand-light-border" id="articleList">

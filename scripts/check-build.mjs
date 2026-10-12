@@ -123,6 +123,70 @@ for (const [name, rel] of [['題庫練習頁', 'exam/app/index.html'], ['PDF 列
   pass(`${name}存在`, `${(Buffer.byteLength(html) / 1000).toFixed(0)} KB`);
 }
 
+// ── 電子報訂閱入口 ─────────────────────────────────────────────
+// 表單根元素帶 data-newsletter-form（src/components/NewsletterSignup.astro）。
+// 前端只能打自家 /api/subscribe，Kit API key 在伺服器端，dist 裡不得出現 api.kit.com。
+const { NEWSLETTER_ENABLED } = await import('../src/lib/newsletter.ts');
+section(NEWSLETTER_ENABLED ? '電子報訂閱入口' : '電子報關閉');
+if (!NEWSLETTER_ENABLED) {
+  const MARK = 'data-newsletter-form';
+  const walk0 = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk0(path.join(dir, e.name)) : [path.join(dir, e.name)]);
+  const hits = walk0(DIST).filter((f) => /\.html$/.test(f) && fs.readFileSync(f, 'utf8').includes(MARK));
+  assert(hits.length === 0, '電子報關閉：dist 內沒有任何訂閱表單', hits.slice(0, 5).map((f) => path.relative(DIST, f)).join(', '));
+  assert(!fs.existsSync(path.join(DIST, 'newsletter')), '電子報關閉：不產出 /newsletter 頁', 'dist/newsletter');
+  const sm = fs.readdirSync(DIST).filter((f) => /^sitemap.*\.xml$/.test(f))
+    .map((f) => fs.readFileSync(path.join(DIST, f), 'utf8')).join('');
+  assert(!/newsletter/i.test(sm), '電子報關閉：sitemap 未收錄 /newsletter', '');
+} else {
+  const MARK = 'data-newsletter-form';
+  const artBase = path.join(DIST, 'articles');
+  if (fs.existsSync(artBase)) {
+    const artPages = fs.readdirSync(artBase, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((e) => path.join(artBase, e.name, 'index.html'))
+      .filter((f) => fs.existsSync(f));
+    const missing = artPages.filter((f) => !fs.readFileSync(f, 'utf8').includes(MARK));
+    assert(artPages.length > 0 && missing.length === 0, `文章內頁都有訂閱表單（${artPages.length} 頁）`,
+      missing.map((f) => path.basename(path.dirname(f))).slice(0, 5).join(', '));
+  } else {
+    fail('文章內頁都有訂閱表單', 'dist/articles/ 不存在');
+  }
+
+  for (const [name, rel] of [['文章列表頁', 'articles/index.html'], ['電子報頁', 'newsletter/index.html']]) {
+    const f = path.join(DIST, rel);
+    if (!fs.existsSync(f)) { fail(`${name}存在`, rel); continue; }
+    assert(fs.readFileSync(f, 'utf8').includes(MARK), `${name}有訂閱表單`, rel);
+  }
+
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]);
+  const assets = walk(DIST).filter((f) => /\.(html|m?js)$/.test(f));
+  const direct = assets.filter((f) => fs.readFileSync(f, 'utf8').includes('api.kit.com'));
+  assert(direct.length === 0, `前端未直連 Kit（掃 ${assets.length} 個 html/js）`, direct.slice(0, 5).join(', '));
+}
+
+// ── GA4 埋點 ─────────────────────────────────────────────────
+// 每頁都要載入 GA 且定義 window.aipmTrack（src/lib/ga.ts）。沒用 Base.astro 的頁面（如 exam/print）
+// 最容易漏掉；少了 aipmTrack，頁面上的 aipmTrack(...) 呼叫會靜默失效，購買漏斗就斷了。
+section('GA4 埋點');
+{
+  const { GA_ID, GA_INLINE } = await import('../src/lib/ga.ts');
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]);
+  const htmls = walk(DIST).filter((f) => f.endsWith('.html'));
+  const missing = htmls.filter((f) => {
+    const html = fs.readFileSync(f, 'utf8');
+    return !html.includes(GA_ID) || !html.includes('window.aipmTrack=');
+  });
+  assert(htmls.length > 0 && missing.length === 0, `每個 html 都載入 GA 並定義 aipmTrack（${htmls.length} 頁）`,
+    missing.map((f) => path.relative(DIST, f)).slice(0, 5).join(', ') + (missing.length > 5 ? ` …共 ${missing.length} 頁` : ''));
+
+  // api/ecpay-return.ts 是 Vercel function，內含一份相同的 GA 字串（付款成功頁的 purchase 靠它）
+  assert(fs.readFileSync('api/ecpay-return.ts', 'utf8').includes(JSON.stringify(GA_INLINE)),
+    'api/ecpay-return.ts 的 GA 字串與 src/lib/ga.ts 一致', '改了其中一份要同步另一份');
+}
+
 // 付費頁不可出現在 sitemap
 section('sitemap');
 const smFiles = fs.readdirSync(DIST).filter((f) => /^sitemap.*\.xml$/.test(f));

@@ -1,0 +1,127 @@
+---
+/**
+ * 電子報訂閱表單。讀者主動填 email 才訂閱，不搭配贈品、不做彈窗。
+ * 送出後由 api/subscribe.ts 寫入 Supabase，正式站再同步到 Kit（Kit 會寄確認信）。
+ *
+ * 表單根元素的 data-newsletter-form 屬性是 scripts/check-build.mjs 的檢查依據，勿刪。
+ * 同一頁可放多個實例，script 以屬性逐一綁定，不依賴 id。
+ */
+export interface Props {
+  variant: 'full' | 'compact';
+  source: 'article-end' | 'articles-list' | 'newsletter-page';
+}
+
+const { variant, source } = Astro.props;
+const isFull = variant === 'full';
+// label 與 input 需要成對的 id；同頁多個實例時以 source 區分
+const inputId = `newsletter-email-${source}`;
+---
+
+<form
+  data-newsletter-form
+  data-source={source}
+  class:list={[
+    'newsletter-form rounded-2xl border border-brand-light-border bg-brand-light-bg font-body',
+    isFull ? 'p-6 md:p-8' : 'p-4 md:p-5',
+  ]}
+>
+  {isFull && (
+    <div class="flex items-center gap-3 text-brand-light-subtle text-xs tracking-widest uppercase mb-3">
+      <div class="w-8 h-px bg-brand-accent-dark"></div>
+      <span>Newsletter</span>
+    </div>
+  )}
+  <p class:list={['text-brand-light-text leading-relaxed', isFull ? 'text-base mb-5' : 'text-sm mb-3']}>
+    新文章上線時，寄一封信通知你。一篇文章一封信，隨時可以取消訂閱。
+  </p>
+
+  <div class:list={['flex flex-col sm:flex-row gap-3', isFull ? '' : 'max-w-xl']}>
+    <label for={inputId} class="sr-only">Email</label>
+    <input
+      id={inputId}
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="you@example.com"
+      class="flex-1 min-w-0 px-5 py-3 text-sm font-body rounded-full border border-brand-light-border bg-white text-brand-light-text placeholder:text-brand-light-subtle focus:outline-none focus:border-brand-accent-dark transition-colors"
+    />
+    <div class="newsletter-hp" aria-hidden="true">
+      <label>網站<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <button
+      type="submit"
+      class="mag-btn px-6 py-3 gold-gradient text-white font-heading font-semibold rounded-full text-sm tracking-wide shrink-0 disabled:opacity-60 disabled:cursor-not-allowed"
+    >
+      <span>訂閱</span>
+    </button>
+  </div>
+
+  <p class="newsletter-msg text-sm mt-3 empty:hidden" aria-live="polite"></p>
+
+  <p class="text-xs text-brand-light-subtle leading-relaxed mt-3">
+    訂閱即表示同意以此 email 接收新文章通知，只寄文章通知。詳見<a href="/terms" class="text-brand-accent-dark hover:underline">使用條款</a>。
+  </p>
+</form>
+
+<style>
+  /* honeypot：移出畫面而不是 display:none，部分機器人會略過隱藏欄位 */
+  .newsletter-hp {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const DEFAULT_ERROR = '訂閱沒有成功，請稍後再試。';
+  const SUCCESS = '請到信箱點確認連結，完成訂閱。';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-newsletter-form]').forEach((form) => {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const msg = form.querySelector<HTMLElement>('.newsletter-msg');
+    const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
+    const hpInput = form.querySelector<HTMLInputElement>('input[name="website"]');
+
+    const show = (text: string, ok: boolean) => {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.classList.toggle('text-brand-accent-dark', ok);
+      msg.classList.toggle('text-red-700', !ok);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!emailInput || !form.reportValidity()) return;
+      if (button) button.disabled = true;
+      show('', true);
+      try {
+        const r = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value,
+            website: hpInput?.value || '',
+            source: form.dataset.source || '',
+          }),
+        });
+        const data = await r.json().catch(() => null);
+        if (r.ok && data?.ok) {
+          show(SUCCESS, true);
+          // GA：window.aipmTrack 定義於 src/lib/ga.ts，由 Base.astro 載入
+          (window as any).aipmTrack?.('generate_lead', { source: form.dataset.source || '' });
+          form.reset();
+        } else {
+          show(data?.message || DEFAULT_ERROR, false);
+        }
+      } catch {
+        show(DEFAULT_ERROR, false);
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  });
+</script>

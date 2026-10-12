@@ -42,6 +42,8 @@ const SECRET_PATTERNS = [
   ['ECPAY_HASH_IV', /ECPAY_HASH_IV\s*=[ \t]*\S/],
   ['CRON_SECRET', /CRON_SECRET\s*=[ \t]*\S/],
   ['LINE_CHANNEL_ACCESS_TOKEN', /LINE_CHANNEL_ACCESS_TOKEN\s*=[ \t]*\S/],
+  // Kit 官方文件未公布 API key 的字面格式（2026-09-14 查 developers.kit.com），只能盯變數賦值
+  ['KIT_API_KEY', /KIT_API_KEY\s*=[ \t]*\S/],
   ['Notion token 字面值', /\b(ntn_|secret_)[A-Za-z0-9]{30,}/],
   ['Supabase secret 字面值', /\bsb_secret_[A-Za-z0-9_-]{20,}/],
 ];

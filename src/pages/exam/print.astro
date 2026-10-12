@@ -4,6 +4,9 @@
 // 伺服器端驗證購買紀錄後才回傳題目，避免 view-source 外洩付費內容。
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+
+// 本頁沒用 Base.astro，GA 載入邏輯與 window.aipmTrack 共用同一份字串
+import { GA_INLINE } from '../../lib/ga';
 ---
 
 <html lang="zh-Hant">
@@ -13,6 +16,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>iPAS AI 題庫 — 完整版（列印版）</title>
+<script is:inline set:html={GA_INLINE}></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -130,7 +134,7 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <span class="print-bar-title">iPAS AI 題庫</span>
     <div class="print-bar-actions">
       <button class="toggle-answers" id="toggleAnswers">隱藏答案</button>
-      <button class="print-btn" onclick="window.print()">列印 / 存為 PDF</button>
+      <button class="print-btn" onclick="window.aipmTrack && window.aipmTrack('print_exam'); window.print()">列印 / 存為 PDF</button>
       <a href="/exam/app" class="back-link">返回題庫</a>
     </div>
   </div>

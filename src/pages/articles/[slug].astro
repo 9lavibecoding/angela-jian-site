@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getArticles, getArticleBySlug } from '../../lib/notion';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import { NEWSLETTER_ENABLED } from '../../lib/newsletter';
 
 export async function getStaticPaths() {
   const articles = await getArticles();
@@ -105,6 +107,13 @@ const related = others
         )}
       </div>
 
+      <!-- Newsletter -->
+      {NEWSLETTER_ENABLED && (
+      <div class="max-w-3xl mx-auto mt-12 md:mt-16">
+        <NewsletterSignup variant="full" source="article-end" />
+      </div>
+      )}
+
       <!-- Related Articles -->
       {related.length > 0 && (
         <div class="max-w-3xl mx-auto mt-12 md:mt-16 pt-8 md:pt-12 border-t border-brand-light-border">
@@ -139,12 +148,9 @@ const related = others
     img.addEventListener('error', () => { img.style.display = 'none'; });
   });
 
-  // Style Newsletter CTA paragraph + hashtag paragraph (markdown-only, no Notion change)
+  // Style hashtag paragraph (markdown-only, no Notion change)
   document.querySelectorAll('.article-content-light p').forEach((p) => {
     const text = p.textContent || '';
-    if (text.includes('歡迎追蹤這份 Newsletter') || text.includes('追蹤這份 Newsletter')) {
-      p.classList.add('article-cta');
-    }
     if (/^\s*#[\w一-龥]/.test(text)) {
       p.classList.add('article-hashtags');
     }
@@ -152,34 +158,6 @@ const related = others
 </script>
 
 <style is:global>
-  .article-content-light .article-cta {
-    margin: 3rem 0 1rem !important;
-    padding: 1.75rem 1.75rem 1.75rem 4rem !important;
-    background: linear-gradient(135deg, #FAF6EF, #F3EDE4) !important;
-    border: 1px solid #E0D5C5 !important;
-    border-left: 4px solid #C5A55A !important;
-    border-radius: 0.75rem !important;
-    color: #1a1814 !important;
-    font-size: 0.95rem !important;
-    line-height: 1.75 !important;
-    position: relative;
-  }
-  .article-content-light .article-cta::before {
-    content: "✉";
-    position: absolute;
-    left: 1.5rem;
-    top: 1.6rem;
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 50%;
-    background: #C5A55A;
-    color: #fff;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
   .article-content-light .article-hashtags {
     margin-top: 1.5rem !important;
     font-size: 0.75rem !important;
